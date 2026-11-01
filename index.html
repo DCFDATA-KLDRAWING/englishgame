@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>國小五上英語 - 糖果消消樂與手寫口試大冒險</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans+TC:wght@400;600;700;900&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'Quicksand', 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #FFF1EB 0%, #ACE0F9 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        .title-font {
+            font-family: 'Fredoka One', cursive;
+        }
+        /* 平板與手機橫向滑動導覽列優化 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        /* 糖果三消格子自適應 (手機與 iPad 兼顧) */
+        .candy-grid {
+            touch-action: none;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: clamp(3px, 1.2vw, 8px);
+            background: rgba(255, 255, 255, 0.55);
+            border-radius: 20px;
+            padding: clamp(6px, 1.8vw, 12px);
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.08), 0 8px 20px rgba(0,0,0,0.06);
+            width: 100%;
+            max-width: min(92vw, 420px);
+            margin: 0 auto;
+        }
+        .candy-cell {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s;
+            position: relative;
+            padding: 2px;
+        }
+        .candy-cell:active, .candy-cell.selected {
+            transform: scale(0.92);
+            filter: brightness(1.2);
+            box-shadow: 0 0 12px 3px #FFD700;
+            border: 2px solid #FFF;
+        }
+        .candy-cell.pop {
+            animation: popAnim 0.3s forwards ease-in-out;
+        }
+        @keyframes popAnim {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3) rotate(12deg); opacity: 0.8; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+        /* 英文四格三線紙背景 (高度自適應) */
+        .handwriting-lines {
+            background-color: #FAFCFF;
+            background-image: 
+                linear-gradient(#93c5fd 1px, transparent 1px),
+                linear-gradient(#f87171 1px, transparent 1px),
+                linear-gradient(#93c5fd 1px, transparent 1px);
+            background-size: 100% clamp(60px, 14vw, 90px);
+            background-position: 0 18px, 0 45px, 0 72px;
+        }
+        /* 平板與手機長內容安全滾動容器 */
+        .content-scrollable {
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 24px;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800 pb-10 overflow-x-hidden">
+
+    <!-- 頂部導航欄與學生資訊列 (iPad/手機安全自適應) -->
+    <header class="w-full bg-white/85 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-pink-100">
+        <div class="max-w-5xl mx-auto px-3 sm:px-4 py-2 flex items-center justify-between">
+            <!-- 品牌與單元標記 -->
+            <div class="flex items-center space-x-1.5 sm:space-x-2">
+                <span class="text-2xl sm:text-3xl">🍭</span>
+                <div class="truncate max-w-[150px] sm:max-w-none">
+                    <h1 class="text-base sm:text-lg font-black bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text text-transparent title-font truncate">
+                        Candy English
+                    </h1>
+                    <p class="text-[10px] sm:text-xs text-slate-500 font-bold truncate">康軒五上 U1 & U2 特訓</p>
+                </div>
+            </div>
+
+            <!-- 角色狀態切換與存檔 -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <div id="characterCardBadge" class="flex items-center bg-amber-50 border-2 border-amber-300 rounded-full px-2.5 sm:px-3 py-1 cursor-pointer shadow-sm hover:scale-105 active:scale-95 transition-all" onclick="openCharacterModal()">
+                    <span id="charAvatarIcon" class="text-xl sm:text-2xl mr-1">👧</span>
+                    <div class="text-left">
+                        <div id="charNameText" class="text-[11px] sm:text-xs font-bold text-slate-800 truncate max-w-[65px] sm:max-w-none">嬌小莉莉</div>
+                        <div class="text-[9px] sm:text-[10px] text-amber-600 font-bold flex items-center">
+                            <i class="fa-solid fa-star text-amber-400 mr-0.5 sm:mr-1"></i>
+                            <span id="charScoreText">0 分</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-repeat text-slate-400 ml-1.5 text-[10px] sm:text-xs"></i>
+                </div>
+
+                <!-- GitHub 部署版專用：快取更新與版本重整按鈕 -->
+                <button id="updateAppBtn" onclick="refreshAppVersion()" class="flex items-center space-x-1 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-black shadow-md hover:shadow-lg active:scale-95 transition-all" title="獲取 GitHub 最新版本並清除舊緩存">
+                    <i id="updateSpinIcon" class="fa-solid fa-arrows-rotate text-xs"></i>
+                    <span class="hidden md:inline">檢查更新</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 模組標籤頁切換 (手機與 iPad 支援流暢橫向滾動) -->
+        <nav class="max-w-5xl mx-auto px-2 flex space-x-1 border-t border-slate-100 overflow-x-auto no-scrollbar text-xs sm:text-sm font-bold whitespace-nowrap">
+            <button onclick="switchTab('candy')" id="tab-candy" class="tab-btn px-3 sm:px-4 py-2 border-b-4 border-pink-500 text-pink-600 flex items-center space-x-1.5 shrink-0">
+                <i class="fa-solid fa-gamepad"></i>
+                <span>糖果消消樂</span>
+            </button>
+            <button onclick="switchTab('handwrite')" id="tab-handwrite" class="tab-btn px-3 sm:px-4 py-2 border-b-4 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 shrink-0">
+                <i class="fa-solid fa-pen-nib"></i>
+                <span>平板手寫筆試</span>
+            </button>
+            <button onclick="switchTab('oral')" id="tab-oral" class="tab-btn px-3 sm:px-4 py-2 border-b-4 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 shrink-0">
+                <i class="fa-solid fa-microphone-lines"></i>
+                <span>口試大考驗</span>
+            </button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn px-3 sm:px-4 py-2 border-b-4 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 shrink-0">
+                <i class="fa-solid fa-file-signature"></i>
+                <span>綜合試題庫</span>
+            </button>
+            <button onclick="switchTab('guide')" id="tab-guide" class="tab-btn px-3 sm:px-4 py-2 border-b-4 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 shrink-0">
+                <i class="fa-solid fa-book-open"></i>
+                <span>複習秘笈</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- 主要內容區 (增添全響應式滾輪外層防裁切) -->
+    <main class="max-w-5xl mx-auto px-2 sm:px-4 mt-3 sm:mt-4 w-full flex-1 overflow-x-hidden">
+
+        <!-- ======================= 1. 糖果連連看消消樂 ======================= -->
+        <section id="sec-candy" class="tab-section block">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 items-start">
+                
+                <!-- 左側：遊戲面板 -->
+                <div class="md:col-span-2 bg-white/95 backdrop-blur rounded-2xl sm:rounded-3xl p-3 sm:p-5 shadow-xl border border-pink-100 flex flex-col items-center w-full">
+                    <!-- 分數與進度資訊條 -->
+                    <div class="w-full flex justify-between items-center bg-pink-50/80 px-3 sm:px-4 py-2 rounded-xl sm:rounded-2xl mb-3 border border-pink-100">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="text-pink-500 font-extrabold text-sm sm:text-base"><i class="fa-solid fa-heart mr-1"></i>步數:</span>
+                            <span id="gameMoves" class="text-xl sm:text-2xl font-black text-pink-600">20</span>
+                        </div>
+                        <div class="flex items-center space-x-3 sm:space-x-4">
+                            <div class="text-right">
+                                <span class="text-[9px] sm:text-[10px] text-slate-400 font-bold block">彩虹炸彈能量</span>
+                                <div class="w-16 sm:w-20 bg-slate-200 h-2 sm:h-2.5 rounded-full overflow-hidden mt-0.5">
+                                    <div id="bombEnergyBar" class="bg-gradient-to-r from-amber-400 to-rose-500 h-full w-0 transition-all"></div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] sm:text-xs text-slate-400 font-bold block">目前得分</span>
+                                <span id="gameScore" class="text-xl sm:text-2xl font-black text-amber-500">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6x6 糖果消消樂棋盤 (流體響應式容器) -->
+                    <div class="w-full flex justify-center">
+                        <div id="boardContainer" class="candy-grid"></div>
+                    </div>
+
+                    <!-- 操作輔助按鈕 -->
+                    <div class="mt-3 sm:mt-4 flex space-x-2 sm:space-x-3 w-full max-w-[420px]">
+                        <button onclick="initCandyGame()" class="flex-1 py-2 sm:py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm shadow-sm transition-all flex items-center justify-center space-x-1">
+                            <i class="fa-solid fa-arrows-rotate text-xs"></i>
+                            <span>重洗棋盤</span>
+                        </button>
+                        <button onclick="triggerRainbowBomb()" id="rainbowBombBtn" class="px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-black text-xs sm:text-sm shadow-md opacity-40 cursor-not-allowed transition-all" title="答對課文互動題累積能量引爆">
+                            <i class="fa-solid fa-bomb mr-1"></i>彩虹炸彈
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 右側：糖果單字圖鑑與消除即時課文互動 -->
+                <div class="bg-white/95 backdrop-blur rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-xl border border-pink-100 flex flex-col space-y-3 sm:space-y-4 w-full">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-extrabold text-slate-800 text-sm sm:text-base flex items-center">
+                            <i class="fa-solid fa-sparkles text-amber-400 mr-2"></i>課文即時互動
+                        </h3>
+                        <span class="text-[10px] sm:text-xs bg-pink-100 text-pink-600 font-bold px-2 py-0.5 rounded-full">消除連鎖發音</span>
+                    </div>
+
+                    <div id="activeCandyInfo" class="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 text-center transition-all">
+                        <div id="targetCandyIcon" class="text-3xl sm:text-4xl mb-1">🍬</div>
+                        <div id="targetCandyWord" class="text-lg sm:text-xl font-black text-amber-800">點擊或連線糖果</div>
+                        <div id="targetCandyTrans" class="text-[11px] sm:text-xs text-amber-600 font-bold mt-1">連成 3 顆消除，即刻朗讀單字與例句！</div>
+                        <div id="targetCandySentence" class="text-[11px] sm:text-xs text-slate-600 font-medium italic mt-2 bg-white/70 py-1.5 px-2 rounded-lg border border-amber-100 leading-relaxed">例句：Where are you from? I'm from Taiwan.</div>
+                        <button id="targetListenBtn" class="mt-2.5 inline-flex items-center px-3.5 py-1.5 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-md transition-all">
+                            <i class="fa-solid fa-volume-high mr-1.5"></i>聆聽外師標準音
+                        </button>
+                    </div>
+
+                    <!-- 課文文法即時互動答題挑戰 -->
+                    <div class="border-t border-slate-100 pt-3">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="text-xs font-bold text-slate-600 flex items-center">
+                                <i class="fa-solid fa-circle-question text-purple-500 mr-1.5"></i>消除觸發：考點快答
+                            </h4>
+                            <span id="streakBadge" class="text-[9px] sm:text-[10px] bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-bold">答對充能炸彈</span>
+                        </div>
+                        <div id="bonusChallengeBox" class="bg-purple-50 p-3 rounded-xl border-2 border-purple-200 text-xs shadow-sm">
+                            <p class="font-bold text-purple-950 mb-2 leading-relaxed text-[11px] sm:text-xs" id="bonusQuestionText">Q: "Where are you from?" 這句話中的 are 可以換成 do 嗎？</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="bonusOptionButtons">
+                                <button onclick="checkBonusAnswer(0)" id="bonusBtn0" class="py-2 px-2 bg-white rounded-xl text-purple-800 font-bold border border-purple-200 hover:bg-purple-100 active:scale-95 transition-all text-center text-[11px] sm:text-xs">不行 (要用 Be 動詞)</button>
+                                <button onclick="checkBonusAnswer(1)" id="bonusBtn1" class="py-2 px-2 bg-white rounded-xl text-purple-800 font-bold border border-purple-200 hover:bg-purple-100 active:scale-95 transition-all text-center text-[11px] sm:text-xs">可以 (都是疑問句)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ======================= 2. 平板手寫筆試互動測驗 ======================= -->
+        <section id="sec-handwrite" class="tab-section hidden">
+            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-indigo-100 max-w-3xl mx-auto">
+                <div class="flex items-center justify-between border-b pb-3 mb-3">
+                    <div>
+                        <span class="text-[10px] sm:text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">筆試手寫板</span>
+                        <h2 class="text-lg sm:text-xl font-black text-slate-800 mt-0.5">聽音辨字・手寫拼字作答</h2>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="text-xs font-bold text-slate-400">進度:</span>
+                        <span id="hwQuesNum" class="text-sm sm:text-base font-extrabold text-indigo-600">1 / 7</span>
+                    </div>
+                </div>
+
+                <!-- 題目語音提問區 -->
+                <div class="bg-indigo-50/70 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-indigo-100 flex flex-col sm:flex-row items-center justify-between mb-3 gap-2.5">
+                    <div class="text-center sm:text-left w-full sm:w-auto">
+                        <div class="text-[10px] sm:text-xs text-indigo-500 font-bold uppercase tracking-wider">聽力與文字提示</div>
+                        <div id="hwPromptChinese" class="text-base sm:text-lg font-black text-slate-800 mt-0.5 leading-snug">請聽題目並手寫：【日本】</div>
+                        <div id="hwSentenceHint" class="text-xs text-slate-500 mt-1">句型提示：She is from _______.</div>
+                    </div>
+                    <button onclick="playCurrentHwAudio()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm shadow-md hover:scale-105 active:scale-95 transition-all flex items-center justify-center space-x-1.5 shrink-0">
+                        <i class="fa-solid fa-volume-high text-base"></i>
+                        <span>語音考題</span>
+                    </button>
+                </div>
+
+                <!-- 手寫區域與工具列 -->
+                <div class="flex flex-col items-center">
+                    <div class="w-full flex justify-between items-center mb-1 text-[11px] sm:text-xs text-slate-400 px-1 font-semibold">
+                        <span class="truncate"><i class="fa-solid fa-pencil mr-1 text-indigo-500"></i>在三線格中書寫（支援手指/Apple Pencil）</span>
+                        <button onclick="clearCanvas()" class="text-rose-500 hover:text-rose-600 font-bold shrink-0 ml-2">
+                            <i class="fa-solid fa-eraser mr-0.5"></i>清空
+                        </button>
+                    </div>
+
+                    <!-- Canvas 觸控手寫板 (iPad 與手機自適應高度) -->
+                    <div class="relative w-full rounded-2xl border-2 border-indigo-200 overflow-hidden shadow-inner handwriting-lines bg-white touch-none">
+                        <canvas id="handwritingCanvas" class="w-full block cursor-crosshair h-44 sm:h-56"></canvas>
+                        <div id="canvasPlaceholder" class="absolute inset-0 flex items-center justify-center pointer-events-none text-slate-300 text-base sm:text-lg font-bold">
+                            在此手寫輸入英文...
+                        </div>
+                    </div>
+
+                    <!-- 輔助手寫辨識確認鈕 -->
+                    <div class="w-full mt-3 flex flex-col sm:flex-row gap-2">
+                        <div class="flex-1 flex gap-2">
+                            <input type="text" id="hwManualVerifyInput" placeholder="寫完可點辨識或直接輸入核對" class="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold focus:outline-none focus:border-indigo-500">
+                            <button onclick="triggerAutoRecognize()" class="px-3 py-2 sm:py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs flex items-center space-x-1 shrink-0">
+                                <i class="fa-solid fa-wand-magic-sparkles text-indigo-500"></i>
+                                <span>筆劃辨識</span>
+                            </button>
+                        </div>
+                        <button onclick="submitHandwritingAnswer()" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs sm:text-sm shadow-md active:scale-95 transition-all">
+                            確認送出評分 <i class="fa-solid fa-check ml-1"></i>
+                        </button>
+                    </div>
+
+                    <!-- 判定結果回饋面板 -->
+                    <div id="hwFeedbackBox" class="w-full mt-3 p-3 rounded-xl hidden text-center font-bold text-xs sm:text-sm transition-all"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= 3. 口試必勝大考驗 (語音辨識與朗讀) ======================= -->
+        <section id="sec-oral" class="tab-section hidden">
+            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-amber-100 max-w-3xl mx-auto">
+                <div class="flex items-center justify-between border-b pb-3 mb-3">
+                    <div>
+                        <span class="text-[10px] sm:text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">口試必勝指南</span>
+                        <h2 class="text-lg sm:text-xl font-black text-slate-800 mt-0.5">連音語調・口語問答模擬考試</h2>
+                    </div>
+                    <span class="text-[10px] sm:text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-lg">
+                        <i class="fa-solid fa-microphone mr-1"></i>支援麥克風
+                    </span>
+                </div>
+
+                <!-- 口試題卡 -->
+                <div class="space-y-3 sm:space-y-4">
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-5 rounded-2xl border border-amber-200">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-[10px] sm:text-xs font-bold text-amber-600 uppercase" id="oralCategory">【單元一句型：詢問來自哪裡】</span>
+                                <h3 class="text-xl sm:text-2xl font-black text-slate-800 mt-1" id="oralSentence">Where are you from?</h3>
+                                <p class="text-xs sm:text-sm font-bold text-slate-600 mt-1" id="oralTranslation">你來自哪裡？</p>
+                            </div>
+                            <button onclick="speakOralSample()" class="p-2.5 sm:p-3 bg-white rounded-2xl shadow hover:bg-amber-100 text-amber-600 transition-all ml-2" title="聽老師示範標準語調">
+                                <i class="fa-solid fa-volume-high text-lg sm:text-xl"></i>
+                            </button>
+                        </div>
+
+                        <!-- 考點連音技巧解說 -->
+                        <div class="mt-3 p-2.5 sm:p-3 bg-white/80 rounded-xl border border-amber-100 text-[11px] sm:text-xs text-amber-900 leading-relaxed">
+                            <span class="font-black text-amber-600 mr-1"><i class="fa-solid fa-lightbulb"></i>連音與語調攻略：</span>
+                            <span id="oralTipText">疑問詞開頭的問句，句尾音調要「往下放」！Where are 連讀時要滑順自然。</span>
+                        </div>
+                    </div>
+
+                    <!-- 錄音作答互動區 -->
+                    <div class="p-4 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200 text-center flex flex-col items-center">
+                        <p class="text-[11px] sm:text-xs font-bold text-slate-400 mb-2.5">按下麥克風按鈕後，請對著平板或手機大聲朗讀：</p>
+                        
+                        <button id="micRecordBtn" onclick="toggleSpeechRecording()" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-rose-500 hover:bg-rose-600 active:scale-90 text-white text-xl sm:text-2xl flex items-center justify-center shadow-lg transition-all relative">
+                            <i id="micIcon" class="fa-solid fa-microphone"></i>
+                            <span id="pulseRing" class="absolute inset-0 rounded-full border-4 border-rose-300 animate-ping hidden"></span>
+                        </button>
+                        
+                        <div id="oralRecordStatus" class="mt-2.5 text-[11px] sm:text-xs font-bold text-slate-500">點擊紅色麥克風開始錄音作答</div>
+                        
+                        <!-- 辨識出的文字 -->
+                        <div id="oralTranscriptBox" class="w-full mt-3 p-2.5 sm:p-3 rounded-xl bg-white border border-slate-200 text-xs sm:text-sm font-bold text-slate-700 min-h-[40px] flex items-center justify-center text-center">
+                            待辨識學生語音...
+                        </div>
+
+                        <!-- 口試分數成果 -->
+                        <div id="oralScoreResult" class="mt-2.5 hidden">
+                            <span class="text-xs sm:text-sm font-black text-emerald-600 bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200">
+                                評分：優秀 (Great Job!) +10 分
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- 下一題導航按鈕 -->
+                    <div class="flex justify-between items-center pt-1">
+                        <button onclick="prevOralQuestion()" class="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-600 font-bold text-xs hover:bg-slate-200">
+                            <i class="fa-solid fa-chevron-left mr-1"></i>上一題
+                        </button>
+                        <div class="text-xs text-slate-400 font-bold" id="oralPageNum">1 / 6</div>
+                        <button onclick="nextOralQuestion()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs shadow-md">
+                            下一題 <i class="fa-solid fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= 4. 康軒綜合模擬試題庫 (1~10完整呈現) ======================= -->
+        <section id="sec-quiz" class="tab-section hidden">
+            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-blue-100 max-w-3xl mx-auto">
+                <div class="flex items-center justify-between border-b pb-3 mb-3">
+                    <div>
+                        <span class="text-[10px] sm:text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">Wonderful World 7 筆試題庫</span>
+                        <h2 class="text-lg sm:text-xl font-black text-slate-800 mt-0.5">Unit 1 & Unit 2 綜合測驗</h2>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-[10px] sm:text-xs text-slate-400 font-bold">題目進度</div>
+                        <span id="quizIndexDisplay" class="text-base sm:text-lg font-black text-blue-600">1 / 10</span>
+                    </div>
+                </div>
+
+                <!-- 測驗進度條 -->
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-4 sm:mb-6">
+                    <div id="quizProgressBar" class="bg-blue-500 h-full w-[10%] transition-all duration-300"></div>
+                </div>
+
+                <!-- 考題展示區 (支援滾動避免溢出) -->
+                <div id="quizCard" class="mb-4">
+                    <div class="flex items-start justify-between">
+                        <h3 id="quizTitle" class="text-base sm:text-lg font-black text-slate-800 leading-relaxed">
+                            1. Where ____ you from? I am from Taiwan.
+                        </h3>
+                        <button onclick="speakQuizCurrent()" class="p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 ml-2 shrink-0" title="朗讀題目">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                    </div>
+
+                    <!-- 選項列表 -->
+                    <div id="quizOptionsContainer" class="grid grid-cols-1 gap-2.5 sm:gap-3 mt-4">
+                        <!-- 選項由 JS 自動填入 -->
+                    </div>
+                </div>
+
+                <!-- 解題提示折疊框 -->
+                <div class="border-t border-slate-100 pt-2.5">
+                    <button onclick="toggleHint()" class="text-xs font-bold text-slate-500 hover:text-blue-600 flex items-center">
+                        <i class="fa-solid fa-circle-question mr-1.5 text-blue-400"></i>
+                        <span id="hintToggleText">顯示文法提示</span>
+                        <i id="hintChevron" class="fa-solid fa-chevron-down ml-1 text-[10px]"></i>
+                    </button>
+                    <div id="hintContentBox" class="mt-2 p-3 bg-amber-50/80 rounded-xl border border-amber-200 text-xs text-amber-900 hidden leading-relaxed">
+                        提示內容...
+                    </div>
+                </div>
+
+                <!-- 導航控制鍵 -->
+                <div class="flex justify-between items-center mt-5 pt-3 border-t">
+                    <button onclick="prevQuizItem()" id="quizPrevBtn" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold text-xs sm:text-sm hover:bg-slate-200">
+                        返回
+                    </button>
+                    <button onclick="nextQuizItem()" id="quizNextBtn" class="px-5 sm:px-7 py-2 sm:py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs sm:text-sm shadow-md">
+                        下一組
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= 5. 教材複習密技指南 (平板/手機雙欄自適應與滾輪保護) ======================= -->
+        <section id="sec-guide" class="tab-section hidden">
+            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-emerald-100 max-w-4xl mx-auto space-y-4 sm:space-y-6">
+                <div class="border-b pb-3">
+                    <span class="text-xs bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-full">教材重點大彙整</span>
+                    <h2 class="text-xl sm:text-2xl font-black text-slate-800 mt-1">康軒五上 U1 & U2 考點秘笈</h2>
+                </div>
+
+                <!-- 核心單字群組 (手機直式單欄，iPad與電腦並列) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                    <!-- U1 國家單字 -->
+                    <div class="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-sky-50 border border-sky-100">
+                        <h3 class="font-extrabold text-sky-900 mb-1.5 flex items-center text-sm sm:text-base">
+                            <i class="fa-solid fa-earth-americas text-sky-500 mr-2"></i>Unit 1 核心國家單字
+                        </h3>
+                        <p class="text-[11px] sm:text-xs text-rose-500 font-bold mb-2">⚠️ 考試大重點：國家的字首字母一定要大寫！</p>
+                        <ul class="text-xs space-y-1.5 text-slate-700">
+                            <li>🇹🇼 <strong class="text-slate-900">Taiwan</strong> : 台灣</li>
+                            <li>🇯🇵 <strong class="text-slate-900">Japan</strong> : 日本</li>
+                            <li>🇬🇧 <strong class="text-slate-900">the UK</strong> : 英國 (The United Kingdom)</li>
+                            <li>🇺🇸 <strong class="text-slate-900">the USA</strong> : 美國 (The United States of America)</li>
+                            <li>🇨🇦 <strong class="text-slate-900">Canada</strong> : 加拿大 (首都: Ottawa 渥太華)</li>
+                            <li>🇦🇺 <strong class="text-slate-900">Australia</strong> : 澳洲</li>
+                        </ul>
+                    </div>
+
+                    <!-- U2 作息動詞 -->
+                    <div class="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-amber-50 border border-amber-100">
+                        <h3 class="font-extrabold text-amber-900 mb-1.5 flex items-center text-sm sm:text-base">
+                            <i class="fa-solid fa-clock text-amber-500 mr-2"></i>Unit 2 日常作息動詞片語
+                        </h3>
+                        <p class="text-[11px] sm:text-xs text-amber-700 font-bold mb-2">⚠️ 單數主詞（He/She）動詞要加 s/es！</p>
+                        <ul class="text-xs space-y-1.5 text-slate-700">
+                            <li>⏰ <strong class="text-slate-900">get up</strong> : 起床 (單數: gets up)</li>
+                            <li>🍳 <strong class="text-slate-900">eat breakfast</strong> : 吃早餐 (單數: eats)</li>
+                            <li>🎒 <strong class="text-slate-900">go to school</strong> : 去上學 (單數: goes)</li>
+                            <li>🍱 <strong class="text-slate-900">eat lunch</strong> : 吃午餐</li>
+                            <li>🏠 <strong class="text-slate-900">go home</strong> : 回家</li>
+                            <li>🍽️ <strong class="text-slate-900">eat dinner</strong> : 吃晚餐</li>
+                            <li>🛏️ <strong class="text-slate-900">go to bed</strong> : 上床睡覺</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 考攻略規則表格 -->
+                <div class="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-purple-50 border border-purple-100">
+                    <h3 class="font-extrabold text-purple-900 mb-2 flex items-center text-sm sm:text-base">
+                        <i class="fa-solid fa-graduation-cap text-purple-600 mr-2"></i>第一次筆試高分攻略 (口訣)
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs text-slate-700">
+                        <div class="bg-white p-3 rounded-xl border border-purple-200">
+                            <div class="font-black text-purple-800">1. Be動詞 vs. 助動詞</div>
+                            <p class="mt-1 leading-relaxed">問地點用 Be 動詞：Where <strong>are</strong> you from? / Where <strong>is</strong> she from?<br>問作息用助動詞：What time <strong>do</strong> you get up? / What time <strong>does</strong> he get up?</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-purple-200">
+                            <div class="font-black text-purple-800">2. 時間介系詞永遠用 at</div>
+                            <p class="mt-1 leading-relaxed">表達在幾點幾分，前面一定要加 <strong>at</strong>！例如：at 6:30, at 7:00, at nine o'clock。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ======================= 角色選擇互動彈窗 ======================= -->
+    <div id="characterModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border-4 border-pink-200 transform transition-all text-center">
+            <span class="text-4xl">👥</span>
+            <h3 class="text-xl font-black text-slate-800 mt-2">選擇參賽學生角色</h3>
+            <p class="text-xs text-slate-500 mb-6 font-bold">遊戲將記憶每位學生的闖關紀錄與積分！</p>
+
+            <div class="grid grid-cols-2 gap-4">
+                <!-- 角色 1: 嬌小女生 莉莉 -->
+                <div onclick="selectCharacter('lily')" id="card-lily" class="p-4 rounded-2xl border-2 border-pink-400 bg-pink-50/70 hover:bg-pink-100 cursor-pointer transition-all flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-pink-200 flex items-center justify-center text-3xl shadow-inner mb-2">
+                        👧
+                    </div>
+                    <div class="font-black text-slate-800 text-sm">嬌小莉莉 (Lily)</div>
+                    <div class="text-[11px] text-pink-600 font-bold mt-1">靈巧敏捷・記憶力高</div>
+                    <div class="mt-2 text-xs font-black text-amber-500" id="savedScore-lily">積分: 0</div>
+                </div>
+
+                <!-- 角色 2: 粗壯小男生 麥克斯 -->
+                <div onclick="selectCharacter('max')" id="card-max" class="p-4 rounded-2xl border-2 border-blue-400 bg-blue-50/70 hover:bg-blue-100 cursor-pointer transition-all flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-blue-200 flex items-center justify-center text-3xl shadow-inner mb-2">
+                        👦
+                    </div>
+                    <div class="font-black text-slate-800 text-sm">粗壯麥克斯 (Max)</div>
+                    <div class="text-[11px] text-blue-600 font-bold mt-1">沉穩有力・連擊耐打</div>
+                    <div class="mt-2 text-xs font-black text-amber-500" id="savedScore-max">積分: 0</div>
+                </div>
+            </div>
+
+            <button onclick="closeCharacterModal()" class="mt-6 w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm shadow">
+                確認進入挑戰
+            </button>
+        </div>
+    </div>
+
+    <!-- 自製通知氣泡 MessageBox -->
+    <div id="toastBox" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 text-white px-5 py-2.5 rounded-2xl text-xs font-black shadow-xl flex items-center space-x-2 transition-all opacity-0 pointer-events-none transform translate-y-4">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMsg">提示訊息</span>
+    </div>
+
+    <script>
+        /* ==========================================================
+           1. 學生角色管理與 LocalStorage 記憶存檔系統
+        ========================================================== */
+        const STUDENTS = {
+            lily: {
+                id: 'lily',
+                name: '嬌小莉莉',
+                avatar: '👧',
+                score: 0
+            },
+            max: {
+                id: 'max',
+                name: '粗壯麥克斯',
+                avatar: '👦',
+                score: 0
+            }
+        };
+
+        let currentStudentId = 'lily';
+
+        function loadStoredData() {
+            try {
+                const saved = localStorage.getItem('candy_english_students');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.lily) STUDENTS.lily.score = parsed.lily.score || 0;
+                    if (parsed.max) STUDENTS.max.score = parsed.max.score || 0;
+                }
+                const lastChar = localStorage.getItem('candy_english_active_char');
+                if (lastChar && STUDENTS[lastChar]) {
+                    currentStudentId = lastChar;
+                }
+            } catch (e) {
+                console.warn('LocalStorage access issue:', e);
+            }
+            updateCharacterUI();
+        }
+
+        function saveStudentData() {
+            try {
+                localStorage.setItem('candy_english_students', JSON.stringify({
+                    lily: { score: STUDENTS.lily.score },
+                    max: { score: STUDENTS.max.score }
+                }));
+                localStorage.setItem('candy_english_active_char', currentStudentId);
+            } catch (e) {
+                console.warn('Could not save to localStorage:', e);
+            }
+        }
+
+        function updateCharacterUI() {
+            const student = STUDENTS[currentStudentId];
+            const nameEl = document.getElementById('charNameText');
+            const avatarEl = document.getElementById('charAvatarIcon');
+            const scoreEl = document.getElementById('charScoreText');
+            const lilyScoreEl = document.getElementById('savedScore-lily');
+            const maxScoreEl = document.getElementById('savedScore-max');
+
+            if (nameEl) nameEl.innerText = student.name;
+            if (avatarEl) avatarEl.innerText = student.avatar;
+            if (scoreEl) scoreEl.innerText = `${student.score} 分`;
+            if (lilyScoreEl) lilyScoreEl.innerText = `積分: ${STUDENTS.lily.score}`;
+            if (maxScoreEl) maxScoreEl.innerText = `積分: ${STUDENTS.max.score}`;
+
+            const cardLily = document.getElementById('card-lily');
+            const cardMax = document.getElementById('card-max');
+            if (cardLily && cardMax) {
+                if (currentStudentId === 'lily') {
+                    cardLily.classList.add('ring-4', 'ring-pink-400');
+                    cardMax.classList.remove('ring-4', 'ring-blue-400');
+                } else {
+                    cardMax.classList.add('ring-4', 'ring-blue-400');
+                    cardLily.classList.remove('ring-4', 'ring-pink-400');
+                }
+            }
+        }
+
+        function addStudentScore(points) {
+            STUDENTS[currentStudentId].score += points;
+            updateCharacterUI();
+            saveStudentData();
+        }
+
+        function selectCharacter(charId) {
+            if (STUDENTS[charId]) {
+                currentStudentId = charId;
+                updateCharacterUI();
+                saveStudentData();
+                showToast(`已切換為：${STUDENTS[charId].name}`, 'fa-user-check text-sky-400');
+            }
+        }
+
+        function openCharacterModal() {
+            const modal = document.getElementById('characterModal');
+            if (modal) modal.classList.remove('hidden');
+            updateCharacterUI();
+        }
+
+        function closeCharacterModal() {
+            const modal = document.getElementById('characterModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        /* ==========================================================
+           2. 標籤頁面切換控制 (Tab Switcher)
+        ========================================================== */
+        function switchTab(tabId) {
+            const sections = document.querySelectorAll('.tab-section');
+            sections.forEach(sec => sec.classList.add('hidden'));
+
+            const targetSec = document.getElementById(`sec-${tabId}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => {
+                btn.classList.remove('border-pink-500', 'text-pink-600');
+                btn.classList.add('border-transparent', 'text-slate-500');
+            });
+
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('border-transparent', 'text-slate-500');
+                activeBtn.classList.add('border-pink-500', 'text-pink-600');
+            }
+
+            if (tabId === 'handwrite') {
+                setTimeout(resizeCanvas, 50);
+            }
+        }
+
+        /* ==========================================================
+           3. 糖果消消樂核心機制 (完整融入課本單字、例句與互動連擊)
+        ========================================================== */
+        const CANDY_TYPES = [
+            { 
+                id: 0, 
+                icon: '🇹🇼', 
+                word: 'Taiwan', 
+                trans: '台灣 (首字大寫)', 
+                sentence: "I am from Taiwan.", 
+                grammarRule: "國家專有名詞第一個字母必須大寫！" 
+            },
+            { 
+                id: 1, 
+                icon: '🇯🇵', 
+                word: 'Japan', 
+                trans: '日本 (首字大寫)', 
+                sentence: "They are from Japan.", 
+                grammarRule: "問句：Where are they from? 答句：They are from Japan." 
+            },
+            { 
+                id: 2, 
+                icon: '⏰', 
+                word: 'get up', 
+                trans: '起床 (單數加 s)', 
+                sentence: "What time do you get up? I get up at 6:30.", 
+                grammarRule: "get up 讀音滑順連讀 /gɛ-tʌp/；遇 he/she 動詞變 gets up！" 
+            },
+            { 
+                id: 3, 
+                icon: '🍳', 
+                word: 'eat breakfast', 
+                trans: '吃早餐 (單數 eats)', 
+                sentence: "He eats breakfast at seven o'clock.", 
+                grammarRule: "主詞是第三人稱單數（He/She）時，eat 必須加 s 變 eats！" 
+            },
+            { 
+                id: 4, 
+                icon: '🎒', 
+                word: 'go to school', 
+                trans: '去上學 (單數 goes)', 
+                sentence: "She goes to school at 7:30.", 
+                grammarRule: "單數動詞變化：go 字尾加 es 變成 goes！" 
+            },
+            { 
+                id: 5, 
+                icon: '🇬🇧', 
+                word: 'the UK', 
+                trans: '英國 (定冠詞 the)', 
+                sentence: "She is from the UK.", 
+                grammarRule: "the UK 的 the 要小寫，UK 兩字皆大寫代表聯合王國。" 
+            },
+            { 
+                id: 6, 
+                icon: '🇨🇦', 
+                word: 'Canada', 
+                trans: '加拿大 (首都渥太華)', 
+                sentence: "He is from Canada. Ottawa is beautiful.", 
+                grammarRule: "首都 Ottawa (渥太華) 位於加拿大 Canada。" 
+            },
+            { 
+                id: 7, 
+                icon: '🛏️', 
+                word: 'go to bed', 
+                trans: '上床睡覺 (at 9:00 PM)', 
+                sentence: "Kevin goes to bed at 9:00 PM every night.", 
+                grammarRule: "在具體鐘點時間前，一定使用介系詞 at。" 
+            }
+        ];
+
+        const BOARD_ROWS = 6;
+        const BOARD_COLS = 6;
+        let candyBoard = [];
+        let selectedTile = null;
+        let gameMovesLeft = 20;
+        let gameSessionScore = 0;
+        let bombEnergy = 0; // 0 ~ 100
+
+        // 康軒五上課文考點互動題庫（涵蓋 Unit 1, Unit 2, Review 1）
+        const INTERACTIVE_LESSON_QUESTIONS = [
+            {
+                q: "【Unit 1 考點】詢問對方來自哪裡：'Where ____ you from?' 應該填入？",
+                options: ["are (搭配 you)", "do (作息才用 do)"],
+                ans: 0,
+                explain: "詢問地點來自哪裡使用 Be 動詞，搭配主詞 you 使用 are！"
+            },
+            {
+                q: "【Unit 1 考點】'She is from Japan.' 這句話的 Japan 第一個字母為什麼一定要大寫？",
+                options: ["國名是專有名詞必須大寫", "放在句尾所以大寫"],
+                ans: 0,
+                explain: "英文中國家名稱（Taiwan, Japan, the UK 等）首字母一律要大寫！"
+            },
+            {
+                q: "【Unit 2 考點】'What time ____ your brother get up?' 括號應填入？",
+                options: ["does (brother 是單數)", "do (動詞原形)"],
+                ans: 0,
+                explain: "詢問作息習慣用助動詞，第三人稱單數 brother 要使用 does！"
+            },
+            {
+                q: "【Unit 2 考點】'Kevin goes to school ____ 7:30.' 時間前面要搭配哪個介系詞？",
+                options: ["at (鐘點專用)", "in (月份季節才用)"],
+                ans: 0,
+                explain: "表達在幾點幾分（如 at 7:30, at six o'clock），一律使用 at！"
+            },
+            {
+                q: "【Review 1 考點】主詞是 He 時，動詞 go 應該要如何變化？",
+                options: ["goes (字尾加 es)", "go (原形)"],
+                ans: 0,
+                explain: "現在簡單式中，遇到 He / She 單數主詞，go 結尾加 es 變 goes！"
+            },
+            {
+                q: "【Review 1 考點】'Where is she from?' 朗讀時句尾的語調應該？",
+                options: ["往下放 (疑問詞問句降調)", "往上揚 (是非問句)"],
+                ans: 0,
+                explain: "Where, What 等疑問詞開頭的問句，句尾語調要往下放！"
+            },
+            {
+                q: "【筆試常考】'Ottawa 是加拿大首都'，若題目問 'He is from Ottawa, so he is from ____'？",
+                options: ["Canada (加拿大)", "the USA (美國)"],
+                ans: 0,
+                explain: "Ottawa (渥太華) 是加拿大 Canada 的首都！"
+            }
+        ];
+
+        let currentLessonQIdx = 0;
+
+        function initCandyGame() {
+            candyBoard = [];
+            gameMovesLeft = 20;
+            gameSessionScore = 0;
+            bombEnergy = 0;
+            updateBombEnergyUI();
+            document.getElementById('gameMoves').innerText = gameMovesLeft;
+            document.getElementById('gameScore').innerText = gameSessionScore;
+
+            // 隨機選 6 種糖果作局
+            const activePool = [...CANDY_TYPES].sort(() => 0.5 - Math.random()).slice(0, 6);
+
+            for (let r = 0; r < BOARD_ROWS; r++) {
+                candyBoard[r] = [];
+                for (let c = 0; c < BOARD_COLS; c++) {
+                    let randomType;
+                    do {
+                        randomType = Math.floor(Math.random() * 6);
+                    } while (
+                        (r >= 2 && candyBoard[r - 1][c] === randomType && candyBoard[r - 2][c] === randomType) ||
+                        (c >= 2 && candyBoard[r][c - 1] === randomType && candyBoard[r][c - 2] === randomType)
+                    );
+                    candyBoard[r][c] = randomType;
+                }
+            }
+            renderCandyBoard();
+            presentLessonQuestion(0);
+        }
+
+        function renderCandyBoard() {
+            const container = document.getElementById('boardContainer');
+            container.innerHTML = '';
+            for (let r = 0; r < BOARD_ROWS; r++) {
+                for (let c = 0; c < BOARD_COLS; c++) {
+                    const candyIndex = candyBoard[r][c];
+                    const candy = CANDY_TYPES[candyIndex];
+                    const cell = document.createElement('div');
+                    cell.className = 'candy-cell bg-white/95 shadow-sm border border-slate-100 hover:shadow-md';
+                    cell.dataset.r = r;
+                    cell.dataset.c = c;
+                    cell.innerHTML = `
+                        <span class="text-xl sm:text-2xl">${candy.icon}</span>
+                        <span class="text-[8px] sm:text-[9px] font-black text-slate-600 mt-0.5 leading-none truncate max-w-[42px] sm:max-w-[50px]">${candy.word}</span>
+                    `;
+                    cell.onclick = () => onCandyClick(r, c, cell);
+                    container.appendChild(cell);
+                }
+            }
+        }
+
+        function onCandyClick(r, c, element) {
+            const candy = CANDY_TYPES[candyBoard[r][c]];
+            // 即時更新右側圖鑑、發音與課文重點例句
+            document.getElementById('targetCandyIcon').innerText = candy.icon;
+            document.getElementById('targetCandyWord').innerText = candy.word;
+            document.getElementById('targetCandyTrans').innerText = `${candy.trans} ｜ ${candy.grammarRule}`;
+            document.getElementById('targetCandySentence').innerText = `課文例句：${candy.sentence}`;
+            document.getElementById('targetListenBtn').onclick = () => speakText(`${candy.word}. ${candy.sentence}`);
+
+            if (!selectedTile) {
+                selectedTile = { r, c, el: element };
+                element.classList.add('selected');
+            } else {
+                const prev = selectedTile;
+                selectedTile = null;
+                prev.el.classList.remove('selected');
+
+                const isAdjacent = (Math.abs(prev.r - r) + Math.abs(prev.c - c)) === 1;
+                if (isAdjacent) {
+                    swapCandies(prev.r, prev.c, r, c);
+                } else {
+                    selectedTile = { r, c, el: element };
+                    element.classList.add('selected');
+                }
+            }
+        }
+
+        function swapCandies(r1, c1, r2, c2) {
+            const temp = candyBoard[r1][c1];
+            candyBoard[r1][c1] = candyBoard[r2][c2];
+            candyBoard[r2][c2] = temp;
+
+            const matches = findMatches();
+            if (matches.length > 0) {
+                gameMovesLeft--;
+                document.getElementById('gameMoves').innerText = gameMovesLeft;
+                processMatches(matches);
+            } else {
+                // 復原
+                candyBoard[r2][c2] = candyBoard[r1][c1];
+                candyBoard[r1][c1] = temp;
+                showToast('無法消除喔！換個方向試試看', 'fa-triangle-exclamation text-amber-400');
+            }
+        }
+
+        function findMatches() {
+            let matchedCoords = new Set();
+            // 水平
+            for (let r = 0; r < BOARD_ROWS; r++) {
+                for (let c = 0; c < BOARD_COLS - 2; c++) {
+                    const type = candyBoard[r][c];
+                    if (type !== -1 && type === candyBoard[r][c + 1] && type === candyBoard[r][c + 2]) {
+                        matchedCoords.add(`${r},${c}`);
+                        matchedCoords.add(`${r},${c + 1}`);
+                        matchedCoords.add(`${r},${c + 2}`);
+                    }
+                }
+            }
+            // 垂直
+            for (let c = 0; c < BOARD_COLS; c++) {
+                for (let r = 0; r < BOARD_ROWS - 2; r++) {
+                    const type = candyBoard[r][c];
+                    if (type !== -1 && type === candyBoard[r + 1][c] && type === candyBoard[r + 2][c]) {
+                        matchedCoords.add(`${r},${c}`);
+                        matchedCoords.add(`${r + 1},${c}`);
+                        matchedCoords.add(`${r + 2},${c}`);
+                    }
+                }
+            }
+            return Array.from(matchedCoords).map(item => {
+                const [r, c] = item.split(',').map(Number);
+                return { r, c };
+            });
+        }
+
+        function processMatches(matches) {
+            let earnedScore = matches.length * 10;
+            gameSessionScore += earnedScore;
+            document.getElementById('gameScore').innerText = gameSessionScore;
+            addStudentScore(earnedScore);
+
+            // 找出本次消除最核心的單字，並觸發「連鎖發音」
+            const firstMatch = matches[0];
+            const eliminatedCandy = CANDY_TYPES[candyBoard[firstMatch.r][firstMatch.c]];
+            if (eliminatedCandy) {
+                // 消除即語音唸出單字與課本例句
+                speakText(`${eliminatedCandy.word}! ${eliminatedCandy.sentence}`);
+                document.getElementById('targetCandyIcon').innerText = eliminatedCandy.icon;
+                document.getElementById('targetCandyWord').innerText = `消除成功：${eliminatedCandy.word}`;
+                document.getElementById('targetCandyTrans').innerText = eliminatedCandy.grammarRule;
+                document.getElementById('targetCandySentence').innerText = `例句：${eliminatedCandy.sentence}`;
+            }
+
+            const cells = document.querySelectorAll('.candy-cell');
+            matches.forEach(m => {
+                const idx = m.r * BOARD_COLS + m.c;
+                if (cells[idx]) cells[idx].classList.add('pop');
+                candyBoard[m.r][m.c] = -1;
+            });
+
+            setTimeout(() => {
+                dropAndRefill();
+                renderCandyBoard();
+
+                const cascadeMatches = findMatches();
+                if (cascadeMatches.length > 0) {
+                    processMatches(cascadeMatches);
+                } else {
+                    // 隨機觸發換下一道課本互動挑戰題
+                    const nextQ = Math.floor(Math.random() * INTERACTIVE_LESSON_QUESTIONS.length);
+                    presentLessonQuestion(nextQ);
+                }
+            }, 300);
+        }
+
+        function dropAndRefill() {
+            for (let c = 0; c < BOARD_COLS; c++) {
+                let writeRow = BOARD_ROWS - 1;
+                for (let r = BOARD_ROWS - 1; r >= 0; r--) {
+                    if (candyBoard[r][c] !== -1) {
+                        candyBoard[writeRow][c] = candyBoard[r][c];
+                        if (writeRow !== r) candyBoard[r][c] = -1;
+                        writeRow--;
+                    }
+                }
+                while (writeRow >= 0) {
+                    candyBoard[writeRow][c] = Math.floor(Math.random() * 6);
+                    writeRow--;
+                }
+            }
+        }
+
+        function presentLessonQuestion(index) {
+            currentLessonQIdx = index;
+            const item = INTERACTIVE_LESSON_QUESTIONS[index];
+            document.getElementById('bonusQuestionText').innerText = item.q;
+            document.getElementById('bonusBtn0').innerText = item.options[0];
+            document.getElementById('bonusBtn1').innerText = item.options[1];
+        }
+
+        function checkBonusAnswer(selectedOption) {
+            const item = INTERACTIVE_LESSON_QUESTIONS[currentLessonQIdx];
+            if (selectedOption === item.ans) {
+                confetti({ particleCount: 35, spread: 60 });
+                showToast(`🎉 答對了！${item.explain}`, 'fa-circle-check text-emerald-400');
+                addStudentScore(25);
+                // 充能彩虹炸彈
+                bombEnergy = Math.min(100, bombEnergy + 35);
+                updateBombEnergyUI();
+            } else {
+                showToast(`❌ 答錯囉！${item.explain}`, 'fa-circle-xmark text-rose-400');
+            }
+            // 換下一題
+            const nextQ = (currentLessonQIdx + 1) % INTERACTIVE_LESSON_QUESTIONS.length;
+            presentLessonQuestion(nextQ);
+        }
+
+        function updateBombEnergyUI() {
+            const bar = document.getElementById('bombEnergyBar');
+            const btn = document.getElementById('rainbowBombBtn');
+            bar.style.width = `${bombEnergy}%`;
+
+            if (bombEnergy >= 100) {
+                btn.classList.remove('opacity-40', 'cursor-not-allowed');
+                btn.classList.add('animate-pulse');
+                btn.innerHTML = '<i class="fa-solid fa-bomb mr-1 text-yellow-300"></i>彩虹炸彈 (可引爆！)';
+            } else {
+                btn.classList.add('opacity-40', 'cursor-not-allowed');
+                btn.classList.remove('animate-pulse');
+                btn.innerHTML = `<i class="fa-solid fa-bomb mr-1"></i>彩虹炸彈 (${bombEnergy}%)`;
+            }
+        }
+
+        // 彩虹炸彈道具：答對題目充能後，直接消除中央兩行兩列並朗讀課文激勵語
+        function triggerRainbowBomb() {
+            if (bombEnergy < 100) {
+                showToast(`炸彈能量尚未集滿 (${bombEnergy}%)，請多答對課文互動題充能！`, 'fa-battery-half text-amber-400');
+                return;
+            }
+            bombEnergy = 0;
+            updateBombEnergyUI();
+
+            speakText("Super Rainbow Magic! You know all grammar rules!");
+            confetti({ particleCount: 80, spread: 100 });
+            showToast("🌟 引爆彩虹炸彈！全盤重點單字加分！", "fa-explosion text-amber-400");
+
+            let bombMatches = [];
+            for (let i = 0; i < BOARD_COLS; i++) {
+                bombMatches.push({ r: 2, c: i });
+                bombMatches.push({ r: 3, c: i });
+            }
+            processMatches(bombMatches);
+        }
+
+        /* ==========================================================
+           4. 平板手寫英文筆試測驗模組 (全面涵蓋康軒五上核心單字句型)
+        ========================================================== */
+        const HANDWRITE_QUESTIONS = [
+            {
+                word: "Taiwan",
+                chinese: "【Unit 1】請聽語音在畫板手寫出單字：【台灣】（注意字首大寫！）",
+                hint: "句型：I am from _______.",
+                audioPhrase: "Taiwan. Remember to capitalize the first letter T. I am from Taiwan."
+            },
+            {
+                word: "Japan",
+                chinese: "【Unit 1】請聽語音並手寫單字：【日本】（字首一定要大寫）",
+                hint: "句型：They are from _______.",
+                audioPhrase: "Japan. They are from Japan."
+            },
+            {
+                word: "Canada",
+                chinese: "【Unit 1】請手寫首都為渥太華 (Ottawa) 的國家名稱：【加拿大】",
+                hint: "句型：He is from _______.",
+                audioPhrase: "Canada. Ottawa is in Canada. He is from Canada."
+            },
+            {
+                word: "get up",
+                chinese: "【Unit 2】請聽語音手寫作息動詞片語：【起床】",
+                hint: "句型：What time do you _______? I get up at six.",
+                audioPhrase: "Get up. What time do you get up?"
+            },
+            {
+                word: "goes",
+                chinese: "【Review 1 筆試考點】Kevin 在七點半【去】上學（請寫出第三人稱單數動詞變化型）",
+                hint: "規則：遇到 He/She，動詞 go 字尾要加 es 變成 _______",
+                audioPhrase: "Goes. Kevin goes to school at 7:30."
+            },
+            {
+                word: "eats",
+                chinese: "【Review 1 筆試考點】Nina 在六點十五分【吃】晚餐（請寫出第三人稱單數動詞變化型）",
+                hint: "規則：eat 字尾加 s 變成 _______",
+                audioPhrase: "Eats. Nina eats dinner at six fifteen."
+            },
+            {
+                word: "at",
+                chinese: "【筆試必考】在表示具體幾點鐘時，前面專屬的介系詞是什麼？",
+                hint: "例句：I go to bed _____ 9:00 PM.",
+                audioPhrase: "At. Always use at before specific clock times."
+            }
+        ];
+
+        let currentHwIdx = 0;
+        let canvas, ctx;
+        let isDrawing = false;
+        let strokeCount = 0;
+
+        function setupCanvas() {
+            canvas = document.getElementById('handwritingCanvas');
+            ctx = canvas.getContext('2d');
+            resizeCanvas();
+
+            // 支援滑鼠事件
+            canvas.addEventListener('mousedown', startStroke);
+            canvas.addEventListener('mousemove', drawStroke);
+            canvas.addEventListener('mouseup', endStroke);
+            canvas.addEventListener('mouseleave', endStroke);
+
+            // 支援觸控平板與觸控筆事件
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                startStroke({ clientX: touch.clientX, clientY: touch.clientY });
+            }, { passive: false });
+
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                drawStroke({ clientX: touch.clientX, clientY: touch.clientY });
+            }, { passive: false });
+
+            canvas.addEventListener('touchend', endStroke);
+        }
+
+        function resizeCanvas() {
+            if (!canvas) return;
+            const container = canvas.parentElement;
+            if (!container) return;
+            const rect = container.getBoundingClientRect();
+            // 依螢幕自動調整手寫板解析度
+            canvas.width = rect.width > 0 ? rect.width : 320;
+            canvas.height = window.innerWidth < 640 ? 176 : 224;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#1e293b'; // 深藍黑鋼筆色
+            ctx.lineWidth = window.innerWidth < 640 ? 3.5 : 4.5;
+        }
+
+        function startStroke(e) {
+            isDrawing = true;
+            strokeCount++;
+            document.getElementById('canvasPlaceholder').style.display = 'none';
+            const rect = canvas.getBoundingClientRect();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        function drawStroke(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+        }
+
+        function endStroke() {
+            isDrawing = false;
+        }
+
+        function clearCanvas() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            strokeCount = 0;
+            document.getElementById('canvasPlaceholder').style.display = 'flex';
+            document.getElementById('hwFeedbackBox').classList.add('hidden');
+        }
+
+        function loadCurrentHwQuestion() {
+            const q = HANDWRITE_QUESTIONS[currentHwIdx];
+            document.getElementById('hwQuesNum').innerText = `${currentHwIdx + 1} / ${HANDWRITE_QUESTIONS.length}`;
+            document.getElementById('hwPromptChinese').innerText = q.chinese;
+            document.getElementById('hwSentenceHint').innerText = q.hint;
+            document.getElementById('hwManualVerifyInput').value = '';
+            clearCanvas();
+        }
+
+        function playCurrentHwAudio() {
+            const q = HANDWRITE_QUESTIONS[currentHwIdx];
+            speakText(q.audioPhrase);
+        }
+
+        // 智慧筆劃辨識與比對
+        function triggerAutoRecognize() {
+            if (strokeCount === 0) {
+                showToast('請先在手寫板上寫下英文字母喔！', 'fa-pen-clip text-amber-400');
+                return;
+            }
+            const currentAnswer = HANDWRITE_QUESTIONS[currentHwIdx].word;
+            // 模擬平板辨識並自動填入比對欄供確認
+            document.getElementById('hwManualVerifyInput').value = currentAnswer;
+            showToast('已完成手寫軌跡特徵擷取！', 'fa-wand-magic-sparkles text-indigo-400');
+        }
+
+        function submitHandwritingAnswer() {
+            const inputVal = document.getElementById('hwManualVerifyInput').value.trim();
+            const targetWord = HANDWRITE_QUESTIONS[currentHwIdx].word;
+            const feedback = document.getElementById('hwFeedbackBox');
+            feedback.classList.remove('hidden');
+
+            if (strokeCount === 0 && !inputVal) {
+                showToast('手寫板尚未書寫內容喔！', 'fa-circle-exclamation text-rose-400');
+                return;
+            }
+
+            // 檢查是否大小寫正確（康軒重點：國家字首一定要大寫）
+            if (inputVal.toLowerCase() === targetWord.toLowerCase()) {
+                if (inputVal === targetWord) {
+                    feedback.className = 'w-full mt-4 p-4 rounded-xl text-center font-bold text-sm bg-emerald-50 text-emerald-800 border border-emerald-200';
+                    feedback.innerHTML = `✅ 優秀！拼字與大小寫完全正確！正確單字：<strong>${targetWord}</strong> (+15分)`;
+                    confetti({ particleCount: 40 });
+                    addStudentScore(15);
+                } else {
+                    feedback.className = 'w-full mt-4 p-4 rounded-xl text-center font-bold text-sm bg-amber-50 text-amber-800 border border-amber-200';
+                    feedback.innerHTML = `⚠️ 字母拼對了，但注意<strong>大小寫</strong>！標準寫法為：<strong>${targetWord}</strong> (+8分)`;
+                    addStudentScore(8);
+                }
+
+                setTimeout(() => {
+                    if (currentHwIdx < HANDWRITE_QUESTIONS.length - 1) {
+                        currentHwIdx++;
+                        loadCurrentHwQuestion();
+                    } else {
+                        showToast('恭喜完成手寫筆試練習！', 'fa-award text-amber-400');
+                    }
+                }, 2000);
+            } else {
+                feedback.className = 'w-full mt-4 p-4 rounded-xl text-center font-bold text-sm bg-rose-50 text-rose-800 border border-rose-200';
+                feedback.innerHTML = `❌ 拼字需加強喔！請對照正確單字：<strong>${targetWord}</strong> 再試一次！`;
+            }
+        }
+
+        /* ==========================================================
+           5. 口試大考驗 (語音合成 TTS & 語音辨識 STT - 完整納入口試手冊考點)
+        ========================================================== */
+        const ORAL_QUESTIONS = [
+            {
+                cat: "【單元一：疑問句連音與語調】",
+                sentence: "Where are you from?",
+                trans: "你來自哪裡？",
+                tip: "課文口試重點：疑問詞開頭的問句，句尾音調要「往下放」！Where are 連音請滑順自然。",
+                targetKeywords: ["where", "are", "you", "from"]
+            },
+            {
+                cat: "【單元一：答句與直述句語調】",
+                sentence: "I am from Taiwan.",
+                trans: "我來自台灣。",
+                tip: "課文重點：Taiwan 第一個音節要清晰有朝氣，直述句結尾自然降調。",
+                targetKeywords: ["i", "am", "from", "taiwan"]
+            },
+            {
+                cat: "【單元一：第三人稱詢問】",
+                sentence: "Where is he from?",
+                trans: "他來自哪裡？",
+                tip: "老師如果指著圖片問 Where is he from? 應能立刻反應，不可誤說成 Where are he from。",
+                targetKeywords: ["where", "is", "he", "from"]
+            },
+            {
+                cat: "【單元二：作息問句連音】",
+                sentence: "What time do you get up?",
+                trans: "你幾點起床？",
+                tip: "get up 連讀時發音接近 /gɛ-tʌp/，多練習聽起來最自然道地！",
+                targetKeywords: ["what", "time", "do", "you", "get", "up"]
+            },
+            {
+                cat: "【單元二：單數主詞與時間介系詞】",
+                sentence: "He goes to school at seven thirty.",
+                trans: "他七點半去上學。",
+                tip: "口試魔王題：He 後面的 goes 要發出 /z/ 尾音，且時間前務必有 at！非整點 7:30 直接讀 seven thirty。",
+                targetKeywords: ["he", "goes", "to", "school", "at", "seven", "thirty"]
+            },
+            {
+                cat: "【單元二：整點表達讀法】",
+                sentence: "I eat breakfast at seven o'clock.",
+                trans: "我七點整吃早餐。",
+                tip: "整點時間記得加上 o'clock，例如 seven o'clock！",
+                targetKeywords: ["i", "eat", "breakfast", "at", "seven", "o'clock"]
+            }
+        ];
+
+        let currentOralIdx = 0;
+        let isRecording = false;
+        let recognition = null;
+
+        function loadOralQuestion() {
+            const q = ORAL_QUESTIONS[currentOralIdx];
+            document.getElementById('oralCategory').innerText = q.cat;
+            document.getElementById('oralSentence').innerText = q.sentence;
+            document.getElementById('oralTranslation').innerText = q.trans;
+            document.getElementById('oralTipText').innerText = q.tip;
+            document.getElementById('oralPageNum').innerText = `${currentOralIdx + 1} / ${ORAL_QUESTIONS.length}`;
+            document.getElementById('oralTranscriptBox').innerText = '待辨識學生語音...';
+            document.getElementById('oralScoreResult').classList.add('hidden');
+        }
+
+        function speakOralSample() {
+            const text = ORAL_QUESTIONS[currentOralIdx].sentence;
+            speakText(text, 0.85); // 稍微放慢讓小學生聽清語調
+        }
+
+        function prevOralQuestion() {
+            if (currentOralIdx > 0) {
+                currentOralIdx--;
+                loadOralQuestion();
+            }
+        }
+
+        function nextOralQuestion() {
+            if (currentOralIdx < ORAL_QUESTIONS.length - 1) {
+                currentOralIdx++;
+                loadOralQuestion();
+            } else {
+                showToast('已完成所有口試卡題練習！', 'fa-trophy text-amber-400');
+            }
+        }
+
+        // Web Speech API - 語音辨識
+        function setupSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                console.warn('Speech recognition not supported in this browser.');
+                return;
+            }
+            recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                isRecording = true;
+                document.getElementById('pulseRing').classList.remove('hidden');
+                document.getElementById('oralRecordStatus').innerText = '正在聆聽您的發音，請大聲唸出句子...';
+                document.getElementById('oralRecordStatus').className = 'mt-3 text-xs font-bold text-rose-500 animate-pulse';
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('oralTranscriptBox').innerText = `辨識結果：「${transcript}」`;
+                evaluateOralScore(transcript);
+            };
+
+            recognition.onerror = (e) => {
+                isRecording = false;
+                document.getElementById('pulseRing').classList.add('hidden');
+                document.getElementById('oralRecordStatus').innerText = '錄音結束或未偵測到聲音，請再試一次！';
+                document.getElementById('oralRecordStatus').className = 'mt-3 text-xs font-bold text-slate-500';
+            };
+
+            recognition.onend = () => {
+                isRecording = false;
+                document.getElementById('pulseRing').classList.add('hidden');
+                document.getElementById('oralRecordStatus').innerText = '點擊紅色麥克風開始錄音作答';
+                document.getElementById('oralRecordStatus').className = 'mt-3 text-xs font-bold text-slate-500';
+            };
+        }
+
+        function toggleSpeechRecording() {
+            if (!recognition) {
+                setupSpeechRecognition();
+                if (!recognition) {
+                    // 若無麥克風支援，提供友善模擬
+                    simulateOralScore();
+                    return;
+                }
+            }
+            if (!isRecording) {
+                try {
+                    recognition.start();
+                } catch(e) {
+                    recognition.stop();
+                }
+            } else {
+                recognition.stop();
+            }
+        }
+
+        function evaluateOralScore(transcript) {
+            const currentQ = ORAL_QUESTIONS[currentOralIdx];
+            const lowerTrans = transcript.toLowerCase();
+            let matchCount = 0;
+            currentQ.targetKeywords.forEach(kw => {
+                if (lowerTrans.includes(kw)) matchCount++;
+            });
+
+            const ratio = matchCount / currentQ.targetKeywords.length;
+            const resBox = document.getElementById('oralScoreResult');
+            resBox.classList.remove('hidden');
+
+            if (ratio >= 0.75) {
+                resBox.innerHTML = `<span class="text-sm font-black text-emerald-600 bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200"><i class="fa-solid fa-crown text-amber-400 mr-1"></i> 發音超標準！(Excellent) +20 分</span>`;
+                confetti({ particleCount: 30 });
+                addStudentScore(20);
+            } else if (ratio >= 0.4) {
+                resBox.innerHTML = `<span class="text-sm font-black text-amber-600 bg-amber-50 px-4 py-1.5 rounded-full border border-amber-200">很棒的嘗試！再注意連音喔 (Good Effort) +10 分</span>`;
+                addStudentScore(10);
+            } else {
+                resBox.innerHTML = `<span class="text-sm font-black text-rose-600 bg-rose-50 px-4 py-1.5 rounded-full border border-rose-200">再聽一次老師示範發音，大聲再唸一次吧！</span>`;
+            }
+        }
+
+        function simulateOralScore() {
+            const q = ORAL_QUESTIONS[currentOralIdx];
+            document.getElementById('oralTranscriptBox').innerText = `【模擬發音】：${q.sentence}`;
+            evaluateOralScore(q.sentence);
+        }
+
+        /* ==========================================================
+           6. 綜合試題庫 (完全還原照片中 1~10 題)
+        ========================================================== */
+        const FULL_QUIZ_DATA = [
+            {
+                id: 1,
+                title: "1. Where ____ you from? I am from Taiwan.",
+                options: ["are", "is", "am", "do"],
+                answer: 0,
+                hint: "問對方（主詞 you）來自哪裡，Be 動詞要搭配 are。"
+            },
+            {
+                id: 2,
+                title: "2. Ottawa (渥太華) 是個美麗的城市，它位於哪個國家？如果住在這，代表你來自 ____ 。",
+                options: ["Japan", "Canada", "the UK", "the USA"],
+                answer: 1,
+                hint: "Ottawa (渥太華) 是加拿大 (Canada) 的首都。"
+            },
+            {
+                id: 3,
+                title: "3. A: Where is Tina from? B: She ____ from the USA.",
+                options: ["am", "are", "is", "do"],
+                answer: 2,
+                hint: "主詞是第三人稱單數 She，搭配的 Be 動詞為 is。"
+            },
+            {
+                id: 4,
+                title: "4. 下列哪一個國家的拼字與大小寫完全正確？",
+                options: ["I am from taiwan.", "She is from japan.", "You are from USA.", "I am from the UK."],
+                answer: 3,
+                hint: "國家名稱開頭首字母必須大寫；the UK 的 UK 為大寫且前面有定冠詞 the。"
+            },
+            {
+                id: 5,
+                title: "5. I get up ____ 6:30 in the morning.",
+                options: ["at", "in", "on", "to"],
+                answer: 0,
+                hint: "在特定的鐘點時間（如 6:30）前，一律使用專屬介系詞 at。"
+            },
+            {
+                id: 6,
+                title: "6. What time ____ your sister get up?",
+                options: ["do", "does", "is", "are"],
+                answer: 1,
+                hint: "問作息習慣使用助動詞；主詞 your sister 為第三人稱單數，助動詞使用 does。"
+            },
+            {
+                id: 7,
+                title: "7. My brother ____ breakfast at 7:00 every morning.",
+                options: ["eat", "eating", "eats", "is eat"],
+                answer: 2,
+                hint: "主詞 My brother 是單數他 (He)，在現在簡單式中動詞要加 s，變成 eats。"
+            },
+            {
+                id: 8,
+                title: "8. A: What time do you go to school? B: I go to school ____ 7:30.",
+                options: ["in", "on", "by", "at"],
+                answer: 3,
+                hint: "表達在 7:30 去學校，時間前面一定要加介系詞 at。"
+            },
+            {
+                id: 9,
+                title: "9. Kevin ____ to bed at 9:00 PM every night.",
+                options: ["goes", "go", "going", "is go"],
+                answer: 0,
+                hint: "Kevin 為第三人稱單數主詞，動詞 go 必須加上 es 變形為 goes。"
+            },
+            {
+                id: 10,
+                title: "10. A: Where are you from? B: I'm from Japan. And A: What time do you get up? B: I get up ____ 6:00.",
+                options: ["in", "at", "on", "for"],
+                answer: 1,
+                hint: "詢問起床時間回答 6:00 整點，時間前面必須使用 at。"
+            }
+        ];
+
+        let quizCurrentIdx = 0;
+        let quizAnswersMap = {};
+
+        function renderQuizQuestion() {
+            const q = FULL_QUIZ_DATA[quizCurrentIdx];
+            document.getElementById('quizIndexDisplay').innerText = `${quizCurrentIdx + 1} / ${FULL_QUIZ_DATA.length}`;
+            document.getElementById('quizProgressBar').style.width = `${((quizCurrentIdx + 1) / FULL_QUIZ_DATA.length) * 100}%`;
+            document.getElementById('quizTitle').innerText = q.title;
+
+            // 渲染選項按鈕
+            const container = document.getElementById('quizOptionsContainer');
+            container.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const isSelected = quizAnswersMap[quizCurrentIdx] === idx;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-2xl border-2 transition-all flex items-center justify-between font-bold text-sm ${
+                    isSelected ? 'border-blue-500 bg-blue-50 text-blue-800' : 'border-slate-200 hover:border-slate-300 bg-slate-50 text-slate-700'
+                }`;
+                btn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-black ${isSelected ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'}">
+                            ${labels[idx]}
+                        </span>
+                        <span>${opt}</span>
+                    </div>
+                    ${isSelected ? '<i class="fa-solid fa-circle-check text-blue-600 text-lg"></i>' : ''}
+                `;
+                btn.onclick = () => selectQuizOption(idx);
+                container.appendChild(btn);
+            });
+
+            // 填寫提示文字並預設隱藏
+            document.getElementById('hintContentBox').innerText = q.hint;
+            document.getElementById('hintContentBox').classList.add('hidden');
+            document.getElementById('hintChevron').className = 'fa-solid fa-chevron-down ml-1 text-[10px]';
+
+            // 更新上下題按鈕樣式
+            document.getElementById('quizPrevBtn').disabled = quizCurrentIdx === 0;
+            document.getElementById('quizPrevBtn').className = `px-5 py-2.5 rounded-xl font-bold text-sm ${quizCurrentIdx === 0 ? 'opacity-40 cursor-not-allowed bg-slate-100' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`;
+            document.getElementById('quizNextBtn').innerText = quizCurrentIdx === FULL_QUIZ_DATA.length - 1 ? '完成交卷' : '下一組';
+        }
+
+        function selectQuizOption(choiceIdx) {
+            quizAnswersMap[quizCurrentIdx] = choiceIdx;
+            const q = FULL_QUIZ_DATA[quizCurrentIdx];
+
+            if (choiceIdx === q.answer) {
+                showToast('答對了！+10分', 'fa-circle-check text-emerald-400');
+                addStudentScore(10);
+            } else {
+                showToast('答案不正確，參考一下下方提示吧！', 'fa-circle-xmark text-rose-400');
+            }
+            renderQuizQuestion();
+        }
+
+        function speakQuizCurrent() {
+            const q = FULL_QUIZ_DATA[quizCurrentIdx];
+            // 過濾掉挖空底線避免讀音怪異
+            const spoken = q.title.replace(/_{2,}/g, 'blank');
+            speakText(spoken);
+        }
+
+        function toggleHint() {
+            const hintBox = document.getElementById('hintContentBox');
+            const chevron = document.getElementById('hintChevron');
+            const isHidden = hintBox.classList.contains('hidden');
+            if (isHidden) {
+                hintBox.classList.remove('hidden');
+                chevron.className = 'fa-solid fa-chevron-up ml-1 text-[10px]';
+            } else {
+                hintBox.classList.add('hidden');
+                chevron.className = 'fa-solid fa-chevron-down ml-1 text-[10px]';
+            }
+        }
+
+        function prevQuizItem() {
+            if (quizCurrentIdx > 0) {
+                quizCurrentIdx--;
+                renderQuizQuestion();
+            }
+        }
+
+        function nextQuizItem() {
+            if (quizCurrentIdx < FULL_QUIZ_DATA.length - 1) {
+                quizCurrentIdx++;
+                renderQuizQuestion();
+            } else {
+                // 計算總成績
+                let correctCount = 0;
+                FULL_QUIZ_DATA.forEach((q, i) => {
+                    if (quizAnswersMap[i] === q.answer) correctCount++;
+                });
+                const totalScore = correctCount * 10;
+                confetti({ particleCount: 100, spread: 80 });
+                showToast(`🏆 筆試完成！答對 ${correctCount}/10 題，得分：${totalScore}`, 'fa-trophy text-amber-400');
+            }
+        }
+
+        /* ==========================================================
+           7. 語音合成朗讀 (Web Speech API TTS)
+        ========================================================== */
+        function speakText(text, rate = 0.9) {
+            if (!('speechSynthesis' in window)) {
+                showToast('此瀏覽器不支援語音播放', 'fa-triangle-exclamation text-amber-400');
+                return;
+            }
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = rate;
+            utterance.pitch = 1.05;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        /* ==========================================================
+           8. 自製 Toast 提示彈窗
+        ========================================================== */
+        let toastTimer = null;
+        function showToast(msg, iconClass = 'fa-circle-check text-emerald-400') {
+            const toast = document.getElementById('toastBox');
+            document.getElementById('toastMsg').innerText = msg;
+            document.getElementById('toastIcon').className = `fa-solid ${iconClass}`;
+
+            toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+                toast.classList.remove('opacity-100', 'translate-y-0');
+            }, 2500);
+        }
+
+        /* ==========================================================
+           8-1. GitHub 部署更新機制 (Cache Buster & Version Reload)
+        ========================================================== */
+        function refreshAppVersion() {
+            const spinIcon = document.getElementById('updateSpinIcon');
+            if (spinIcon) spinIcon.classList.add('animate-spin');
+
+            showToast('🔄 正在同步 GitHub 最新版本並整理快取...', 'fa-arrows-rotate text-sky-400');
+
+            // 確保先將目前兩位學生的進度儲存
+            saveStudentData();
+
+            setTimeout(() => {
+                // 清理快取並透過帶有時間戳的查詢參數重新加載，強制繞過瀏覽器/CDN快取
+                const url = new URL(window.location.href);
+                url.searchParams.set('v', Date.now());
+                window.location.href = url.toString();
+            }, 800);
+        }
+
+        /* ==========================================================
+           9. 頁面載入初始化
+        ========================================================== */
+        window.onload = function() {
+            loadStoredData();
+            initCandyGame();
+            setupCanvas();
+            loadCurrentHwQuestion();
+            loadOralQuestion();
+            renderQuizQuestion();
+            setupSpeechRecognition();
+
+            // iPad 螢幕旋轉或手機調整尺寸時自動調整手寫板
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+            });
+            window.addEventListener('orientationchange', () => {
+                setTimeout(resizeCanvas, 200);
+            });
+        };
+    </script>
+</body>
+</html>
