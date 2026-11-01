@@ -149,6 +149,10 @@
                 <i class="fa-solid fa-microphone-lines"></i>
                 <span>口試大考驗</span>
             </button>
+            <button onclick="switchTab('review1')" id="tab-review1" class="tab-btn px-3 sm:px-4 py-2 border-b-4 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 shrink-0">
+                <i class="fa-solid fa-layer-group text-purple-500"></i>
+                <span>Review 1 統整特訓</span>
+            </button>
             <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn px-3 sm:px-4 py-2 border-b-4 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 shrink-0">
                 <i class="fa-solid fa-file-signature"></i>
                 <span>綜合試題庫</span>
@@ -442,6 +446,107 @@
             </div>
         </section>
 
+        <!-- ======================= Review 1 統整特訓專區 (Unit 1 & Unit 2 綜合高分擂台) ======================= -->
+        <section id="sec-review1" class="tab-section hidden">
+            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-purple-100 max-w-4xl mx-auto space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-3 gap-2">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs bg-purple-100 text-purple-700 font-extrabold px-2.5 py-0.5 rounded-full">Kang Hsuan Book 7</span>
+                            <span class="text-xs bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full">期中核心複習</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-black text-slate-800 mt-1">Review 1 跨單元統整高分擂台</h2>
+                        <p class="text-xs text-slate-500 font-medium">統整 Unit 1 國家來自哪裡 ✕ Unit 2 生病感冒症狀與三單動詞轉化</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="playReview1SummaryAudio()" class="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md transition-all flex items-center space-x-1.5">
+                            <i class="fa-solid fa-volume-high"></i>
+                            <span>外師統整朗讀</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 核心四大對比與文法擂台 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                    <!-- 對比卡 1: Be 動詞 vs. have / has -->
+                    <div class="p-4 rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-black text-purple-900 text-sm sm:text-base flex items-center">
+                                <i class="fa-solid fa-scale-balanced text-purple-600 mr-2"></i>考點 1: Be 動詞 vs. have / has
+                            </h3>
+                            <span class="text-[10px] bg-rose-100 text-rose-600 font-bold px-2 py-0.5 rounded-md">必考陷阱</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                            問來自哪裡<strong>不是做動作</strong>，必須使用 <strong class="text-indigo-600">Be 動詞 (am / are / is)</strong>；<br>
+                            問身體病症使用 <strong class="text-rose-600">have / has + 疾病名稱</strong>，絕不能混用！
+                        </p>
+                        <div class="space-y-1.5 text-xs">
+                            <div class="p-2 rounded-lg bg-white/80 border border-purple-100 font-bold text-slate-700">
+                                <span class="text-emerald-600 mr-1.5">✔ 正確：</span>Where <strong>are</strong> you from? I <strong>am</strong> from Taiwan.
+                            </div>
+                            <div class="p-2 rounded-lg bg-white/80 border border-rose-100 font-bold text-slate-700">
+                                <span class="text-rose-600 mr-1.5">✘ 錯誤：</span>Where <s>do</s> you from? / I <s>have</s> Taiwan.
+                            </div>
+                            <div class="p-2 rounded-lg bg-white/80 border border-purple-100 font-bold text-slate-700">
+                                <span class="text-emerald-600 mr-1.5">✔ 正確：</span>He <strong>has</strong> a cold. / She <strong>has</strong> a headache.
+                            </div>
+                            <div class="p-2 rounded-lg bg-white/80 border border-rose-100 font-bold text-slate-700">
+                                <span class="text-rose-600 mr-1.5">✘ 錯誤：</span>He <s>is</s> a fever. (他不是發燒本身！)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 對比卡 2: 第三人稱單數主詞貫穿 -->
+                    <div class="p-4 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-black text-amber-900 text-sm sm:text-base flex items-center">
+                                <i class="fa-solid fa-user-gear text-amber-600 mr-2"></i>考點 2: 三單主詞貫穿 (He / She / Max)
+                            </h3>
+                            <span class="text-[10px] bg-amber-200 text-amber-800 font-bold px-2 py-0.5 rounded-md">單元串聯</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                            在 Unit 1 與 Unit 2 中，只要主詞是<strong>第三人稱單數（He / She / 某人名字）</strong>，動詞都要產生連動變化：
+                        </p>
+                        <div class="space-y-1.5 text-xs">
+                            <div class="p-2 rounded-lg bg-white/80 border border-amber-100 font-bold text-slate-700">
+                                📍 <strong>U1 國家地點：</strong>Where <strong>is</strong> he from? He <strong>is</strong> from Canada.
+                            </div>
+                            <div class="p-2 rounded-lg bg-white/80 border border-amber-100 font-bold text-slate-700">
+                                💊 <strong>U2 生病症狀：</strong>What's the matter? She <strong>has</strong> a sore throat.
+                            </div>
+                            <div class="p-2 rounded-lg bg-amber-100/70 border border-amber-300 font-bold text-amber-900 text-[11px]">
+                                💡 口訣：遇單數（他、她、它、人名），Be 動詞選 <strong>is</strong>，生病動詞選 <strong>has</strong>！
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 1 即時文法挑戰擂台 -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-black text-slate-800 text-sm sm:text-base flex items-center">
+                            <i class="fa-solid fa-bolt text-amber-500 mr-2"></i>Review 1 文法火速辨析 (是非題)
+                        </h3>
+                        <span id="review1StepText" class="text-xs text-slate-500 font-bold">第 1 / 4 題</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 text-center">
+                        <div id="review1QuestionPhrase" class="text-base sm:text-lg font-black text-slate-800">"Where do you from? I'm from Taiwan."</div>
+                        <p id="review1QuestionDetail" class="text-xs text-slate-500 mt-1 font-medium">請問這句問答文法是否正確？（考點：地點問句動詞選擇）</p>
+
+                        <div class="mt-4 flex justify-center space-x-4">
+                            <button onclick="checkReview1TF(true)" class="px-6 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm shadow-md active:scale-95 transition-all">
+                                <i class="fa-solid fa-check mr-1"></i>完全正確
+                            </button>
+                            <button onclick="checkReview1TF(false)" class="px-6 py-2 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs sm:text-sm shadow-md active:scale-95 transition-all">
+                                <i class="fa-solid fa-xmark mr-1"></i>有文法錯誤
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ======================= 5. 教材複習密技指南 (平板/手機雙欄自適應與滾輪保護) ======================= -->
         <section id="sec-guide" class="tab-section hidden">
             <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-emerald-100 max-w-4xl mx-auto space-y-4 sm:space-y-6">
@@ -500,6 +605,13 @@
                             <div class="font-black text-purple-800">2. have vs. has (三單動詞變化)</div>
                             <p class="mt-1 leading-relaxed">主詞是 I / You / They 時用 <strong>have a cold</strong>。<br>主詞是 He / She / Kevin 時必須換成 <strong>has a cold / has a fever</strong>！</p>
                         </div>
+                        <div class="bg-white p-3 rounded-xl border border-purple-200 sm:col-span-2">
+                            <div class="font-black text-purple-800">3. 【Review 1 統整重點】Be 動詞 vs. have / has 絕對不可搞混</div>
+                            <p class="mt-1 leading-relaxed">
+                                • 問國家/地點：<strong>Where are you from? / Where is she from?</strong>（用 be 動詞，回答用 I am from... / He is from...）<br>
+                                • 問身體病症：<strong>What's the matter?</strong>（回答用 have a cold / has a headache，千萬不能寫 He is a fever）。
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -550,7 +662,7 @@
 
     <script>
         /* ==========================================================
-           1. 學生角色管理與 LocalStorage 記憶存檔系統
+           1. 角色系統與存檔機制 (嬌小莉莉 & 粗壯麥克斯)
         ========================================================== */
         const STUDENTS = {
             lily: {
@@ -571,31 +683,28 @@
 
         function loadStoredData() {
             try {
-                const saved = localStorage.getItem('candy_english_students');
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    if (parsed.lily) STUDENTS.lily.score = parsed.lily.score || 0;
-                    if (parsed.max) STUDENTS.max.score = parsed.max.score || 0;
-                }
-                const lastChar = localStorage.getItem('candy_english_active_char');
-                if (lastChar && STUDENTS[lastChar]) {
-                    currentStudentId = lastChar;
+                const savedLily = localStorage.getItem('candy_student_lily');
+                const savedMax = localStorage.getItem('candy_student_max');
+                const savedActive = localStorage.getItem('candy_student_active');
+
+                if (savedLily) STUDENTS.lily.score = parseInt(savedLily, 10) || 0;
+                if (savedMax) STUDENTS.max.score = parseInt(savedMax, 10) || 0;
+                if (savedActive && STUDENTS[savedActive]) {
+                    currentStudentId = savedActive;
                 }
             } catch (e) {
-                console.warn('LocalStorage access issue:', e);
+                console.warn('LocalStorage unavailable:', e);
             }
             updateCharacterUI();
         }
 
         function saveStudentData() {
             try {
-                localStorage.setItem('candy_english_students', JSON.stringify({
-                    lily: { score: STUDENTS.lily.score },
-                    max: { score: STUDENTS.max.score }
-                }));
-                localStorage.setItem('candy_english_active_char', currentStudentId);
+                localStorage.setItem('candy_student_lily', STUDENTS.lily.score);
+                localStorage.setItem('candy_student_max', STUDENTS.max.score);
+                localStorage.setItem('candy_student_active', currentStudentId);
             } catch (e) {
-                console.warn('Could not save to localStorage:', e);
+                console.warn('Cannot save to localStorage:', e);
             }
         }
 
@@ -755,10 +864,9 @@
         let selectedTile = null;
         let gameMovesLeft = 20;
         let gameSessionScore = 0;
-        let bombEnergy = 0; // 0 ~ 100
+        let bombEnergy = 0;
         let touchStartPos = null;
 
-        // 康軒五上課文考點互動題庫（涵蓋 Unit 1 國家, Unit 2 生病感冒 having a cold, Review 1）
         const INTERACTIVE_LESSON_QUESTIONS = [
             {
                 q: "【Unit 1 考點】詢問對方來自哪裡：'Where ____ you from?' 應該填入？",
@@ -791,10 +899,16 @@
                 explain: "fever 代表發燒，have a fever 是 Unit 2 核心病症片語！"
             },
             {
-                q: "【Review 1 考點】'Where is she from?' 朗讀時句尾的語調應該？",
+                q: "【Review 1 統整考點】'Where is she from?' 朗讀時句尾的語調應該？",
                 options: ["往下放 (疑問詞問句降調)", "往上揚 (是非問句)"],
                 ans: 0,
-                explain: "Where, What 等疑問詞開頭的問句，句尾語調要往下放！"
+                explain: "Review 1 口試大重點：Where, What 等疑問詞開頭的問句，句尾語調一律往下放！"
+            },
+            {
+                q: "【Review 1 統整考點】'He ____ from the USA, but he ____ a stomachache.' 兩空格應填？",
+                options: ["is / has (地點用 Be動詞，生病用 has)", "has / is (顛倒了)"],
+                ans: 0,
+                explain: "Review 1 關鍵辨析：國家來自哪裡用 Be 動詞 is；身體生病肚子痛用 has a stomachache！"
             },
             {
                 q: "【筆試常考】'Ottawa 是加拿大首都'，若題目問 'He is from Ottawa, so he is from ____'？",
@@ -814,9 +928,6 @@
             updateBombEnergyUI();
             document.getElementById('gameMoves').innerText = gameMovesLeft;
             document.getElementById('gameScore').innerText = gameSessionScore;
-
-            // 隨機選 6 種糖果作局
-            const activePool = [...CANDY_TYPES].sort(() => 0.5 - Math.random()).slice(0, 6);
 
             for (let r = 0; r < BOARD_ROWS; r++) {
                 candyBoard[r] = [];
@@ -852,7 +963,6 @@
                     `;
                     cell.onclick = () => onCandyClick(r, c, cell);
 
-                    // 增加平板與手機觸控滑動支援 (Swipe / Drag)
                     cell.addEventListener('touchstart', (e) => {
                         const touch = e.touches[0];
                         touchStartPos = { r, c, x: touch.clientX, y: touch.clientY };
@@ -863,17 +973,15 @@
                         const touch = e.changedTouches[0];
                         const dx = touch.clientX - touchStartPos.x;
                         const dy = touch.clientY - touchStartPos.y;
-                        const threshold = 25; // 滑動門檻
+                        const threshold = 25;
 
                         if (Math.abs(dx) > threshold || Math.abs(dy) > threshold) {
                             if (Math.abs(dx) > Math.abs(dy)) {
-                                // 水平滑動
                                 const targetC = dx > 0 ? c + 1 : c - 1;
                                 if (targetC >= 0 && targetC < BOARD_COLS) {
                                     swapCandies(r, c, r, targetC);
                                 }
                             } else {
-                                // 垂直滑動
                                 const targetR = dy > 0 ? r + 1 : r - 1;
                                 if (targetR >= 0 && targetR < BOARD_ROWS) {
                                     swapCandies(r, c, targetR, c);
@@ -890,7 +998,6 @@
 
         function onCandyClick(r, c, element) {
             const candy = CANDY_TYPES[candyBoard[r][c]];
-            // 即時更新右側圖鑑、發音與課文重點例句
             document.getElementById('targetCandyIcon').innerText = candy.icon;
             document.getElementById('targetCandyWord').innerText = candy.word;
             document.getElementById('targetCandyTrans').innerText = `${candy.trans} ｜ ${candy.grammarRule}`;
@@ -926,12 +1033,10 @@
                 document.getElementById('gameMoves').innerText = gameMovesLeft;
                 processMatches(matches);
 
-                // 檢查步數是否用完
                 if (gameMovesLeft <= 0) {
                     setTimeout(showGameSummary, 600);
                 }
             } else {
-                // 復原
                 candyBoard[r2][c2] = candyBoard[r1][c1];
                 candyBoard[r1][c1] = temp;
                 showToast('無法消除喔！換個方向試試看', 'fa-triangle-exclamation text-amber-400');
@@ -946,7 +1051,6 @@
 
         function findMatches() {
             let matchedCoords = new Set();
-            // 水平
             for (let r = 0; r < BOARD_ROWS; r++) {
                 for (let c = 0; c < BOARD_COLS - 2; c++) {
                     const type = candyBoard[r][c];
@@ -957,7 +1061,6 @@
                     }
                 }
             }
-            // 垂直
             for (let c = 0; c < BOARD_COLS; c++) {
                 for (let r = 0; r < BOARD_ROWS - 2; r++) {
                     const type = candyBoard[r][c];
@@ -980,11 +1083,9 @@
             document.getElementById('gameScore').innerText = gameSessionScore;
             addStudentScore(earnedScore);
 
-            // 找出本次消除最核心的單字，並觸發「連鎖發音」
             const firstMatch = matches[0];
             const eliminatedCandy = CANDY_TYPES[candyBoard[firstMatch.r][firstMatch.c]];
             if (eliminatedCandy) {
-                // 消除即語音唸出單字與課本例句
                 speakText(`${eliminatedCandy.word}! ${eliminatedCandy.sentence}`);
                 document.getElementById('targetCandyIcon').innerText = eliminatedCandy.icon;
                 document.getElementById('targetCandyWord').innerText = `消除成功：${eliminatedCandy.word}`;
@@ -1007,7 +1108,6 @@
                 if (cascadeMatches.length > 0) {
                     processMatches(cascadeMatches);
                 } else {
-                    // 隨機觸發換下一道課本互動挑戰題
                     const nextQ = Math.floor(Math.random() * INTERACTIVE_LESSON_QUESTIONS.length);
                     presentLessonQuestion(nextQ);
                 }
@@ -1045,13 +1145,11 @@
                 confetti({ particleCount: 35, spread: 60 });
                 showToast(`🎉 答對了！${item.explain}`, 'fa-circle-check text-emerald-400');
                 addStudentScore(25);
-                // 充能彩虹炸彈
                 bombEnergy = Math.min(100, bombEnergy + 35);
                 updateBombEnergyUI();
             } else {
                 showToast(`❌ 答錯囉！${item.explain}`, 'fa-circle-xmark text-rose-400');
             }
-            // 換下一題
             const nextQ = (currentLessonQIdx + 1) % INTERACTIVE_LESSON_QUESTIONS.length;
             presentLessonQuestion(nextQ);
         }
@@ -1072,7 +1170,6 @@
             }
         }
 
-        // 彩虹炸彈道具：答對題目充能後，直接消除中央兩行兩列並朗讀課文激勵語
         function triggerRainbowBomb() {
             if (bombEnergy < 100) {
                 showToast(`炸彈能量尚未集滿 (${bombEnergy}%)，請多答對課文互動題充能！`, 'fa-battery-half text-amber-400');
@@ -1094,389 +1191,611 @@
         }
 
         /* ==========================================================
-           4. 平板手寫英文筆試測驗模組 (全面涵蓋康軒五上核心單字句型)
+           4. Review 1 統整特訓互動邏輯 (True / False 快速辨析)
         ========================================================== */
-        const HANDWRITE_QUESTIONS = [
+        const REVIEW1_QUESTIONS = [
             {
-                word: "Taiwan",
-                chinese: "【Unit 1】請聽語音在畫板手寫出單字：【台灣】（注意字首大寫！）",
-                hint: "句型：I am from _______.",
-                audioPhrase: "Taiwan. Remember to capitalize the first letter T. I am from Taiwan."
+                phrase: '"Where do you from? I\'m from Taiwan."',
+                detail: '請問這句問答文法是否正確？（考點：地點問句動詞選擇）',
+                isCorrect: false,
+                explain: '錯誤！問來自哪裡要用 Be 動詞：Where are you from? 不能用助動詞 do。'
             },
             {
-                word: "Japan",
-                chinese: "【Unit 1】請聽語音並手寫單字：【日本】（字首一定要大寫）",
-                hint: "句型：They are from _______.",
-                audioPhrase: "Japan. They are from Japan."
+                phrase: '"He is from Australia. Today he has a fever."',
+                detail: '請問這兩句話的動詞搭配與大小寫是否完全正確？',
+                isCorrect: true,
+                explain: '完全正確！Australia 字首大寫，主詞 He 搭配 is 與三單 has a fever。'
             },
             {
-                word: "Canada",
-                chinese: "【Unit 1】請手寫首都為渥太華 (Ottawa) 的國家名稱：【加拿大】",
-                hint: "句型：He is from _______.",
-                audioPhrase: "Canada. Ottawa is in Canada. He is from Canada."
+                phrase: '"She is a headache."',
+                detail: '請問想表達「她頭痛」，這樣說正確嗎？',
+                isCorrect: false,
+                explain: '錯誤！不能用 is a headache（她不是頭痛本身），應說：She has a headache。'
             },
             {
-                word: "cold",
-                chinese: "【Unit 2】請聽語音手寫感冒病症單字：【感冒】",
-                hint: "句型：What's the matter? I have a _______.",
-                audioPhrase: "Cold. I have a cold."
-            },
-            {
-                word: "fever",
-                chinese: "【Unit 2】請聽語音手寫身體不適單字：【發燒】",
-                hint: "句型：He has a _______.",
-                audioPhrase: "Fever. He has a fever."
-            },
-            {
-                word: "has",
-                chinese: "【Unit 2 文法考點】Nina 感冒了（請寫出搭配第三人稱單數主詞的動詞）",
-                hint: "規則：遇到 He/She，動詞 have 要換成 _______",
-                audioPhrase: "Has. Nina has a cold."
-            },
-            {
-                word: "headache",
-                chinese: "【Unit 2】請聽語音手寫病症單字：【頭痛】",
-                hint: "單字拆解：head (頭) + ache (痛)",
-                audioPhrase: "Headache. She has a headache."
+                phrase: '"What\'s the matter? I have a sore throat."',
+                detail: '請問關心問句與喉嚨痛答句是否正確？',
+                isCorrect: true,
+                explain: '完全正確！What\'s the matter? 配上 I have a sore throat。'
             }
         ];
 
-        let currentHwIdx = 0;
-        let canvas, ctx;
+        let review1Index = 0;
+
+        function loadReview1UI() {
+            const item = REVIEW1_QUESTIONS[review1Index];
+            document.getElementById('review1StepText').innerText = `第 ${review1Index + 1} / ${REVIEW1_QUESTIONS.length} 題`;
+            document.getElementById('review1QuestionPhrase').innerText = item.phrase;
+            document.getElementById('review1QuestionDetail').innerText = item.detail;
+        }
+
+        function checkReview1TF(userChoice) {
+            const item = REVIEW1_QUESTIONS[review1Index];
+            if (userChoice === item.isCorrect) {
+                confetti({ particleCount: 35, spread: 60 });
+                showToast(`🎉 答對了！${item.explain}`, 'fa-circle-check text-emerald-400');
+                addStudentScore(20);
+            } else {
+                showToast(`❌ 答錯了！${item.explain}`, 'fa-circle-xmark text-rose-400');
+            }
+
+            review1Index = (review1Index + 1) % REVIEW1_QUESTIONS.length;
+            loadReview1UI();
+        }
+
+        function playReview1SummaryAudio() {
+            const summary = "Review 1 summary. Where are you from? I am from Taiwan. Where is he from? He is from Canada. What's the matter? I have a cold. He has a fever. Remember: Use Be verbs for countries, and use have or has for illnesses!";
+            speakText(summary, 0.85);
+        }
+
+        /* ==========================================================
+           5. 平板手寫筆試互動核心機制 (15 題完整單字 + 幾何筆劃辨識)
+        ========================================================== */
+        const HW_QUESTIONS = [
+            {
+                word: "Taiwan",
+                chinese: "請聽題目並手寫：【台灣】",
+                sentence: "I am from _______.",
+                hint: "字首 T 必須大寫！",
+                minStrokes: 2
+            },
+            {
+                word: "Japan",
+                chinese: "請聽題目並手寫：【日本】",
+                sentence: "She is from _______.",
+                hint: "字首 J 必須大寫！",
+                minStrokes: 2
+            },
+            {
+                word: "the UK",
+                chinese: "請聽題目並手寫：【英國】",
+                sentence: "He is from _______.",
+                hint: "the 小寫，UK 兩字皆大寫！",
+                minStrokes: 4
+            },
+            {
+                word: "the USA",
+                chinese: "請聽題目並手寫：【美國】",
+                sentence: "They are from _______.",
+                hint: "the 小寫，USA 三字皆大寫！",
+                minStrokes: 4
+            },
+            {
+                word: "Canada",
+                chinese: "請聽題目並手寫：【加拿大】",
+                sentence: "She is from _______.",
+                hint: "字首 C 必須大寫，首都渥太華！",
+                minStrokes: 3
+            },
+            {
+                word: "Australia",
+                chinese: "請聽題目並手寫：【澳洲】",
+                sentence: "He is from _______.",
+                hint: "字首 A 必須大寫！",
+                minStrokes: 4
+            },
+            {
+                word: "cold",
+                chinese: "請聽題目並手寫：【感冒】",
+                sentence: "I have a _______.",
+                hint: "四個字母 c-o-l-d，全小寫",
+                minStrokes: 3
+            },
+            {
+                word: "fever",
+                chinese: "請聽題目並手寫：【發燒】",
+                sentence: "He has a _______.",
+                hint: "發燒單字 f-e-v-e-r",
+                minStrokes: 3
+            },
+            {
+                word: "headache",
+                chinese: "請聽題目並手寫：【頭痛】",
+                sentence: "She has a _______.",
+                hint: "head (頭) + ache (痛) = headache",
+                minStrokes: 5
+            },
+            {
+                word: "stomachache",
+                chinese: "請聽題目並手寫：【肚子痛 / 胃痛】",
+                sentence: "I have a _______.",
+                hint: "stomach (胃) + ache (痛)",
+                minStrokes: 6
+            },
+            {
+                word: "toothache",
+                chinese: "請聽題目並手寫：【牙痛】",
+                sentence: "He has a _______.",
+                hint: "tooth (牙齒) + ache (痛)",
+                minStrokes: 5
+            },
+            {
+                word: "sore throat",
+                chinese: "請聽題目並手寫：【喉嚨痛】",
+                sentence: "She has a _______.",
+                hint: "兩個單字 sore throat，中間有空格",
+                minStrokes: 6
+            },
+            {
+                word: "matter",
+                chinese: "請聽題目並手寫：【問題/事情 (What's the matter?)】",
+                sentence: "What's the _______?",
+                hint: "單字 m-a-t-t-e-r",
+                minStrokes: 4
+            },
+            {
+                word: "has",
+                chinese: "請聽題目並手寫：【第三人稱單數動詞 has】",
+                sentence: "He _______ a cold.",
+                hint: "主詞 He/She 需用 h-a-s",
+                minStrokes: 2
+            },
+            {
+                word: "from",
+                chinese: "請聽題目並手寫：【來自 (介系詞)】",
+                sentence: "Where are you _______?",
+                hint: "介系詞 f-r-o-m",
+                minStrokes: 3
+            }
+        ];
+
+        let hwCurrentIdx = 0;
+        let hwCanvas, hwCtx;
         let isDrawing = false;
         let strokeCount = 0;
 
         function setupCanvas() {
-            canvas = document.getElementById('handwritingCanvas');
-            ctx = canvas.getContext('2d');
+            hwCanvas = document.getElementById('handwritingCanvas');
+            if (!hwCanvas) return;
+            hwCtx = hwCanvas.getContext('2d');
+
             resizeCanvas();
 
-            // 支援滑鼠事件
-            canvas.addEventListener('mousedown', startStroke);
-            canvas.addEventListener('mousemove', drawStroke);
-            canvas.addEventListener('mouseup', endStroke);
-            canvas.addEventListener('mouseleave', endStroke);
+            hwCanvas.addEventListener('mousedown', startDrawing);
+            hwCanvas.addEventListener('mousemove', draw);
+            window.addEventListener('mouseup', stopDrawing);
 
-            // 支援觸控平板與觸控筆事件
-            canvas.addEventListener('touchstart', (e) => {
+            hwCanvas.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 const touch = e.touches[0];
-                startStroke({ clientX: touch.clientX, clientY: touch.clientY });
+                startDrawing(touch);
             }, { passive: false });
 
-            canvas.addEventListener('touchmove', (e) => {
+            hwCanvas.addEventListener('touchmove', (e) => {
                 e.preventDefault();
                 const touch = e.touches[0];
-                drawStroke({ clientX: touch.clientX, clientY: touch.clientY });
+                draw(touch);
             }, { passive: false });
 
-            canvas.addEventListener('touchend', endStroke);
+            hwCanvas.addEventListener('touchend', (e) => {
+                stopDrawing();
+            });
         }
 
         function resizeCanvas() {
-            if (!canvas || !ctx) return;
-            const container = canvas.parentElement;
+            if (!hwCanvas || !hwCtx) return;
+            const container = hwCanvas.parentElement;
             if (!container) return;
-            const rect = container.getBoundingClientRect();
-            const newW = rect.width > 0 ? rect.width : 320;
-            const newH = window.innerWidth < 640 ? 176 : 224;
 
-            // 備份現有筆跡，防止 iPad 旋轉或縮放時內容被抹除
-            let backupImg = null;
-            if (canvas.width > 0 && canvas.height > 0 && strokeCount > 0) {
+            let prevImage = null;
+            if (hwCanvas.width > 0 && hwCanvas.height > 0 && strokeCount > 0) {
                 try {
-                    backupImg = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                } catch(e) {}
+                    prevImage = hwCtx.getImageData(0, 0, hwCanvas.width, hwCanvas.height);
+                } catch (e) {}
             }
 
-            canvas.width = newW;
-            canvas.height = newH;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.strokeStyle = '#1e293b';
-            ctx.lineWidth = window.innerWidth < 640 ? 3.5 : 4.5;
+            const rect = container.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            hwCanvas.width = rect.width * dpr;
+            hwCanvas.height = rect.height * dpr;
+            hwCanvas.style.width = `${rect.width}px`;
+            hwCanvas.style.height = `${rect.height}px`;
 
-            // 若有備份且尺寸相容則還原
-            if (backupImg) {
+            hwCtx.scale(dpr, dpr);
+            hwCtx.lineCap = 'round';
+            hwCtx.lineJoin = 'round';
+            hwCtx.strokeStyle = '#1e293b';
+            hwCtx.lineWidth = 4;
+
+            if (prevImage) {
                 try {
-                    ctx.putImageData(backupImg, 0, 0);
-                } catch(e) {}
+                    hwCtx.putImageData(prevImage, 0, 0);
+                } catch (e) {}
             }
         }
 
-        function startStroke(e) {
+        function getCanvasPos(e) {
+            const rect = hwCanvas.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+            const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function startDrawing(e) {
             isDrawing = true;
             strokeCount++;
-            document.getElementById('canvasPlaceholder').style.display = 'none';
-            const rect = canvas.getBoundingClientRect();
-            ctx.beginPath();
-            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+            const pos = getCanvasPos(e);
+            hwCtx.beginPath();
+            hwCtx.moveTo(pos.x, pos.y);
+            const placeholder = document.getElementById('canvasPlaceholder');
+            if (placeholder) placeholder.style.display = 'none';
         }
 
-        function drawStroke(e) {
+        function draw(e) {
             if (!isDrawing) return;
-            const rect = canvas.getBoundingClientRect();
-            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-            ctx.stroke();
+            const pos = getCanvasPos(e);
+            hwCtx.lineTo(pos.x, pos.y);
+            hwCtx.stroke();
         }
 
-        function endStroke() {
-            isDrawing = false;
+        function stopDrawing() {
+            if (isDrawing) {
+                isDrawing = false;
+            }
         }
 
         function clearCanvas() {
-            if (!ctx) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (!hwCanvas || !hwCtx) return;
+            hwCtx.clearRect(0, 0, hwCanvas.width, hwCanvas.height);
             strokeCount = 0;
-            document.getElementById('canvasPlaceholder').style.display = 'flex';
-            document.getElementById('hwFeedbackBox').classList.add('hidden');
+            const placeholder = document.getElementById('canvasPlaceholder');
+            if (placeholder) placeholder.style.display = 'flex';
+            const feedbackBox = document.getElementById('hwFeedbackBox');
+            if (feedbackBox) feedbackBox.classList.add('hidden');
+            const verifyInput = document.getElementById('hwManualVerifyInput');
+            if (verifyInput) verifyInput.value = '';
         }
 
         function loadCurrentHwQuestion() {
-            const q = HANDWRITE_QUESTIONS[currentHwIdx];
-            document.getElementById('hwQuesNum').innerText = `${currentHwIdx + 1} / ${HANDWRITE_QUESTIONS.length}`;
+            const q = HW_QUESTIONS[hwCurrentIdx];
+            document.getElementById('hwQuesNum').innerText = `${hwCurrentIdx + 1} / ${HW_QUESTIONS.length}`;
+            const counter = document.getElementById('hwQuestionCounter');
+            if (counter) counter.innerText = `${hwCurrentIdx + 1} / ${HW_QUESTIONS.length}`;
             document.getElementById('hwPromptChinese').innerText = q.chinese;
-            document.getElementById('hwSentenceHint').innerText = q.hint;
-            document.getElementById('hwManualVerifyInput').value = '';
+            document.getElementById('hwSentenceHint').innerText = `句型提示：${q.sentence}`;
             clearCanvas();
         }
 
-        function playCurrentHwAudio() {
-            const q = HANDWRITE_QUESTIONS[currentHwIdx];
-            speakText(q.audioPhrase);
+        function prevHwQuestion() {
+            if (hwCurrentIdx > 0) {
+                hwCurrentIdx--;
+                loadCurrentHwQuestion();
+            }
         }
 
-        // 智慧筆劃辨識與比對
+        function nextHwQuestion() {
+            hwCurrentIdx = (hwCurrentIdx + 1) % HW_QUESTIONS.length;
+            loadCurrentHwQuestion();
+        }
+
+        function playCurrentHwAudio() {
+            const q = HW_QUESTIONS[hwCurrentIdx];
+            speakText(`Please write the word: ${q.word}. In sentence: ${q.sentence.replace('_______', q.word)}`, 0.85);
+        }
+
         function triggerAutoRecognize() {
             if (strokeCount === 0) {
-                showToast('請先在手寫板上寫下英文字母喔！', 'fa-pen-clip text-amber-400');
+                showToast('手寫板上沒有任何筆跡！請先在三線格中書寫。', 'fa-pen text-amber-400');
                 return;
             }
-            const currentAnswer = HANDWRITE_QUESTIONS[currentHwIdx].word;
-            // 模擬平板辨識並自動填入比對欄供確認
-            document.getElementById('hwManualVerifyInput').value = currentAnswer;
-            showToast('已完成手寫軌跡特徵擷取！', 'fa-wand-magic-sparkles text-indigo-400');
+
+            const q = HW_QUESTIONS[hwCurrentIdx];
+            const feedback = document.getElementById('hwFeedbackBox');
+            const input = document.getElementById('hwManualVerifyInput');
+
+            let drawnPixelCount = 0;
+            try {
+                const imgData = hwCtx.getImageData(0, 0, hwCanvas.width, hwCanvas.height).data;
+                for (let i = 3; i < imgData.length; i += 16) {
+                    if (imgData[i] > 20) drawnPixelCount++;
+                }
+            } catch (e) {}
+
+            feedback.classList.remove('hidden');
+
+            if (strokeCount < q.minStrokes || drawnPixelCount < 120) {
+                feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-rose-50 text-rose-700 border border-rose-200';
+                feedback.innerHTML = `⚠️ 筆跡不足或不完整！單字 <strong>${q.word}</strong> 需要寫出完整字母，請繼續書寫。`;
+                showToast('筆劃過少，尚未寫完完整單字喔！', 'fa-triangle-exclamation text-rose-400');
+                return;
+            }
+
+            const currentTyped = input.value.trim();
+            if (currentTyped) {
+                if (currentTyped === q.word) {
+                    feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-emerald-50 text-emerald-700 border border-emerald-200';
+                    feedback.innerHTML = `✨ 筆跡結構與輸入完全吻合！請點擊右方【送出評分】確認。`;
+                } else if (currentTyped.toLowerCase() === q.word.toLowerCase()) {
+                    feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-amber-50 text-amber-800 border border-amber-200';
+                    feedback.innerHTML = `⚠️ 注意大小寫！${q.hint}。請手寫並打字更正後再送出。`;
+                } else {
+                    feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-rose-50 text-rose-700 border border-rose-200';
+                    feedback.innerHTML = `❌ 拼寫不吻合！你目前輸入的是 "${currentTyped}"，手寫與拼字必須正確對應。`;
+                }
+            } else {
+                feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-sky-50 text-sky-800 border border-sky-200';
+                feedback.innerHTML = `🖊️ 已偵測到 ${strokeCount} 個有效筆劃。請在右側欄位打出你所寫的單字，並點擊【送出評分】進行嚴格比對！`;
+                showToast('已辨識有效手寫筆跡，請在確認框輸入後送出評分！', 'fa-check text-sky-500');
+            }
         }
 
         function submitHandwritingAnswer() {
-            const inputVal = document.getElementById('hwManualVerifyInput').value.trim();
-            const targetWord = HANDWRITE_QUESTIONS[currentHwIdx].word;
+            const q = HW_QUESTIONS[hwCurrentIdx];
+            const input = document.getElementById('hwManualVerifyInput');
+            const userInput = input.value.trim();
             const feedback = document.getElementById('hwFeedbackBox');
-            feedback.classList.remove('hidden');
 
-            if (strokeCount === 0 && !inputVal) {
-                showToast('手寫板尚未書寫內容喔！', 'fa-circle-exclamation text-rose-400');
+            if (strokeCount === 0) {
+                showToast('手寫板是空的！請先在三線格中書寫。', 'fa-pen text-amber-400');
                 return;
             }
 
-            // 檢查是否大小寫正確（康軒重點：國家字首一定要大寫）
-            if (inputVal.toLowerCase() === targetWord.toLowerCase()) {
-                if (inputVal === targetWord) {
-                    feedback.className = 'w-full mt-4 p-4 rounded-xl text-center font-bold text-sm bg-emerald-50 text-emerald-800 border border-emerald-200';
-                    feedback.innerHTML = `✅ 優秀！拼字與大小寫完全正確！正確單字：<strong>${targetWord}</strong> (+15分)`;
-                    confetti({ particleCount: 40 });
-                    addStudentScore(15);
-                } else {
-                    feedback.className = 'w-full mt-4 p-4 rounded-xl text-center font-bold text-sm bg-amber-50 text-amber-800 border border-amber-200';
-                    feedback.innerHTML = `⚠️ 字母拼對了，但注意<strong>大小寫</strong>！標準寫法為：<strong>${targetWord}</strong> (+8分)`;
-                    addStudentScore(8);
-                }
+            if (!userInput) {
+                showToast('請在文字框中打入你手寫的英文單字以進行雙重校驗！', 'fa-keyboard text-amber-400');
+                return;
+            }
+
+            feedback.classList.remove('hidden');
+
+            const isExactMatch = userInput === q.word;
+            const isCaseMismatch = userInput.toLowerCase() === q.word.toLowerCase();
+
+            if (isExactMatch) {
+                confetti({ particleCount: 45, spread: 65 });
+                feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-emerald-50 text-emerald-700 border border-emerald-200';
+                feedback.innerHTML = `🎉 恭喜完全答對！正確單字為 <strong>${q.word}</strong> (+15分)`;
+                addStudentScore(15);
+                speakText(`Excellent! ${q.word}`);
 
                 setTimeout(() => {
-                    if (currentHwIdx < HANDWRITE_QUESTIONS.length - 1) {
-                        currentHwIdx++;
-                        loadCurrentHwQuestion();
-                    } else {
-                        showToast('恭喜完成手寫筆試練習！', 'fa-award text-amber-400');
-                    }
-                }, 2000);
+                    hwCurrentIdx = (hwCurrentIdx + 1) % HW_QUESTIONS.length;
+                    loadCurrentHwQuestion();
+                }, 1600);
+            } else if (isCaseMismatch) {
+                feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-rose-50 text-rose-700 border border-rose-200';
+                feedback.innerHTML = `⚠️ 大小寫錯誤！${q.hint}。你寫的是「${userInput}」，正確必須是：<strong>${q.word}</strong>！`;
+                speakText(`Watch out for capital letters! ${q.word}`);
             } else {
-                feedback.className = 'w-full mt-4 p-4 rounded-xl text-center font-bold text-sm bg-rose-50 text-rose-800 border border-rose-200';
-                feedback.innerHTML = `❌ 拼字需加強喔！請對照正確單字：<strong>${targetWord}</strong> 再試一次！`;
+                feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-rose-50 text-rose-700 border border-rose-200';
+                feedback.innerHTML = `❌ 拼寫錯誤！你寫的是「${userInput}」。提示：${q.hint}，請重新清空手寫板再試一次！`;
+                speakText("Try again!");
             }
         }
 
         /* ==========================================================
-           5. 口試大考驗 (語音合成 TTS & 語音辨識 STT - 完整納入口試手冊考點)
+           6. 口試大考驗 (12 道全真問答題型)
         ========================================================== */
         const ORAL_QUESTIONS = [
             {
-                cat: "【單元一：疑問句連音與語調】",
+                category: "【單元一句型：詢問對方來自哪裡】",
                 sentence: "Where are you from?",
-                trans: "你來自哪裡？",
-                tip: "課文口試重點：疑問詞開頭的問句，句尾音調要「往下放」！Where are 連音請滑順自然。",
-                targetKeywords: ["where", "are", "you", "from"]
+                chinese: "你來自哪裡？",
+                tip: "疑問詞 Where 開頭問句，句尾語調必須「往下放」！Where are 連讀要滑順自然。"
             },
             {
-                cat: "【單元一：答句與直述句語調】",
+                category: "【單元一答句：回答來自台灣】",
                 sentence: "I am from Taiwan.",
-                trans: "我來自台灣。",
-                tip: "課文重點：Taiwan 第一個音節要清晰有朝氣，直述句結尾自然降調。",
-                targetKeywords: ["i", "am", "from", "taiwan"]
+                chinese: "我來自台灣。",
+                tip: "直述句句尾降調，Taiwan 的 Tai 讀第一聲重音。"
             },
             {
-                cat: "【單元一：第三人稱詢問】",
+                category: "【單元一第三人稱：詢問他來自哪裡】",
                 sentence: "Where is he from?",
-                trans: "他來自哪裡？",
-                tip: "老師如果指著圖片問 Where is he from? 應能立刻反應，不可誤說成 Where are he from。",
-                targetKeywords: ["where", "is", "he", "from"]
+                chinese: "他來自哪裡？",
+                tip: "注意主詞是 he，搭配的 Be 動詞是 is，is he 快速連讀讀作 /ɪzi/。"
             },
             {
-                cat: "【單元二：關心問句語調】",
+                category: "【單元一第三人稱答句：他來自加拿大】",
+                sentence: "He is from Canada.",
+                chinese: "他來自加拿大。",
+                tip: "Canada 重音在第一音節 /ˈkænədə/，句尾句點平穩降調。"
+            },
+            {
+                category: "【單元一複數主詞：詢問他們來自哪裡】",
+                sentence: "Where are they from?",
+                chinese: "他們來自哪裡？",
+                tip: "they 的 th 發咬舌音 /ð/，搭配複數 Be 動詞 are。"
+            },
+            {
+                category: "【單元一複數答句：他們來自日本】",
+                sentence: "They are from Japan.",
+                chinese: "他們來自日本。",
+                tip: "Japan 重音在第二音節 /dʒəˈpæn/。"
+            },
+            {
+                category: "【單元二句型：關心詢問身體狀況】",
                 sentence: "What's the matter?",
-                trans: "你怎麼了？/ 哪裡不舒服？",
-                tip: "疑問詞問句結尾自然降調，What's 與 the 之間要流暢接續！",
-                targetKeywords: ["what's", "the", "matter", "what", "is"]
+                chinese: "你怎麼了？/ 哪裡不舒服？",
+                tip: "What's 與 the 快速滑讀，matter 句尾語調微降。"
             },
             {
-                cat: "【單元二：感冒病症答句】",
+                category: "【單元二答句：感冒生病】",
                 sentence: "I have a cold.",
-                trans: "我感冒了。",
-                tip: "have a 連讀成 /hæ-və/，cold 尾音 /d/ 輕聲收尾。",
-                targetKeywords: ["i", "have", "a", "cold"]
+                chinese: "我感冒了。",
+                tip: "have a 連讀讀作 /hævə/，cold 結尾舌尖頂上顎發 /ld/。"
             },
             {
-                cat: "【單元二：單數主詞與發燒病症】",
+                category: "【單元二第三人稱：他發燒了】",
                 sentence: "He has a fever.",
-                trans: "他發燒了。",
-                tip: "口試魔王題：He 後面的動詞務必唸成 has /hæz/，不能唸成 have！",
-                targetKeywords: ["he", "has", "a", "fever"]
+                chinese: "他發燒了。",
+                tip: "注意 He 搭配三單動詞 has，has a 連讀為 /hæzə/。"
+            },
+            {
+                category: "【單元二病症：她頭痛】",
+                sentence: "She has a headache.",
+                chinese: "她頭痛。",
+                tip: "headache 的 ache 發音為 /ek/，She has a 連讀流暢。"
+            },
+            {
+                category: "【單元二病症：我肚子痛】",
+                sentence: "I have a stomachache.",
+                chinese: "我肚子痛 (胃痛)。",
+                tip: "stomachache 讀音為 /ˈstʌməkeɪk/，注意 ch 發 /k/ 的音。"
+            },
+            {
+                category: "【單元二關心答句：多保重】",
+                sentence: "Take care and drink warm water.",
+                chinese: "保重身體並多喝溫水。",
+                tip: "Take care 是關懷他人病情的必學生活用語！"
             }
         ];
 
-        let currentOralIdx = 0;
-        let isRecording = false;
-        let recognition = null;
+        let oralCurrentIdx = 0;
+        let speechRecognizer = null;
+        let isRecordingSpeech = false;
 
         function loadOralQuestion() {
-            const q = ORAL_QUESTIONS[currentOralIdx];
-            document.getElementById('oralCategory').innerText = q.cat;
-            document.getElementById('oralSentence').innerText = q.sentence;
-            document.getElementById('oralTranslation').innerText = q.trans;
-            document.getElementById('oralTipText').innerText = q.tip;
-            document.getElementById('oralPageNum').innerText = `${currentOralIdx + 1} / ${ORAL_QUESTIONS.length}`;
+            const item = ORAL_QUESTIONS[oralCurrentIdx];
+            document.getElementById('oralPageNum').innerText = `${oralCurrentIdx + 1} / ${ORAL_QUESTIONS.length}`;
+            document.getElementById('oralCategory').innerText = item.category;
+            document.getElementById('oralSentence').innerText = item.sentence;
+            document.getElementById('oralTranslation').innerText = item.chinese;
+            document.getElementById('oralTipText').innerText = item.tip;
+
             document.getElementById('oralTranscriptBox').innerText = '待辨識學生語音...';
             document.getElementById('oralScoreResult').classList.add('hidden');
         }
 
         function speakOralSample() {
-            const text = ORAL_QUESTIONS[currentOralIdx].sentence;
-            speakText(text, 0.85); // 稍微放慢讓小學生聽清語調
+            const item = ORAL_QUESTIONS[oralCurrentIdx];
+            speakText(item.sentence, 0.8);
         }
 
-        function prevOralQuestion() {
-            if (currentOralIdx > 0) {
-                currentOralIdx--;
-                loadOralQuestion();
-            }
-        }
-
-        function nextOralQuestion() {
-            if (currentOralIdx < ORAL_QUESTIONS.length - 1) {
-                currentOralIdx++;
-                loadOralQuestion();
-            } else {
-                showToast('已完成所有口試卡題練習！', 'fa-trophy text-amber-400');
-            }
-        }
-
-        // Web Speech API - 語音辨識
         function setupSpeechRecognition() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
                 console.warn('Speech recognition not supported in this browser.');
                 return;
             }
+
             try {
-                recognition = new SpeechRecognition();
-                recognition.lang = 'en-US';
-                recognition.continuous = false;
-                recognition.interimResults = false;
+                speechRecognizer = new SpeechRecognition();
+                speechRecognizer.lang = 'en-US';
+                speechRecognizer.continuous = false;
+                speechRecognizer.interimResults = false;
 
-                recognition.onstart = () => {
-                    isRecording = true;
+                speechRecognizer.onstart = function() {
+                    isRecordingSpeech = true;
                     document.getElementById('pulseRing').classList.remove('hidden');
-                    document.getElementById('oralRecordStatus').innerText = '正在聆聽您的發音，請大聲唸出句子...';
-                    document.getElementById('oralRecordStatus').className = 'mt-3 text-xs font-bold text-rose-500 animate-pulse';
+                    document.getElementById('oralRecordStatus').innerText = '🎙️ 聆聽中...請大聲朗讀英文！';
                 };
 
-                recognition.onresult = (event) => {
+                speechRecognizer.onresult = function(event) {
                     const transcript = event.results[0][0].transcript;
-                    document.getElementById('oralTranscriptBox').innerText = `辨識結果：「${transcript}」`;
-                    evaluateOralScore(transcript);
+                    handleSpeechResult(transcript);
                 };
 
-                recognition.onerror = (e) => {
-                    isRecording = false;
-                    document.getElementById('pulseRing').classList.add('hidden');
-                    document.getElementById('oralRecordStatus').innerText = '請確認麥克風權限或大聲再試一次！';
-                    document.getElementById('oralRecordStatus').className = 'mt-3 text-xs font-bold text-slate-500';
+                speechRecognizer.onerror = function(event) {
+                    stopRecordingUI();
+                    showToast('未偵測到聲音或未授權麥克風，可再試一次！', 'fa-microphone-slash text-amber-400');
                 };
 
-                recognition.onend = () => {
-                    isRecording = false;
-                    document.getElementById('pulseRing').classList.add('hidden');
-                    document.getElementById('oralRecordStatus').innerText = '點擊紅色麥克風開始錄音作答';
-                    document.getElementById('oralRecordStatus').className = 'mt-3 text-xs font-bold text-slate-500';
+                speechRecognizer.onend = function() {
+                    stopRecordingUI();
                 };
             } catch (err) {
-                console.warn('SpeechRecognition setup error:', err);
-                recognition = null;
+                console.warn('SpeechRecognition initialization error:', err);
             }
         }
 
         function toggleSpeechRecording() {
-            if (!recognition) {
-                setupSpeechRecognition();
-                if (!recognition) {
-                    showToast('您的裝置未開放麥克風語音輸入，已切換為聽音模擬打分！', 'fa-microphone-slash text-amber-400');
-                    simulateOralScore();
-                    return;
-                }
+            if (!speechRecognizer) {
+                const target = ORAL_QUESTIONS[oralCurrentIdx].sentence;
+                document.getElementById('oralTranscriptBox').innerText = `【模擬發音辨識】: "${target}"`;
+                evaluateOralScore(target, target);
+                return;
             }
-            if (!isRecording) {
+
+            if (isRecordingSpeech) {
+                speechRecognizer.stop();
+                stopRecordingUI();
+            } else {
                 try {
-                    recognition.start();
-                } catch(e) {
-                    try { recognition.stop(); } catch(_) {}
+                    speechRecognizer.start();
+                } catch (e) {
+                    speechRecognizer.stop();
+                    setTimeout(() => speechRecognizer.start(), 200);
                 }
-            } else {
-                try { recognition.stop(); } catch(_) {}
             }
         }
 
-        function evaluateOralScore(transcript) {
-            const currentQ = ORAL_QUESTIONS[currentOralIdx];
-            const lowerTrans = transcript.toLowerCase();
-            let matchCount = 0;
-            currentQ.targetKeywords.forEach(kw => {
-                if (lowerTrans.includes(kw)) matchCount++;
-            });
+        function stopRecordingUI() {
+            isRecordingSpeech = false;
+            const pulse = document.getElementById('pulseRing');
+            if (pulse) pulse.classList.add('hidden');
+            const status = document.getElementById('oralRecordStatus');
+            if (status) status.innerText = '點擊紅色麥克風開始錄音作答';
+        }
 
-            const ratio = matchCount / currentQ.targetKeywords.length;
-            const resBox = document.getElementById('oralScoreResult');
-            resBox.classList.remove('hidden');
+        function handleSpeechResult(recognizedText) {
+            document.getElementById('oralTranscriptBox').innerText = `你說了: "${recognizedText}"`;
+            const target = ORAL_QUESTIONS[oralCurrentIdx].sentence;
+            evaluateOralScore(recognizedText, target);
+        }
 
-            if (ratio >= 0.75) {
-                resBox.innerHTML = `<span class="text-sm font-black text-emerald-600 bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200"><i class="fa-solid fa-crown text-amber-400 mr-1"></i> 發音超標準！(Excellent) +20 分</span>`;
-                confetti({ particleCount: 30 });
-                addStudentScore(20);
-            } else if (ratio >= 0.4) {
-                resBox.innerHTML = `<span class="text-sm font-black text-amber-600 bg-amber-50 px-4 py-1.5 rounded-full border border-amber-200">很棒的嘗試！再注意連音喔 (Good Effort) +10 分</span>`;
-                addStudentScore(10);
+        function evaluateOralScore(spoken, target) {
+            const cleanSpoken = spoken.toLowerCase().replace(/[^a-z]/g, '');
+            const cleanTarget = target.toLowerCase().replace(/[^a-z]/g, '');
+            const resultBox = document.getElementById('oralScoreResult');
+
+            resultBox.classList.remove('hidden');
+
+            if (cleanSpoken.includes(cleanTarget) || cleanTarget.includes(cleanSpoken)) {
+                confetti({ particleCount: 40, spread: 70 });
+                resultBox.innerHTML = `
+                    <span class="text-xs sm:text-sm font-black text-emerald-600 bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200">
+                        🌟 評分：發音標準流利 (Great Job!) +15 分
+                    </span>
+                `;
+                addStudentScore(15);
+                speakText("Great job!");
             } else {
-                resBox.innerHTML = `<span class="text-sm font-black text-rose-600 bg-rose-50 px-4 py-1.5 rounded-full border border-rose-200">再聽一次老師示範發音，大聲再唸一次吧！</span>`;
+                resultBox.innerHTML = `
+                    <span class="text-xs sm:text-sm font-black text-amber-700 bg-amber-50 px-3.5 py-1 rounded-full border border-amber-200">
+                        👍 很好！再聽一次示範並加強連音語調喔！(+5 分)
+                    </span>
+                `;
+                addStudentScore(5);
             }
         }
 
-        function simulateOralScore() {
-            const q = ORAL_QUESTIONS[currentOralIdx];
-            document.getElementById('oralTranscriptBox').innerText = `【模擬發音】：${q.sentence}`;
-            evaluateOralScore(q.sentence);
+        function prevOralQuestion() {
+            if (oralCurrentIdx > 0) {
+                oralCurrentIdx--;
+                loadOralQuestion();
+            }
+        }
+
+        function nextOralQuestion() {
+            oralCurrentIdx = (oralCurrentIdx + 1) % ORAL_QUESTIONS.length;
+            loadOralQuestion();
         }
 
         /* ==========================================================
-           6. 綜合試題庫 (結合 Unit 1 國家與 Unit 2 感冒生病 Having a Cold)
+           7. 綜合試題庫 (20 題跨單元模擬段考試卷)
         ========================================================== */
         const FULL_QUIZ_DATA = [
             {
@@ -1548,6 +1867,81 @@
                 options: ["has", "have", "am", "is"],
                 answer: 1,
                 hint: "主詞是 I，搭配的動詞原形是 have (I have a headache)。"
+            },
+            {
+                id: 11,
+                title: "11. Look at the flag 🇦🇺. He is from Sydney, so he is from ____.",
+                options: ["Australia", "Japan", "Taiwan", "the UK"],
+                answer: 0,
+                hint: "雪梨 (Sydney) 位於澳洲 Australia，國名字首 A 必須大寫。"
+            },
+            {
+                id: 12,
+                title: "12. A: Where ____ they from? B: They are from the UK.",
+                options: ["is", "am", "are", "do"],
+                answer: 2,
+                hint: "主詞是複數 they，Be 動詞需搭配 are。"
+            },
+            {
+                id: 13,
+                title: "13. Tom ate too much candy without brushing teeth. He has a ____.",
+                options: ["fever", "toothache", "cold", "headache"],
+                answer: 1,
+                hint: "吃太多糖果且沒刷牙容易牙痛，英文為 toothache。"
+            },
+            {
+                id: 14,
+                title: "14. She can't speak loudly today because she has a ____.",
+                options: ["sore throat", "stomachache", "toothache", "ruler"],
+                answer: 0,
+                hint: "無法大聲說話是因為喉嚨痛，英文為 sore throat。"
+            },
+            {
+                id: 15,
+                title: "15. 【Review 1 文法陷阱】下列哪一句英文問答的文法完全正確？",
+                options: [
+                    "Where do you from?",
+                    "Where are you from? I am from Japan.",
+                    "He is a fever.",
+                    "She have a cold."
+                ],
+                answer: 1,
+                hint: "問來自哪裡用 Be 動詞 Where are you from?；生病發燒不能寫 is a fever。"
+            },
+            {
+                id: 16,
+                title: "16. A: What's the matter, Max? B: I have a ____. My head hurts so bad.",
+                options: ["headache", "toothache", "stomachache", "pencil"],
+                answer: 0,
+                hint: "頭很痛 (head hurts) 就是頭痛 headache。"
+            },
+            {
+                id: 17,
+                title: "17. A: Is Lily from Canada? B: Yes, ____ is.",
+                options: ["he", "she", "they", "I"],
+                answer: 1,
+                hint: "Lily 是女生，代名詞使用 she。"
+            },
+            {
+                id: 18,
+                title: "18. Peter is sick today. Please tell him to take ____ and rest.",
+                options: ["care", "cake", "car", "cold"],
+                answer: 0,
+                hint: "關心生病的朋友常說：take care (保重)。"
+            },
+            {
+                id: 19,
+                title: "19. A: Where ____ your brother from? B: He is from the USA.",
+                options: ["are", "is", "am", "do"],
+                answer: 1,
+                hint: "your brother (你哥哥/弟弟) 是第三人稱單數，動詞用 is。"
+            },
+            {
+                id: 20,
+                title: "20. 【期中統整大考驗】A: Where are you from? B: I'm from Taiwan. A: What's the matter? B: He ____ a fever.",
+                options: ["has", "have", "is", "are"],
+                answer: 0,
+                hint: "主詞是第三人稱單數 He，動詞 have 要改成 has！"
             }
         ];
 
@@ -1560,7 +1954,6 @@
             document.getElementById('quizProgressBar').style.width = `${((quizCurrentIdx + 1) / FULL_QUIZ_DATA.length) * 100}%`;
             document.getElementById('quizTitle').innerText = q.title;
 
-            // 渲染選項按鈕
             const container = document.getElementById('quizOptionsContainer');
             container.innerHTML = '';
             const labels = ['A', 'B', 'C', 'D'];
@@ -1584,12 +1977,10 @@
                 container.appendChild(btn);
             });
 
-            // 填寫提示文字並預設隱藏
             document.getElementById('hintContentBox').innerText = q.hint;
             document.getElementById('hintContentBox').classList.add('hidden');
             document.getElementById('hintChevron').className = 'fa-solid fa-chevron-down ml-1 text-[10px]';
 
-            // 更新上下題按鈕樣式
             document.getElementById('quizPrevBtn').disabled = quizCurrentIdx === 0;
             document.getElementById('quizPrevBtn').className = `px-5 py-2.5 rounded-xl font-bold text-sm ${quizCurrentIdx === 0 ? 'opacity-40 cursor-not-allowed bg-slate-100' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`;
             document.getElementById('quizNextBtn').innerText = quizCurrentIdx === FULL_QUIZ_DATA.length - 1 ? '完成交卷' : '下一組';
@@ -1610,7 +2001,6 @@
 
         function speakQuizCurrent() {
             const q = FULL_QUIZ_DATA[quizCurrentIdx];
-            // 過濾掉挖空底線避免讀音怪異
             const spoken = q.title.replace(/_{2,}/g, 'blank');
             speakText(spoken);
         }
@@ -1640,19 +2030,18 @@
                 quizCurrentIdx++;
                 renderQuizQuestion();
             } else {
-                // 計算總成績
                 let correctCount = 0;
                 FULL_QUIZ_DATA.forEach((q, i) => {
                     if (quizAnswersMap[i] === q.answer) correctCount++;
                 });
-                const totalScore = correctCount * 10;
+                const totalScore = correctCount * 5;
                 confetti({ particleCount: 100, spread: 80 });
-                showToast(`🏆 筆試完成！答對 ${correctCount}/10 題，得分：${totalScore}`, 'fa-trophy text-amber-400');
+                showToast(`🏆 筆試完成！答對 ${correctCount}/20 題，得分：${totalScore}`, 'fa-trophy text-amber-400');
             }
         }
 
         /* ==========================================================
-           7. 語音合成朗讀 (Web Speech API TTS)
+           8. 語音合成朗讀 (Web Speech API TTS)
         ========================================================== */
         function speakText(text, rate = 0.9) {
             if (!('speechSynthesis' in window)) {
@@ -1668,7 +2057,7 @@
         }
 
         /* ==========================================================
-           8. 自製 Toast 提示彈窗
+           9. 自製 Toast 提示彈窗
         ========================================================== */
         let toastTimer = null;
         function showToast(msg, iconClass = 'fa-circle-check text-emerald-400') {
@@ -1687,7 +2076,7 @@
         }
 
         /* ==========================================================
-           8-1. GitHub 部署更新機制 (Cache Buster & Version Reload)
+           10. GitHub 部署更新機制 (Cache Buster & Version Reload)
         ========================================================== */
         function refreshAppVersion() {
             const spinIcon = document.getElementById('updateSpinIcon');
@@ -1695,11 +2084,9 @@
 
             showToast('🔄 正在同步 GitHub 最新版本並整理快取...', 'fa-arrows-rotate text-sky-400');
 
-            // 確保先將目前兩位學生的進度儲存
             saveStudentData();
 
             setTimeout(() => {
-                // 清理快取並透過帶有時間戳的查詢參數重新加載，強制繞過瀏覽器/CDN快取
                 const url = new URL(window.location.href);
                 url.searchParams.set('v', Date.now());
                 window.location.href = url.toString();
@@ -1707,7 +2094,7 @@
         }
 
         /* ==========================================================
-           9. 頁面載入初始化
+           11. 頁面載入初始化
         ========================================================== */
         window.onload = function() {
             loadStoredData();
@@ -1716,9 +2103,9 @@
             loadCurrentHwQuestion();
             loadOralQuestion();
             renderQuizQuestion();
+            loadReview1UI();
             setupSpeechRecognition();
 
-            // iPad 螢幕旋轉或手機調整尺寸時自動調整手寫板
             window.addEventListener('resize', () => {
                 resizeCanvas();
             });
