@@ -593,13 +593,36 @@
                         <p class="text-[11px] sm:text-xs text-amber-700 font-bold mb-2">⚠️ 單數主詞（He/She）動詞 have 要改成 has！</p>
                         <ul class="text-xs space-y-1.5 text-slate-700">
                             <li>🤧 <strong class="text-slate-900">have a cold</strong> : 感冒 (單數: has a cold)</li>
-                            <li>🌡️ <strong class="text-slate-900">have a fever</strong> : 發燒 (單數: has a fever)</li>
-                            <li>🤕 <strong class="text-slate-900">have a headache</strong> : 頭痛 (單數: has a headache)</li>
-                            <li>🤢 <strong class="text-slate-900">have a stomachache</strong> : 肚子痛 / 胃痛</li>
-                            <li>🦷 <strong class="text-slate-900">have a toothache</strong> : 牙痛</li>
+                            <li>🗣️ <strong class="text-slate-900">have a cough</strong> : 咳嗽</li>
+                            <li>🌡️ <strong class="text-slate-900">have a fever</strong> : 發燒</li>
+                            <li>🤕 <strong class="text-slate-900">have a headache</strong> : 頭痛 (head 頭)</li>
+                            <li>🤢 <strong class="text-slate-900">have a stomachache</strong> : 肚子痛 / 胃痛 (stomach 胃)</li>
+                            <li>🦷 <strong class="text-slate-900">have a toothache</strong> : 牙痛 (tooth 牙齒)</li>
+                            <li>🤧 <strong class="text-slate-900">have a runny nose</strong> : 流鼻水</li>
                             <li>🧣 <strong class="text-slate-900">have a sore throat</strong> : 喉嚨痛</li>
-                            <li>💊 <strong class="text-slate-900">take care</strong> : 保重 / 照顧</li>
                         </ul>
+                    </div>
+                </div>
+
+                <!-- 新增：康軒五上 Phonics 自然發音大統整 (依課本第26~41頁) -->
+                <div class="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-sky-50 border border-sky-200">
+                    <h3 class="font-extrabold text-sky-900 mb-2 flex items-center text-sm sm:text-base">
+                        <i class="fa-solid fa-music text-sky-600 mr-2"></i>Phonics 自然發音韻文 (課本第 26 & 40 頁核心考點)
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs">
+                        <div class="bg-white p-3 rounded-xl border border-sky-100 space-y-1">
+                            <div class="font-black text-indigo-700 text-sm">Unit 1: er / ir / ur 發音群</div>
+                            <p class="text-slate-600"><strong>er:</strong> clerk (店員), perm (燙髮)</p>
+                            <p class="text-slate-600"><strong>ir:</strong> girl (女孩), skirt (裙子), shirt (襯衫)</p>
+                            <p class="text-slate-600"><strong>ur:</strong> nurse (護士), purse (提包), purple (紫色)</p>
+                            <p class="text-[11px] text-amber-700 font-bold bg-amber-50 p-1 rounded mt-1">🎵 課本韻文：The nurse has a purple purse. / The clerk has a perm.</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-sky-100 space-y-1">
+                            <div class="font-black text-amber-700 text-sm">Unit 2: ar / or 發音群</div>
+                            <p class="text-slate-600"><strong>ar:</strong> car (車), farm (農場), party (派對), park (公園)</p>
+                            <p class="text-slate-600"><strong>or:</strong> corn (玉米), horse (馬), pork (豬肉), born (出生)</p>
+                            <p class="text-[11px] text-amber-700 font-bold bg-amber-50 p-1 rounded mt-1">🎵 課本韻文：There's a party at the farm. / Have some corn and pork.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -1270,50 +1293,29 @@
         }
 
         /* ==========================================================
-           5. 平板手寫筆試互動核心機制 (15 題完整單字 + 幾何筆劃辨識)
+           5. 平板手寫筆試互動核心機制 (擴充納入照片中的 Phonics 與完整病症單字)
         ========================================================== */
         const HW_QUESTIONS = [
             {
                 word: "Taiwan",
                 chinese: "請聽題目並手寫：【台灣】",
                 sentence: "I am from _______.",
-                hint: "字首 T 必須大寫！",
+                hint: "國名字首 T 必須大寫！",
                 minStrokes: 2
             },
             {
                 word: "Japan",
                 chinese: "請聽題目並手寫：【日本】",
                 sentence: "She is from _______.",
-                hint: "字首 J 必須大寫！",
+                hint: "國名字首 J 必須大寫！",
                 minStrokes: 2
-            },
-            {
-                word: "the UK",
-                chinese: "請聽題目並手寫：【英國】",
-                sentence: "He is from _______.",
-                hint: "the 小寫，UK 兩字皆大寫！",
-                minStrokes: 4
-            },
-            {
-                word: "the USA",
-                chinese: "請聽題目並手寫：【美國】",
-                sentence: "They are from _______.",
-                hint: "the 小寫，USA 三字皆大寫！",
-                minStrokes: 4
             },
             {
                 word: "Canada",
                 chinese: "請聽題目並手寫：【加拿大】",
-                sentence: "She is from _______.",
+                sentence: "He is from _______.",
                 hint: "字首 C 必須大寫，首都渥太華！",
                 minStrokes: 3
-            },
-            {
-                word: "Australia",
-                chinese: "請聽題目並手寫：【澳洲】",
-                sentence: "He is from _______.",
-                hint: "字首 A 必須大寫！",
-                minStrokes: 4
             },
             {
                 word: "cold",
@@ -1321,6 +1323,13 @@
                 sentence: "I have a _______.",
                 hint: "四個字母 c-o-l-d，全小寫",
                 minStrokes: 3
+            },
+            {
+                word: "cough",
+                chinese: "請聽題目並手寫：【咳嗽 (課本第25頁)】",
+                sentence: "She has a _______.",
+                hint: "單字 c-o-u-g-h，gh 發 /f/ 的音",
+                minStrokes: 4
             },
             {
                 word: "fever",
@@ -1333,7 +1342,7 @@
                 word: "headache",
                 chinese: "請聽題目並手寫：【頭痛】",
                 sentence: "She has a _______.",
-                hint: "head (頭) + ache (痛) = headache",
+                hint: "head (頭) + ache (痛)",
                 minStrokes: 5
             },
             {
@@ -1351,31 +1360,80 @@
                 minStrokes: 5
             },
             {
+                word: "runny nose",
+                chinese: "請聽題目並手寫：【流鼻水 (課本第25頁)】",
+                sentence: "I have a _______.",
+                hint: "兩個字 runny nose，中間有空格",
+                minStrokes: 5
+            },
+            {
                 word: "sore throat",
                 chinese: "請聽題目並手寫：【喉嚨痛】",
                 sentence: "She has a _______.",
-                hint: "兩個單字 sore throat，中間有空格",
+                hint: "兩個單字 sore throat",
                 minStrokes: 6
             },
             {
-                word: "matter",
-                chinese: "請聽題目並手寫：【問題/事情 (What's the matter?)】",
-                sentence: "What's the _______?",
-                hint: "單字 m-a-t-t-e-r",
+                word: "nurse",
+                chinese: "請聽題目並手寫：【護士 (ur發音單字)】",
+                sentence: "The _______ has a purple purse.",
+                hint: "課本第26頁單字 n-u-r-s-e",
                 minStrokes: 4
             },
             {
-                word: "has",
-                chinese: "請聽題目並手寫：【第三人稱單數動詞 has】",
-                sentence: "He _______ a cold.",
-                hint: "主詞 He/She 需用 h-a-s",
-                minStrokes: 2
+                word: "purse",
+                chinese: "請聽題目並手寫：【女用提包 (ur發音單字)】",
+                sentence: "The nurse has a purple _______.",
+                hint: "課本第26頁單字 p-u-r-s-e",
+                minStrokes: 4
             },
             {
-                word: "from",
-                chinese: "請聽題目並手寫：【來自 (介系詞)】",
-                sentence: "Where are you _______?",
-                hint: "介系詞 f-r-o-m",
+                word: "clerk",
+                chinese: "請聽題目並手寫：【店員 (er發音單字)】",
+                sentence: "The _______ has a perm.",
+                hint: "課本第26頁單字 c-l-e-r-k",
+                minStrokes: 4
+            },
+            {
+                word: "girl",
+                chinese: "請聽題目並手寫：【女孩 (ir發音單字)】",
+                sentence: "The _______ is wearing a skirt.",
+                hint: "課本第26頁單字 g-i-r-l",
+                minStrokes: 3
+            },
+            {
+                word: "skirt",
+                chinese: "請聽題目並手寫：【裙子 (ir發音單字)】",
+                sentence: "She is wearing a blue _______.",
+                hint: "課本第26頁單字 s-k-i-r-t",
+                minStrokes: 4
+            },
+            {
+                word: "farm",
+                chinese: "請聽題目並手寫：【農場 (ar發音單字)】",
+                sentence: "There is a party at the _______.",
+                hint: "課本第40頁單字 f-a-r-m",
+                minStrokes: 3
+            },
+            {
+                word: "party",
+                chinese: "請聽題目並手寫：【派對 (ar發音單字)】",
+                sentence: "There's a _______ at the farm.",
+                hint: "課本第40頁單字 p-a-r-t-y",
+                minStrokes: 4
+            },
+            {
+                word: "corn",
+                chinese: "請聽題目並手寫：【玉米 (or發音單字)】",
+                sentence: "Would you like some _______?",
+                hint: "課本第40頁單字 c-o-r-n",
+                minStrokes: 3
+            },
+            {
+                word: "pork",
+                chinese: "請聽題目並手寫：【豬肉 (or發音單字)】",
+                sentence: "Have some corn and _______.",
+                hint: "課本第40頁單字 p-o-r-k",
                 minStrokes: 3
             }
         ];
@@ -1735,7 +1793,7 @@
         }
 
         /* ==========================================================
-           6. 口試大考驗 (12 道全真問答題型)
+           6. 口試大考驗 (擴充課本韻文與 Phonics 發音口試)
         ========================================================== */
         const ORAL_QUESTIONS = [
             {
@@ -1763,16 +1821,22 @@
                 tip: "Canada 重音在第一音節 /ˈkænədə/，句尾句點平穩降調。"
             },
             {
-                category: "【單元一複數主詞：詢問他們來自哪裡】",
-                sentence: "Where are they from?",
-                chinese: "他們來自哪裡？",
-                tip: "they 的 th 發咬舌音 /ð/，搭配複數 Be 動詞 are。"
+                category: "【U1 Phonics 課本韻文：ur 發音】",
+                sentence: "The nurse has a purple purse.",
+                chinese: "護士有一個紫色的提包。",
+                tip: "nurse, purple, purse 皆包含 /ɜːr/ 捲舌音，注意連讀流暢！"
             },
             {
-                category: "【單元一複數答句：他們來自日本】",
-                sentence: "They are from Japan.",
-                chinese: "他們來自日本。",
-                tip: "Japan 重音在第二音節 /dʒəˈpæn/。"
+                category: "【U1 Phonics 課本韻文：er & ir 發音】",
+                sentence: "The girl is wearing a skirt.",
+                chinese: "女孩正穿著一件裙子。",
+                tip: "girl 與 skirt 練習 ir 的捲舌音，wearing 自然滑讀。"
+            },
+            {
+                category: "【U1 Phonics 課本韻文：clerk & perm】",
+                sentence: "The clerk has a perm.",
+                chinese: "店員燙了捲髮。",
+                tip: "clerk 與 perm 為課本第26頁 er 核心韻文！"
             },
             {
                 category: "【單元二句型：關心詢問身體狀況】",
@@ -1785,6 +1849,12 @@
                 sentence: "I have a cold.",
                 chinese: "我感冒了。",
                 tip: "have a 連讀讀作 /hævə/，cold 結尾舌尖頂上顎發 /ld/。"
+            },
+            {
+                category: "【單元二新病症：咳嗽與流鼻水】",
+                sentence: "She has a cough and a runny nose.",
+                chinese: "她咳嗽而且流鼻水。",
+                tip: "課本第25頁核心！cough 發音為 /kɔːf/，runny nose 連讀流暢。"
             },
             {
                 category: "【單元二第三人稱：他發燒了】",
@@ -1805,10 +1875,16 @@
                 tip: "stomachache 讀音為 /ˈstʌməkeɪk/，注意 ch 發 /k/ 的音。"
             },
             {
-                category: "【單元二關心答句：多保重】",
-                sentence: "Take care and drink warm water.",
-                chinese: "保重身體並多喝溫水。",
-                tip: "Take care 是關懷他人病情的必學生活用語！"
+                category: "【U2 Phonics 課本韻文：ar 發音】",
+                sentence: "There's a party at the farm.",
+                chinese: "農場裡有一場派對。",
+                tip: "課本第40頁韻文！party 與 farm 包含 /ɑːr/ 飽滿母音。"
+            },
+            {
+                category: "【U2 Phonics 課本韻文：or 發音】",
+                sentence: "Have some corn and pork.",
+                chinese: "吃點玉米和豬肉吧。",
+                tip: "課本第40頁韻文！corn 與 pork 發 /ɔːr/ 圓唇捲舌音。"
             }
         ];
 
