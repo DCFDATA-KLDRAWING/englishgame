@@ -258,9 +258,14 @@
                         <span class="text-[10px] sm:text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">筆試手寫板</span>
                         <h2 class="text-lg sm:text-xl font-black text-slate-800 mt-0.5">聽音辨字・手寫拼字作答</h2>
                     </div>
-                    <div class="flex items-center space-x-1.5">
-                        <span class="text-xs font-bold text-slate-400">進度:</span>
-                        <span id="hwQuesNum" class="text-sm sm:text-base font-extrabold text-indigo-600">1 / 7</span>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="prevHwQuestion()" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold transition-all">
+                            <i class="fa-solid fa-chevron-left"></i> 上一題
+                        </button>
+                        <span id="hwQuesNum" class="text-sm sm:text-base font-extrabold text-indigo-600 min-w-[50px] text-center">1 / 15</span>
+                        <button onclick="nextHwQuestion()" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold transition-all">
+                            下一題 <i class="fa-solid fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -268,8 +273,8 @@
                 <div class="bg-indigo-50/70 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-indigo-100 flex flex-col sm:flex-row items-center justify-between mb-3 gap-2.5">
                     <div class="text-center sm:text-left w-full sm:w-auto">
                         <div class="text-[10px] sm:text-xs text-indigo-500 font-bold uppercase tracking-wider">聽力與文字提示</div>
-                        <div id="hwPromptChinese" class="text-base sm:text-lg font-black text-slate-800 mt-0.5 leading-snug">請聽題目並手寫：【日本】</div>
-                        <div id="hwSentenceHint" class="text-xs text-slate-500 mt-1">句型提示：She is from _______.</div>
+                        <div id="hwPromptChinese" class="text-base sm:text-lg font-black text-slate-800 mt-0.5 leading-snug">請聽題目並手寫：【台灣】</div>
+                        <div id="hwSentenceHint" class="text-xs text-slate-500 mt-1">句型提示：I am from _______.</div>
                     </div>
                     <button onclick="playCurrentHwAudio()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm shadow-md hover:scale-105 active:scale-95 transition-all flex items-center justify-center space-x-1.5 shrink-0">
                         <i class="fa-solid fa-volume-high text-base"></i>
@@ -278,33 +283,34 @@
                 </div>
 
                 <!-- 手寫區域與工具列 -->
-                <div class="flex flex-col items-center">
-                    <div class="w-full flex justify-between items-center mb-1 text-[11px] sm:text-xs text-slate-400 px-1 font-semibold">
-                        <span class="truncate"><i class="fa-solid fa-pencil mr-1 text-indigo-500"></i>在三線格中書寫（支援手指/Apple Pencil）</span>
-                        <button onclick="clearCanvas()" class="text-rose-500 hover:text-rose-600 font-bold shrink-0 ml-2">
-                            <i class="fa-solid fa-eraser mr-0.5"></i>清空
+                <div class="flex flex-col items-center w-full">
+                    <div class="w-full flex justify-between items-center mb-1 text-[11px] sm:text-xs text-slate-500 px-1 font-bold">
+                        <span class="truncate"><i class="fa-solid fa-pencil mr-1 text-indigo-500"></i>在三線格中書寫（完全支援 iPad 手指 / Apple Pencil）</span>
+                        <button onclick="clearCanvas()" class="text-rose-500 hover:text-rose-600 font-bold shrink-0 ml-2 px-2 py-1 rounded-lg bg-rose-50 border border-rose-200">
+                            <i class="fa-solid fa-eraser mr-1"></i>清空重寫
                         </button>
                     </div>
 
-                    <!-- Canvas 觸控手寫板 (iPad 與手機自適應高度) -->
-                    <div class="relative w-full rounded-2xl border-2 border-indigo-200 overflow-hidden shadow-inner handwriting-lines bg-white touch-none">
-                        <canvas id="handwritingCanvas" class="w-full block cursor-crosshair h-44 sm:h-56"></canvas>
-                        <div id="canvasPlaceholder" class="absolute inset-0 flex items-center justify-center pointer-events-none text-slate-300 text-base sm:text-lg font-bold">
-                            在此手寫輸入英文...
+                    <!-- Canvas 觸控手寫板 (iPad 與手機保證高度不塌陷) -->
+                    <div id="hwCanvasWrapper" class="relative w-full h-56 sm:h-64 rounded-2xl border-2 border-indigo-300 overflow-hidden shadow-inner handwriting-lines bg-white" style="touch-action: none; min-height: 220px;">
+                        <canvas id="handwritingCanvas" class="w-full h-full block cursor-crosshair" style="touch-action: none;"></canvas>
+                        <div id="canvasPlaceholder" class="absolute inset-0 flex items-center justify-center pointer-events-none text-slate-300 text-base sm:text-lg font-black tracking-wider">
+                            ✍️ 請在此手寫英文字母...
                         </div>
                     </div>
 
                     <!-- 輔助手寫辨識確認鈕 -->
                     <div class="w-full mt-3 flex flex-col sm:flex-row gap-2">
                         <div class="flex-1 flex gap-2">
-                            <input type="text" id="hwManualVerifyInput" placeholder="寫完可點辨識或直接輸入核對" class="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold focus:outline-none focus:border-indigo-500">
-                            <button onclick="triggerAutoRecognize()" class="px-3 py-2 sm:py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs flex items-center space-x-1 shrink-0">
-                                <i class="fa-solid fa-wand-magic-sparkles text-indigo-500"></i>
+                            <input type="text" id="hwManualVerifyInput" placeholder="寫完可點筆劃辨識或直接輸入核對" class="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border-2 border-indigo-200 text-xs sm:text-sm font-bold focus:outline-none focus:border-indigo-500 bg-slate-50">
+                            <button onclick="triggerAutoRecognize()" class="px-3.5 py-2 sm:py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl font-black text-xs flex items-center space-x-1.5 shrink-0 active:scale-95 transition-all">
+                                <i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i>
                                 <span>筆劃辨識</span>
                             </button>
                         </div>
-                        <button onclick="submitHandwritingAnswer()" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs sm:text-sm shadow-md active:scale-95 transition-all">
-                            確認送出評分 <i class="fa-solid fa-check ml-1"></i>
+                        <button onclick="submitHandwritingAnswer()" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs sm:text-sm shadow-md active:scale-95 transition-all flex items-center justify-center space-x-1">
+                            <span>確認送出評分</span>
+                            <i class="fa-solid fa-check"></i>
                         </button>
                     </div>
 
@@ -784,7 +790,13 @@
             }
 
             if (tabId === 'handwrite') {
-                setTimeout(resizeCanvas, 50);
+                // 給予 DOM 渲染完成的時間，確保獲取到真實寬高
+                setTimeout(() => {
+                    resizeCanvas();
+                }, 60);
+                setTimeout(() => {
+                    resizeCanvas();
+                }, 200);
             }
         }
 
@@ -1371,31 +1383,42 @@
 
             resizeCanvas();
 
-            hwCanvas.addEventListener('mousedown', startDrawing);
-            hwCanvas.addEventListener('mousemove', draw);
-            window.addEventListener('mouseup', stopDrawing);
-
-            hwCanvas.addEventListener('touchstart', (e) => {
+            // 改用全相容的 Pointer Events（完美支援 iPad Apple Pencil、手指觸控與滑鼠）
+            hwCanvas.addEventListener('pointerdown', (e) => {
                 e.preventDefault();
-                const touch = e.touches[0];
-                startDrawing(touch);
-            }, { passive: false });
+                try {
+                    hwCanvas.setPointerCapture(e.pointerId);
+                } catch (err) {}
+                startDrawing(e);
+            });
 
-            hwCanvas.addEventListener('touchmove', (e) => {
+            hwCanvas.addEventListener('pointermove', (e) => {
                 e.preventDefault();
-                const touch = e.touches[0];
-                draw(touch);
-            }, { passive: false });
+                draw(e);
+            });
 
-            hwCanvas.addEventListener('touchend', (e) => {
+            hwCanvas.addEventListener('pointerup', (e) => {
+                e.preventDefault();
+                try {
+                    hwCanvas.releasePointerCapture(e.pointerId);
+                } catch (err) {}
+                stopDrawing();
+            });
+
+            hwCanvas.addEventListener('pointercancel', (e) => {
                 stopDrawing();
             });
         }
 
         function resizeCanvas() {
             if (!hwCanvas || !hwCtx) return;
-            const container = hwCanvas.parentElement;
+            const container = document.getElementById('hwCanvasWrapper') || hwCanvas.parentElement;
             if (!container) return;
+
+            const rect = container.getBoundingClientRect();
+            // 如果容器此時為 hidden 或尚未算好高度，強制給予最低高度
+            const realWidth = rect.width > 20 ? rect.width : 500;
+            const realHeight = rect.height > 20 ? rect.height : 240;
 
             let prevImage = null;
             if (hwCanvas.width > 0 && hwCanvas.height > 0 && strokeCount > 0) {
@@ -1404,12 +1427,11 @@
                 } catch (e) {}
             }
 
-            const rect = container.getBoundingClientRect();
             const dpr = window.devicePixelRatio || 1;
-            hwCanvas.width = rect.width * dpr;
-            hwCanvas.height = rect.height * dpr;
-            hwCanvas.style.width = `${rect.width}px`;
-            hwCanvas.style.height = `${rect.height}px`;
+            hwCanvas.width = Math.floor(realWidth * dpr);
+            hwCanvas.height = Math.floor(realHeight * dpr);
+            hwCanvas.style.width = `${realWidth}px`;
+            hwCanvas.style.height = `${realHeight}px`;
 
             hwCtx.scale(dpr, dpr);
             hwCtx.lineCap = 'round';
@@ -1421,6 +1443,124 @@
                 try {
                     hwCtx.putImageData(prevImage, 0, 0);
                 } catch (e) {}
+            }
+        }
+
+        function getCanvasPos(e) {
+            const rect = hwCanvas.getBoundingClientRect();
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            strokeCount++;
+            const pos = getCanvasPos(e);
+            hwCtx.beginPath();
+            hwCtx.moveTo(pos.x, pos.y);
+            const placeholder = document.getElementById('canvasPlaceholder');
+            if (placeholder) placeholder.style.display = 'none';
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const pos = getCanvasPos(e);
+            hwCtx.lineTo(pos.x, pos.y);
+            hwCtx.stroke();
+        }
+
+        function stopDrawing() {
+            if (isDrawing) {
+                isDrawing = false;
+            }
+        }
+
+        function clearCanvas() {
+            if (!hwCanvas || !hwCtx) return;
+            hwCtx.save();
+            hwCtx.setTransform(1, 0, 0, 1, 0, 0);
+            hwCtx.clearRect(0, 0, hwCanvas.width, hwCanvas.height);
+            hwCtx.restore();
+
+            strokeCount = 0;
+            const placeholder = document.getElementById('canvasPlaceholder');
+            if (placeholder) placeholder.style.display = 'flex';
+            const feedbackBox = document.getElementById('hwFeedbackBox');
+            if (feedbackBox) feedbackBox.classList.add('hidden');
+            const verifyInput = document.getElementById('hwManualVerifyInput');
+            if (verifyInput) verifyInput.value = '';
+        }
+
+        function loadCurrentHwQuestion() {
+            const q = HW_QUESTIONS[hwCurrentIdx];
+            document.getElementById('hwQuesNum').innerText = `${hwCurrentIdx + 1} / ${HW_QUESTIONS.length}`;
+            document.getElementById('hwPromptChinese').innerText = q.chinese;
+            document.getElementById('hwSentenceHint').innerText = `句型提示：${q.sentence}`;
+            clearCanvas();
+        }
+
+        function prevHwQuestion() {
+            if (hwCurrentIdx > 0) {
+                hwCurrentIdx--;
+                loadCurrentHwQuestion();
+            }
+        }
+
+        function nextHwQuestion() {
+            hwCurrentIdx = (hwCurrentIdx + 1) % HW_QUESTIONS.length;
+            loadCurrentHwQuestion();
+        }
+
+        function playCurrentHwAudio() {
+            const q = HW_QUESTIONS[hwCurrentIdx];
+            speakText(`Please write the word: ${q.word}. In sentence: ${q.sentence.replace('_______', q.word)}`, 0.85);
+        }
+
+        function triggerAutoRecognize() {
+            if (strokeCount === 0) {
+                showToast('手寫板上沒有任何筆跡！請先在三線格中書寫。', 'fa-pen text-amber-400');
+                return;
+            }
+
+            const q = HW_QUESTIONS[hwCurrentIdx];
+            const feedback = document.getElementById('hwFeedbackBox');
+            const input = document.getElementById('hwManualVerifyInput');
+
+            let drawnPixelCount = 0;
+            try {
+                const imgData = hwCtx.getImageData(0, 0, hwCanvas.width, hwCanvas.height).data;
+                for (let i = 3; i < imgData.length; i += 16) {
+                    if (imgData[i] > 20) drawnPixelCount++;
+                }
+            } catch (e) {}
+
+            feedback.classList.remove('hidden');
+
+            if (strokeCount < q.minStrokes || drawnPixelCount < 100) {
+                feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-rose-50 text-rose-700 border border-rose-200';
+                feedback.innerHTML = `⚠️ 筆跡不足或不完整！單字 <strong>${q.word}</strong> 需要寫出完整字母，請繼續書寫。`;
+                showToast('筆劃過少，尚未寫完完整單字喔！', 'fa-triangle-exclamation text-rose-400');
+                return;
+            }
+
+            const currentTyped = input.value.trim();
+            if (currentTyped) {
+                if (currentTyped === q.word) {
+                    feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-emerald-50 text-emerald-700 border border-emerald-200';
+                    feedback.innerHTML = `✨ 筆跡結構與輸入完全吻合！請點擊右方【確認送出評分】確認。`;
+                } else if (currentTyped.toLowerCase() === q.word.toLowerCase()) {
+                    feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-amber-50 text-amber-800 border border-amber-200';
+                    feedback.innerHTML = `⚠️ 注意大小寫！${q.hint}。請手寫並打字更正後再送出。`;
+                } else {
+                    feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-rose-50 text-rose-700 border border-rose-200';
+                    feedback.innerHTML = `❌ 拼寫不吻合！你目前輸入的是 "${currentTyped}"，手寫與拼字必須正確對應。`;
+                }
+            } else {
+                feedback.className = 'w-full mt-3 p-3 rounded-xl block text-center font-bold text-xs sm:text-sm bg-sky-50 text-sky-800 border border-sky-200';
+                feedback.innerHTML = `🖊️ 已偵測到 ${strokeCount} 個有效筆劃。請在左側輸入框輸入你寫出的單字，並點擊【確認送出評分】進行嚴格比對！`;
+                showToast('已辨識有效手寫筆跡，請輸入文字後送出評分！', 'fa-check text-sky-500');
             }
         }
 
