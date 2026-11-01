@@ -51,7 +51,7 @@
         .candy-exploding {
             animation: explodeAnim 0.3s forwards ease-in-out;
         }
-        /* 英文手寫四格三線背景 */
+        /* 英文手寫四格三線背景 - 手機端尺寸 */
         .handwriting-lines {
             background-color: #ffffff;
             background-image: 
@@ -62,45 +62,52 @@
             background-size: 100% 72px;
             background-position: 0 12px, 0 36px, 0 48px, 0 60px;
         }
+        /* 平板端 (iPad) 放大手寫三線格尺寸 */
+        @media (min-width: 768px) {
+            .handwriting-lines {
+                background-size: 100% 96px;
+                background-position: 0 16px, 0 48px, 0 64px, 0 80px;
+            }
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-slate-800 antialiased overflow-x-hidden">
 
     <!-- ======================= 頂部導覽控制列 ======================= -->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md shadow-sm border-b border-indigo-100">
-        <div class="max-w-5xl mx-auto px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
+        <div class="max-w-6xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between">
             <!-- 標題與康軒標誌 -->
-            <div class="flex items-center space-x-2">
-                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-pink-500 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-pink-200">
-                    <i class="fa-solid fa-candy-cane text-lg sm:text-xl"></i>
+            <div class="flex items-center space-x-2.5 sm:space-x-3.5">
+                <div class="w-9 h-9 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-tr from-pink-500 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-pink-200">
+                    <i class="fa-solid fa-candy-cane text-lg sm:text-2xl md:text-3xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-base sm:text-xl font-black bg-gradient-to-r from-pink-600 to-indigo-600 bg-clip-text text-transparent leading-tight">
+                    <h1 class="text-base sm:text-2xl md:text-3xl font-black bg-gradient-to-r from-pink-600 to-indigo-600 bg-clip-text text-transparent leading-tight">
                         Candy English
                     </h1>
-                    <p class="text-[10px] sm:text-xs text-slate-500 font-semibold tracking-wide">康軒五上 U1 & U2 考前特訓</p>
+                    <p class="text-[10px] sm:text-xs md:text-sm text-slate-500 font-semibold tracking-wide">康軒五上 U1 & U2 考前特訓</p>
                 </div>
             </div>
 
             <!-- 學生角色與控制列 -->
-            <div class="flex items-center space-x-2 sm:space-x-3">
+            <div class="flex items-center space-x-2 sm:space-x-4">
                 <!-- 參賽學生卡片 (點擊切換) -->
-                <button onclick="openCharacterModal()" class="flex items-center space-x-1.5 sm:space-x-2 bg-amber-50 hover:bg-amber-100/80 border border-amber-200 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-sm active:scale-95 transition-all">
-                    <span id="headerStudentAvatar" class="text-lg sm:text-xl">👧</span>
+                <button onclick="openCharacterModal()" class="flex items-center space-x-2 sm:space-x-3 bg-amber-50 hover:bg-amber-100/80 border border-amber-200 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full shadow-sm active:scale-95 transition-all">
+                    <span id="headerStudentAvatar" class="text-xl sm:text-2xl md:text-3xl">👧</span>
                     <div class="text-left">
-                        <div class="text-[11px] sm:text-xs font-bold text-amber-900 leading-tight flex items-center">
+                        <div class="text-[11px] sm:text-sm md:text-base font-bold text-amber-900 leading-tight flex items-center">
                             <span id="headerStudentName">嬌小莉莉</span>
-                            <i class="fa-solid fa-arrows-rotate text-[9px] text-amber-500 ml-1"></i>
+                            <i class="fa-solid fa-arrows-rotate text-[9px] sm:text-xs text-amber-500 ml-1.5"></i>
                         </div>
-                        <div class="text-[9px] sm:text-[10px] text-amber-600 font-bold">
+                        <div class="text-[9px] sm:text-xs md:text-sm text-amber-600 font-bold">
                             ⭐ <span id="headerStudentScore">0</span> 分
                         </div>
                     </div>
                 </button>
 
                 <!-- GitHub 更新按鍵 (強制清除快取) -->
-                <button onclick="refreshAppVersion()" title="GitHub Pages 強制更新緩存" class="flex items-center space-x-1 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs border border-indigo-200 shadow-sm active:scale-95 transition-all">
-                    <i id="updateIcon" class="fa-solid fa-cloud-arrow-down text-indigo-600"></i>
+                <button onclick="refreshAppVersion()" title="GitHub Pages 強制更新緩存" class="flex items-center space-x-1.5 px-3 sm:px-4 py-1.5 sm:py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs sm:text-sm md:text-base border border-indigo-200 shadow-sm active:scale-95 transition-all">
+                    <i id="updateIcon" class="fa-solid fa-cloud-arrow-down text-indigo-600 text-sm sm:text-base"></i>
                     <span class="hidden sm:inline">檢查更新</span>
                 </button>
             </div>
@@ -108,28 +115,28 @@
 
         <!-- 導航功能頁籤 (支援平板與手機橫向滑動) -->
         <div class="bg-indigo-50/60 border-t border-indigo-100/80">
-            <nav class="max-w-5xl mx-auto flex space-x-1 px-2 py-1.5 overflow-x-auto no-scrollbar scroll-smooth" id="navTabs">
-                <button onclick="switchTab('game')" id="tab-game" class="tab-btn active px-3 sm:px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center space-x-1 whitespace-nowrap bg-indigo-600 text-white shadow-sm">
+            <nav class="max-w-6xl mx-auto flex space-x-1 sm:space-x-2 px-2 sm:px-4 py-1.5 sm:py-2 overflow-x-auto no-scrollbar scroll-smooth" id="navTabs">
+                <button onclick="switchTab('game')" id="tab-game" class="tab-btn active px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-xl text-xs sm:text-sm md:text-base font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap bg-indigo-600 text-white shadow-sm">
                     <i class="fa-solid fa-gamepad"></i>
                     <span>糖果消消樂</span>
                 </button>
-                <button onclick="switchTab('handwrite')" id="tab-handwrite" class="tab-btn px-3 sm:px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center space-x-1 whitespace-nowrap text-slate-600 hover:text-indigo-600">
+                <button onclick="switchTab('handwrite')" id="tab-handwrite" class="tab-btn px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-xl text-xs sm:text-sm md:text-base font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap text-slate-600 hover:text-indigo-600">
                     <i class="fa-solid fa-pen-nib"></i>
                     <span>平板手寫筆試</span>
                 </button>
-                <button onclick="switchTab('oral')" id="tab-oral" class="tab-btn px-3 sm:px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center space-x-1 whitespace-nowrap text-slate-600 hover:text-indigo-600">
+                <button onclick="switchTab('oral')" id="tab-oral" class="tab-btn px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-xl text-xs sm:text-sm md:text-base font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap text-slate-600 hover:text-indigo-600">
                     <i class="fa-solid fa-microphone-lines"></i>
                     <span>口試大考驗</span>
                 </button>
-                <button onclick="switchTab('review1')" id="tab-review1" class="tab-btn px-3 sm:px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center space-x-1 whitespace-nowrap text-slate-600 hover:text-indigo-600">
+                <button onclick="switchTab('review1')" id="tab-review1" class="tab-btn px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-xl text-xs sm:text-sm md:text-base font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap text-slate-600 hover:text-indigo-600">
                     <i class="fa-solid fa-layer-group"></i>
                     <span>Review 1 統整特訓</span>
                 </button>
-                <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn px-3 sm:px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center space-x-1 whitespace-nowrap text-slate-600 hover:text-indigo-600">
+                <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-xl text-xs sm:text-sm md:text-base font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap text-slate-600 hover:text-indigo-600">
                     <i class="fa-solid fa-clipboard-question"></i>
                     <span>綜合試題庫</span>
                 </button>
-                <button onclick="switchTab('guide')" id="tab-guide" class="tab-btn px-3 sm:px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center space-x-1 whitespace-nowrap text-slate-600 hover:text-indigo-600">
+                <button onclick="switchTab('guide')" id="tab-guide" class="tab-btn px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-xl text-xs sm:text-sm md:text-base font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap text-slate-600 hover:text-indigo-600">
                     <i class="fa-solid fa-book-open"></i>
                     <span>複習秘笈</span>
                 </button>
@@ -138,82 +145,82 @@
     </header>
 
     <!-- ======================= 主內容區域 ======================= -->
-    <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-5">
+    <main class="flex-1 max-w-6xl w-full mx-auto p-3 sm:p-6 md:p-8">
 
         <!-- ======================= 1. 糖果連連看消消樂 (Candy Crash) ======================= -->
         <section id="sec-game" class="tab-section block">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-6 items-start">
                 
                 <!-- 左側：遊戲面板 -->
-                <div class="lg:col-span-7 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-3 sm:p-5 shadow-xl border border-pink-100 flex flex-col items-center">
+                <div class="lg:col-span-7 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-xl border border-pink-100 flex flex-col items-center">
                     <!-- 分數與步數狀態列 -->
-                    <div class="w-full flex items-center justify-between px-2 py-2 mb-3 bg-pink-50/70 rounded-2xl border border-pink-100">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xl">🍬</span>
+                    <div class="w-full flex items-center justify-between px-3 py-2.5 mb-3 sm:mb-4 bg-pink-50/70 rounded-2xl border border-pink-100">
+                        <div class="flex items-center space-x-2 sm:space-x-3">
+                            <span class="text-xl sm:text-3xl">🍬</span>
                             <div>
-                                <div class="text-[10px] text-pink-700 font-bold uppercase tracking-wider">本局得分</div>
-                                <div id="gameScore" class="text-lg sm:text-2xl font-black text-pink-600 leading-none">0</div>
+                                <div class="text-[10px] sm:text-xs md:text-sm text-pink-700 font-bold uppercase tracking-wider">本局得分</div>
+                                <div id="gameScore" class="text-lg sm:text-3xl md:text-4xl font-black text-pink-600 leading-none">0</div>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-2">
+                        <div class="flex items-center space-x-2 sm:space-x-3">
                             <div>
-                                <div class="text-[10px] text-indigo-700 font-bold uppercase tracking-wider text-right">剩餘步數</div>
-                                <div id="gameMoves" class="text-lg sm:text-2xl font-black text-indigo-600 leading-none text-right">20</div>
+                                <div class="text-[10px] sm:text-xs md:text-sm text-indigo-700 font-bold uppercase tracking-wider text-right">剩餘步數</div>
+                                <div id="gameMoves" class="text-lg sm:text-3xl md:text-4xl font-black text-indigo-600 leading-none text-right">20</div>
                             </div>
-                            <span class="text-xl">⏳</span>
+                            <span class="text-xl sm:text-3xl">⏳</span>
                         </div>
-                        <button onclick="resetCandyGame()" class="px-2.5 py-1.5 rounded-xl bg-pink-500 hover:bg-pink-600 text-white text-xs font-bold active:scale-95 transition-all shadow-sm">
+                        <button onclick="resetCandyGame()" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-pink-500 hover:bg-pink-600 text-white text-xs sm:text-sm md:text-base font-bold active:scale-95 transition-all shadow-sm">
                             <i class="fa-solid fa-rotate-left"></i> 重玩
                         </button>
                     </div>
 
-                    <!-- 糖果棋盤容器 (自適應 iPad 與手機寬度) -->
-                    <div class="relative w-full flex justify-center items-center py-1">
-                        <div id="candyBoard" class="grid grid-cols-6 gap-1 sm:gap-1.5 p-2 bg-indigo-950/5 rounded-2xl border-2 border-indigo-200/80 shadow-inner w-full max-w-[360px] sm:max-w-[420px] aspect-square select-none">
+                    <!-- 糖果棋盤容器 (自適應 iPad 與手機寬度，平板端大幅擴展) -->
+                    <div class="relative w-full flex justify-center items-center py-1 sm:py-3">
+                        <div id="candyBoard" class="grid grid-cols-6 gap-1.5 sm:gap-2 md:gap-2.5 p-2 sm:p-3.5 bg-indigo-950/5 rounded-2xl sm:rounded-3xl border-2 border-indigo-200/80 shadow-inner w-full max-w-[360px] sm:max-w-[460px] md:max-w-[500px] lg:max-w-[540px] aspect-square select-none">
                             <!-- 6x6 糖果動態生成於此 -->
                         </div>
                     </div>
 
-                    <div class="w-full mt-3 text-center text-xs text-slate-500 font-semibold">
+                    <div class="w-full mt-3 text-center text-xs sm:text-sm md:text-base text-slate-500 font-semibold">
                         👆 點擊或上下左右滑動相鄰糖果！連線 3 個即可消除並朗讀單字！
                     </div>
                 </div>
 
                 <!-- 右側：課文互動與文法連擊挑戰卡 -->
-                <div class="lg:col-span-5 space-y-3 sm:space-y-4">
+                <div class="lg:col-span-5 space-y-3 sm:space-y-5">
                     <!-- 當前消除單字發音卡 -->
-                    <div class="bg-white/95 rounded-2xl p-4 shadow-md border border-indigo-100 flex items-center space-x-3">
-                        <div id="lastWordIcon" class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl shadow-inner">
+                    <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-md border border-indigo-100 flex items-center space-x-3 sm:space-x-4">
+                        <div id="lastWordIcon" class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl sm:text-3xl shadow-inner shrink-0">
                             🎯
                         </div>
-                        <div class="flex-1">
-                            <div class="text-[10px] text-indigo-500 font-bold">剛剛消除的單字</div>
-                            <div id="lastWordText" class="text-base sm:text-lg font-black text-slate-800">點擊糖果開始！</div>
-                            <div id="lastWordDetail" class="text-xs text-slate-500">消除時將自動播放美式真人發音</div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-[10px] sm:text-xs md:text-sm text-indigo-500 font-bold">剛剛消除的單字</div>
+                            <div id="lastWordText" class="text-base sm:text-xl md:text-2xl font-black text-slate-800 truncate">點擊糖果開始！</div>
+                            <div id="lastWordDetail" class="text-xs sm:text-sm md:text-base text-slate-500 truncate">消除時將自動播放美式真人發音</div>
                         </div>
-                        <button onclick="replayLastWord()" class="w-9 h-9 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white flex items-center justify-center active:scale-90 transition-all shadow-md shadow-indigo-200">
+                        <button onclick="replayLastWord()" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white flex items-center justify-center active:scale-90 transition-all shadow-md shadow-indigo-200 shrink-0 text-sm sm:text-base">
                             <i class="fa-solid fa-volume-high"></i>
                         </button>
                     </div>
 
                     <!-- 糖果連擊加分挑戰 (答對觸發彩虹炸彈) -->
-                    <div id="bonusChallengeCard" class="bg-gradient-to-br from-pink-500 via-rose-500 to-indigo-600 text-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-xl relative overflow-hidden">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full backdrop-blur-sm">課文連擊挑戰</span>
-                            <span class="text-xs font-bold text-pink-100"><i class="fa-solid fa-wand-magic-sparkles"></i> 答對送彩虹炸彈</span>
+                    <div id="bonusChallengeCard" class="bg-gradient-to-br from-pink-500 via-rose-500 to-indigo-600 text-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-2 sm:mb-3">
+                            <span class="text-xs sm:text-sm font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">課文連擊挑戰</span>
+                            <span class="text-xs sm:text-sm font-bold text-pink-100"><i class="fa-solid fa-wand-magic-sparkles"></i> 答對送彩虹炸彈</span>
                         </div>
-                        <div id="bonusQuestionText" class="text-sm sm:text-base font-black my-2 leading-snug">
+                        <div id="bonusQuestionText" class="text-sm sm:text-lg md:text-xl font-black my-2 sm:my-3 leading-snug">
                             Where ____ you from? (請選擇正確 Be 動詞)
                         </div>
-                        <div id="bonusOptionsGrid" class="grid grid-cols-2 gap-2 mt-3">
+                        <div id="bonusOptionsGrid" class="grid grid-cols-2 gap-2 sm:gap-3 mt-3">
                             <!-- 動態選項按鍵 -->
                         </div>
-                        <div id="bonusFeedback" class="text-xs font-bold mt-2 text-yellow-200 hidden"></div>
+                        <div id="bonusFeedback" class="text-xs sm:text-sm md:text-base font-bold mt-2 sm:mt-3 text-yellow-200 hidden"></div>
                     </div>
 
                     <!-- 彩虹炸彈道具按鈕 -->
-                    <button id="rainbowBombBtn" onclick="triggerRainbowBomb()" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white font-black text-sm shadow-lg shadow-orange-200 active:scale-95 transition-all flex items-center justify-center space-x-2 opacity-60 pointer-events-none">
-                        <i class="fa-solid fa-bomb text-lg animate-bounce"></i>
+                    <button id="rainbowBombBtn" onclick="triggerRainbowBomb()" class="w-full py-3.5 sm:py-4 px-4 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white font-black text-sm sm:text-base md:text-lg shadow-lg shadow-orange-200 active:scale-95 transition-all flex items-center justify-center space-x-2.5 opacity-60 pointer-events-none">
+                        <i class="fa-solid fa-bomb text-lg sm:text-2xl animate-bounce"></i>
                         <span>彩虹炸彈 (蓄力中: 答對題目解鎖)</span>
                     </button>
                 </div>
@@ -222,76 +229,76 @@
 
         <!-- ======================= 2. 平板手寫筆試互動 (支援 Apple Pencil / 手指 / 線上手寫辨識) ======================= -->
         <section id="sec-handwrite" class="tab-section hidden">
-            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-indigo-100 max-w-3xl mx-auto space-y-4">
+            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xl border border-indigo-100 max-w-4xl mx-auto space-y-4 sm:space-y-6">
                 
                 <!-- 題目導航與進度列 -->
-                <div class="flex items-center justify-between border-b pb-3">
+                <div class="flex items-center justify-between border-b pb-3 sm:pb-4">
                     <div>
-                        <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2.5 py-0.5 rounded-full">手寫辨識筆試</span>
-                        <h2 class="text-lg sm:text-xl font-black text-slate-800 mt-1">聽音辨字・手寫作答</h2>
+                        <span class="text-xs sm:text-sm md:text-base bg-indigo-100 text-indigo-700 font-bold px-3 py-1 rounded-full">手寫辨識筆試</span>
+                        <h2 class="text-lg sm:text-2xl md:text-3xl font-black text-slate-800 mt-1.5">聽音辨字・手寫作答</h2>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-xs sm:text-sm font-bold text-slate-500">進度：<span id="hwProgress" class="text-indigo-600 font-black">1</span> / 28</span>
-                        <div class="flex space-x-1">
-                            <button onclick="prevHwQuestion()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center active:scale-90 transition-all"><i class="fa-solid fa-chevron-left text-xs"></i></button>
-                            <button onclick="nextHwQuestion()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center active:scale-90 transition-all"><i class="fa-solid fa-chevron-right text-xs"></i></button>
+                    <div class="flex items-center space-x-2 sm:space-x-3">
+                        <span class="text-xs sm:text-base md:text-lg font-bold text-slate-500">進度：<span id="hwProgress" class="text-indigo-600 font-black">1</span> / 28</span>
+                        <div class="flex space-x-1.5">
+                            <button onclick="prevHwQuestion()" class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center active:scale-90 transition-all"><i class="fa-solid fa-chevron-left text-xs sm:text-base"></i></button>
+                            <button onclick="nextHwQuestion()" class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center active:scale-90 transition-all"><i class="fa-solid fa-chevron-right text-xs sm:text-base"></i></button>
                         </div>
                     </div>
                 </div>
 
                 <!-- 考題提示卡片 (含語音考題鍵) -->
-                <div class="bg-gradient-to-r from-indigo-50 to-pink-50 p-3 sm:p-4 rounded-2xl border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="bg-gradient-to-r from-indigo-50 to-pink-50 p-4 sm:p-5 rounded-2xl border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                     <div>
-                        <div class="text-xs text-indigo-600 font-bold">題目提示 (中文意義 / 句型填空)</div>
-                        <div id="hwPromptTitle" class="text-base sm:text-lg font-black text-slate-800 mt-0.5">請聽語音手寫：【台灣】</div>
-                        <div id="hwSentenceHint" class="text-xs sm:text-sm text-slate-500 font-semibold">例句：I am from _______ .</div>
+                        <div class="text-xs sm:text-sm md:text-base text-indigo-600 font-bold">題目提示 (中文意義 / 句型填空)</div>
+                        <div id="hwPromptTitle" class="text-base sm:text-xl md:text-2xl font-black text-slate-800 mt-1">請聽語音手寫：【台灣】</div>
+                        <div id="hwSentenceHint" class="text-xs sm:text-base md:text-lg text-slate-600 font-semibold mt-0.5">例句：I am from _______ .</div>
                     </div>
-                    <button onclick="playCurrentHwAudio()" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-indigo-200 active:scale-95 transition-all flex items-center justify-center space-x-1.5 shrink-0">
-                        <i class="fa-solid fa-volume-high"></i>
+                    <button onclick="playCurrentHwAudio()" class="px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-base shadow-md shadow-indigo-200 active:scale-95 transition-all flex items-center justify-center space-x-2 shrink-0">
+                        <i class="fa-solid fa-volume-high text-sm sm:text-lg"></i>
                         <span>語音朗讀考題</span>
                     </button>
                 </div>
 
-                <!-- 手寫板繪圖區域 (固定外層高度，杜絕坍縮) -->
-                <div class="relative w-full rounded-2xl overflow-hidden border-2 border-indigo-200 shadow-inner bg-white">
-                    <div id="hwCanvasWrapper" class="w-full relative h-60 sm:h-72 handwriting-lines" style="min-height: 240px;">
+                <!-- 手寫板繪圖區域 (平板端高度擴大為 h-80/h-96，寬闊好書寫) -->
+                <div class="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-indigo-200 shadow-inner bg-white">
+                    <div id="hwCanvasWrapper" class="w-full relative h-60 sm:h-80 md:h-96 handwriting-lines" style="min-height: 260px;">
                         <canvas id="handwritingCanvas" class="w-full h-full block cursor-crosshair touch-none"></canvas>
                         <!-- 浮動提示字帖指引 -->
-                        <div id="hwEmptyPlaceholder" class="pointer-events-none absolute inset-0 flex items-center justify-center text-slate-300 text-sm sm:text-base font-bold tracking-widest select-none">
+                        <div id="hwEmptyPlaceholder" class="pointer-events-none absolute inset-0 flex items-center justify-center text-slate-300 text-sm sm:text-xl md:text-2xl font-bold tracking-widest select-none">
                             ✍️ 請在此手寫英文字母 (支援 Apple Pencil & 手指)
                         </div>
                     </div>
                     <!-- 畫布右上方清空按鈕 -->
-                    <button onclick="clearCanvas()" class="absolute top-2 right-2 px-3 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs border border-rose-200 active:scale-90 transition-all flex items-center space-x-1">
+                    <button onclick="clearCanvas()" class="absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs sm:text-sm md:text-base border border-rose-200 active:scale-90 transition-all flex items-center space-x-1.5 shadow-sm">
                         <i class="fa-solid fa-eraser"></i>
                         <span>清空重寫</span>
                     </button>
                 </div>
 
                 <!-- 辨識與送出控制列 -->
-                <div class="space-y-3">
-                    <div class="flex flex-col sm:flex-row gap-2">
+                <div class="space-y-3 sm:space-y-4">
+                    <div class="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
                         <div class="relative flex-1">
-                            <input type="text" id="hwAnswerInput" placeholder="寫完點右側辨識或在此核對輸入..." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 text-slate-800 font-bold text-sm outline-none transition-all">
-                            <button onclick="triggerOnlineRecognition()" id="recBtn" class="absolute right-1.5 top-1.5 bottom-1.5 px-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center space-x-1 active:scale-95 transition-all">
+                            <input type="text" id="hwAnswerInput" placeholder="寫完點右側辨識或在此核對輸入..." class="w-full px-4 sm:px-5 py-2.5 sm:py-3.5 rounded-xl bg-slate-50 border border-slate-300 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 text-slate-800 font-bold text-sm sm:text-base md:text-lg outline-none transition-all">
+                            <button onclick="triggerOnlineRecognition()" id="recBtn" class="absolute right-1.5 sm:right-2 top-1.5 sm:top-2 bottom-1.5 sm:bottom-2 px-3 sm:px-4 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs sm:text-sm md:text-base flex items-center space-x-1.5 active:scale-95 transition-all">
                                 <i id="recIcon" class="fa-solid fa-wand-magic-sparkles"></i>
                                 <span>AI手寫辨識</span>
                             </button>
                         </div>
-                        <button onclick="submitHandwritingAnswer()" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm shadow-md shadow-emerald-200 active:scale-95 transition-all flex items-center justify-center space-x-1.5">
+                        <button onclick="submitHandwritingAnswer()" class="px-6 sm:px-8 py-2.5 sm:py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm sm:text-base md:text-lg shadow-md shadow-emerald-200 active:scale-95 transition-all flex items-center justify-center space-x-2">
                             <i class="fa-solid fa-circle-check"></i>
                             <span>送出評分</span>
                         </button>
                     </div>
 
                     <!-- 候選字詞預測列 (辨識時動態出現) -->
-                    <div id="candidatesBox" class="hidden flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-1 text-xs">
+                    <div id="candidatesBox" class="hidden flex items-center space-x-2 overflow-x-auto no-scrollbar py-1 text-xs sm:text-sm md:text-base">
                         <span class="text-slate-400 font-semibold shrink-0">辨識候選詞:</span>
-                        <div id="candidatesList" class="flex space-x-1"></div>
+                        <div id="candidatesList" class="flex space-x-1.5"></div>
                     </div>
 
                     <!-- 結果回饋訊息 -->
-                    <div id="hwFeedbackBox" class="hidden p-3 rounded-xl text-xs sm:text-sm font-bold flex items-center space-x-2"></div>
+                    <div id="hwFeedbackBox" class="hidden p-3.5 sm:p-4 rounded-xl text-xs sm:text-base md:text-lg font-bold flex items-center space-x-2"></div>
                 </div>
 
             </div>
@@ -299,54 +306,54 @@
 
         <!-- ======================= 3. 口試大考驗 (口說連音、語調與發音評分) ======================= -->
         <section id="sec-oral" class="tab-section hidden">
-            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-indigo-100 max-w-2xl mx-auto space-y-4">
+            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xl border border-indigo-100 max-w-3xl mx-auto space-y-4 sm:space-y-6">
                 
-                <div class="border-b pb-3 flex items-center justify-between">
+                <div class="border-b pb-3 sm:pb-4 flex items-center justify-between">
                     <div>
-                        <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2.5 py-0.5 rounded-full">口說與聽力測驗</span>
-                        <h2 class="text-lg sm:text-xl font-black text-slate-800 mt-1">口試必勝・朗讀評分</h2>
+                        <span class="text-xs sm:text-sm md:text-base bg-indigo-100 text-indigo-700 font-bold px-3 py-1 rounded-full">口說與聽力測驗</span>
+                        <h2 class="text-lg sm:text-2xl md:text-3xl font-black text-slate-800 mt-1.5">口試必勝・朗讀評分</h2>
                     </div>
-                    <span class="text-xs sm:text-sm font-bold text-slate-500">題號：<span id="oralProgress" class="text-indigo-600 font-black">1</span> / 15</span>
+                    <span class="text-xs sm:text-base md:text-lg font-bold text-slate-500">題號：<span id="oralProgress" class="text-indigo-600 font-black">1</span> / 15</span>
                 </div>
 
                 <!-- 口試題目展示卡片 -->
-                <div class="bg-slate-50 p-4 sm:p-6 rounded-2xl border border-slate-200 text-center space-y-3">
-                    <span id="oralBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700">Unit 1 核心問答</span>
-                    <div id="oralTargetSentence" class="text-xl sm:text-2xl font-black text-indigo-900 tracking-wide">
+                <div class="bg-slate-50 p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-slate-200 text-center space-y-3 sm:space-y-4">
+                    <span id="oralBadge" class="text-xs sm:text-sm md:text-base font-bold px-3 py-1 rounded-full bg-pink-100 text-pink-700">Unit 1 核心問答</span>
+                    <div id="oralTargetSentence" class="text-xl sm:text-3xl md:text-4xl font-black text-indigo-900 tracking-wide">
                         Where are you from?
                     </div>
-                    <div id="oralSentenceChinese" class="text-xs sm:text-sm font-semibold text-slate-500">
+                    <div id="oralSentenceChinese" class="text-xs sm:text-base md:text-lg font-semibold text-slate-500">
                         你來自哪裡？（疑問詞開頭，句尾語調往下降）
                     </div>
 
                     <!-- 語調與連音重點提示 -->
-                    <div id="oralTipText" class="inline-block bg-amber-50 border border-amber-200 text-amber-800 text-xs px-3 py-1.5 rounded-xl font-bold">
+                    <div id="oralTipText" class="inline-block bg-amber-50 border border-amber-200 text-amber-800 text-xs sm:text-sm md:text-base px-3.5 py-2 rounded-xl font-bold">
                         💡 必勝口訣：Where are 連讀為 /weərɑːr/，句尾降調！
                     </div>
                 </div>
 
                 <!-- 錄音與外師示範操作列 -->
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-                    <button onclick="speakOralSample()" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-sm border border-indigo-200 flex items-center justify-center space-x-2 active:scale-95 transition-all">
-                        <i class="fa-solid fa-headphones"></i>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2">
+                    <button onclick="speakOralSample()" class="w-full sm:w-auto px-6 py-3 sm:py-3.5 rounded-2xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-sm sm:text-base md:text-lg border border-indigo-200 flex items-center justify-center space-x-2 active:scale-95 transition-all">
+                        <i class="fa-solid fa-headphones text-base sm:text-xl"></i>
                         <span>外師示範發音</span>
                     </button>
-                    <button id="oralRecordBtn" onclick="toggleSpeechRecording()" class="w-full sm:w-auto px-7 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-black text-sm shadow-lg shadow-pink-200 flex items-center justify-center space-x-2 active:scale-95 transition-all">
-                        <i id="recordIcon" class="fa-solid fa-microphone text-lg"></i>
+                    <button id="oralRecordBtn" onclick="toggleSpeechRecording()" class="w-full sm:w-auto px-8 py-3 sm:py-3.5 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-black text-sm sm:text-base md:text-lg shadow-lg shadow-pink-200 flex items-center justify-center space-x-2 active:scale-95 transition-all">
+                        <i id="recordIcon" class="fa-solid fa-microphone text-base sm:text-xl"></i>
                         <span id="recordText">點擊開始錄音說話</span>
                     </button>
                 </div>
 
                 <!-- 口試辨識與得分回饋 -->
-                <div id="oralFeedbackBox" class="hidden p-4 rounded-2xl border text-center space-y-1">
-                    <div id="oralFeedbackScore" class="text-2xl sm:text-3xl font-black">⭐⭐⭐ 95 分</div>
-                    <div id="oralFeedbackDetail" class="text-xs sm:text-sm font-bold text-slate-600">辨識文字: "Where are you from" - 發音非常標準流利！</div>
+                <div id="oralFeedbackBox" class="hidden p-4 sm:p-5 rounded-2xl border text-center space-y-1.5">
+                    <div id="oralFeedbackScore" class="text-2xl sm:text-3xl md:text-4xl font-black">⭐⭐⭐ 95 分</div>
+                    <div id="oralFeedbackDetail" class="text-xs sm:text-base md:text-lg font-bold text-slate-600">辨識文字: "Where are you from" - 發音非常標準流利！</div>
                 </div>
 
                 <!-- 換下一題口試 -->
-                <div class="flex justify-between items-center pt-2">
-                    <button onclick="prevOralQuestion()" class="text-xs text-slate-500 hover:text-indigo-600 font-bold">上一題</button>
-                    <button onclick="nextOralQuestion()" class="px-4 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold active:scale-95 transition-all">下一道口試題 <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                <div class="flex justify-between items-center pt-3 sm:pt-4">
+                    <button onclick="prevOralQuestion()" class="text-xs sm:text-sm md:text-base text-slate-500 hover:text-indigo-600 font-bold">上一題</button>
+                    <button onclick="nextOralQuestion()" class="px-5 py-2 sm:py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs sm:text-sm md:text-base font-bold active:scale-95 transition-all">下一道口試題 <i class="fa-solid fa-arrow-right ml-1"></i></button>
                 </div>
 
             </div>
@@ -354,36 +361,36 @@
 
         <!-- ======================= 4. Review 1 統整特訓 (是非題文法擂台) ======================= -->
         <section id="sec-review1" class="tab-section hidden">
-            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-indigo-100 max-w-3xl mx-auto space-y-4">
+            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xl border border-indigo-100 max-w-4xl mx-auto space-y-4 sm:space-y-6">
                 
-                <div class="border-b pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div class="border-b pb-3 sm:pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                     <div>
-                        <span class="text-xs bg-purple-100 text-purple-700 font-bold px-2.5 py-0.5 rounded-full">跨單元綜合統整</span>
-                        <h2 class="text-lg sm:text-xl font-black text-slate-800 mt-1">Review 1 核心文法對比與擂台</h2>
+                        <span class="text-xs sm:text-sm md:text-base bg-purple-100 text-purple-700 font-bold px-3 py-1 rounded-full">跨單元綜合統整</span>
+                        <h2 class="text-lg sm:text-2xl md:text-3xl font-black text-slate-800 mt-1.5">Review 1 核心文法對比與擂台</h2>
                     </div>
-                    <button onclick="playReview1SummaryAudio()" class="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs flex items-center space-x-1.5 active:scale-95 transition-all shadow-sm">
+                    <button onclick="playReview1SummaryAudio()" class="px-4 py-2 sm:py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs sm:text-sm md:text-base flex items-center space-x-1.5 active:scale-95 transition-all shadow-sm">
                         <i class="fa-solid fa-volume-high"></i>
                         <span>外師統整朗讀</span>
                     </button>
                 </div>
 
                 <!-- 文法對比精華卡 -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
-                    <div class="p-3.5 bg-blue-50 rounded-2xl border border-blue-200">
-                        <div class="font-black text-blue-900 mb-1 flex items-center">
-                            <i class="fa-solid fa-earth-americas mr-1.5 text-blue-600"></i> Unit 1: 地點/國籍 (用 Be 動詞)
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-5 text-xs sm:text-base md:text-lg">
+                    <div class="p-4 sm:p-5 bg-blue-50 rounded-2xl sm:rounded-3xl border border-blue-200">
+                        <div class="font-black text-blue-900 mb-2 flex items-center text-sm sm:text-lg md:text-xl">
+                            <i class="fa-solid fa-earth-americas mr-2 text-blue-600"></i> Unit 1: 地點/國籍 (用 Be 動詞)
                         </div>
-                        <ul class="space-y-1 text-slate-700 font-semibold">
+                        <ul class="space-y-1.5 text-slate-700 font-semibold">
                             <li>• Where <span class="text-blue-700 font-bold">are</span> you from? (不可用 do)</li>
                             <li>• She <span class="text-blue-700 font-bold">is</span> from Japan. (不可用 has)</li>
                             <li>• 國名首字母大寫：<span class="underline">T</span>aiwan, <span class="underline">C</span>anada</li>
                         </ul>
                     </div>
-                    <div class="p-3.5 bg-rose-50 rounded-2xl border border-rose-200">
-                        <div class="font-black text-rose-900 mb-1 flex items-center">
-                            <i class="fa-solid fa-head-side-cough mr-1.5 text-rose-600"></i> Unit 2: 身體不適 (用 have / has)
+                    <div class="p-4 sm:p-5 bg-rose-50 rounded-2xl sm:rounded-3xl border border-rose-200">
+                        <div class="font-black text-rose-900 mb-2 flex items-center text-sm sm:text-lg md:text-xl">
+                            <i class="fa-solid fa-head-side-cough mr-2 text-rose-600"></i> Unit 2: 身體不適 (用 have / has)
                         </div>
-                        <ul class="space-y-1 text-slate-700 font-semibold">
+                        <ul class="space-y-1.5 text-slate-700 font-semibold">
                             <li>• What's the <span class="text-rose-700 font-bold">matter</span>? (問病情)</li>
                             <li>• I <span class="text-rose-700 font-bold">have</span> a cold. (感冒)</li>
                             <li>• He <span class="text-rose-700 font-bold">has</span> a fever. (三單主詞用 has)</li>
@@ -392,25 +399,25 @@
                 </div>
 
                 <!-- 快速判斷擂台 (True / False) -->
-                <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-2xl border border-purple-200 space-y-3">
+                <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-purple-200 space-y-3 sm:space-y-4">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-black text-purple-800">⚡ 文法除錯是非題擂台</span>
-                        <span class="text-xs font-bold text-slate-500">題號：<span id="r1QIdx">1</span> / 6</span>
+                        <span class="text-xs sm:text-sm md:text-base font-black text-purple-800">⚡ 文法除錯是非題擂台</span>
+                        <span class="text-xs sm:text-base font-bold text-slate-500">題號：<span id="r1QIdx">1</span> / 6</span>
                     </div>
-                    <div id="r1QuestionText" class="text-base sm:text-lg font-black text-slate-800 py-1">
+                    <div id="r1QuestionText" class="text-base sm:text-xl md:text-2xl font-black text-slate-800 py-1 sm:py-2">
                         「Where do you from?」這個詢問對方來自哪裡的句子是完全正確的嗎？
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="checkReview1TF(true)" class="py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm shadow-md active:scale-95 transition-all flex items-center justify-center space-x-1.5">
+                    <div class="grid grid-cols-2 gap-3 sm:gap-4">
+                        <button onclick="checkReview1TF(true)" class="py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm sm:text-base md:text-lg shadow-md active:scale-95 transition-all flex items-center justify-center space-x-2">
                             <i class="fa-solid fa-circle-check"></i>
                             <span>⭕ 正確 (True)</span>
                         </button>
-                        <button onclick="checkReview1TF(false)" class="py-3 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-black text-sm shadow-md active:scale-95 transition-all flex items-center justify-center space-x-1.5">
+                        <button onclick="checkReview1TF(false)" class="py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-rose-500 hover:bg-rose-600 text-white font-black text-sm sm:text-base md:text-lg shadow-md active:scale-95 transition-all flex items-center justify-center space-x-2">
                             <i class="fa-solid fa-circle-xmark"></i>
                             <span>❌ 錯誤 (False)</span>
                         </button>
                     </div>
-                    <div id="r1FeedbackBox" class="hidden p-3 rounded-xl text-xs sm:text-sm font-bold"></div>
+                    <div id="r1FeedbackBox" class="hidden p-3.5 sm:p-4 rounded-xl text-xs sm:text-base md:text-lg font-bold"></div>
                 </div>
 
             </div>
@@ -418,46 +425,46 @@
 
         <!-- ======================= 5. 綜合試題庫 (20 道全真考卷題目) ======================= -->
         <section id="sec-quiz" class="tab-section hidden">
-            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-indigo-100 max-w-3xl mx-auto space-y-4">
+            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xl border border-indigo-100 max-w-4xl mx-auto space-y-4 sm:space-y-6">
                 
-                <div class="flex items-center justify-between border-b pb-3">
+                <div class="flex items-center justify-between border-b pb-3 sm:pb-4">
                     <div>
-                        <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2.5 py-0.5 rounded-full">期中模擬試題</span>
-                        <h2 class="text-lg sm:text-xl font-black text-slate-800 mt-1">U1 & U2 綜合筆試題庫</h2>
+                        <span class="text-xs sm:text-sm md:text-base bg-indigo-100 text-indigo-700 font-bold px-3 py-1 rounded-full">期中模擬試題</span>
+                        <h2 class="text-lg sm:text-2xl md:text-3xl font-black text-slate-800 mt-1.5">U1 & U2 綜合筆試題庫</h2>
                     </div>
-                    <span class="text-xs sm:text-sm font-bold text-slate-500">第 <span id="quizCurrentNum" class="text-indigo-600 font-black">1</span> / 20 題</span>
+                    <span class="text-xs sm:text-base md:text-lg font-bold text-slate-500">第 <span id="quizCurrentNum" class="text-indigo-600 font-black">1</span> / 20 題</span>
                 </div>
 
                 <!-- 考卷題目內容 -->
-                <div class="space-y-3">
-                    <div class="flex items-start space-x-2">
-                        <span id="quizNumBadge" class="w-7 h-7 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5">1</span>
-                        <p id="quizQuestionText" class="text-base sm:text-lg font-black text-slate-800 leading-snug">
+                <div class="space-y-3 sm:space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <span id="quizNumBadge" class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm sm:text-lg font-black shrink-0 mt-0.5">1</span>
+                        <p id="quizQuestionText" class="text-base sm:text-xl md:text-2xl font-black text-slate-800 leading-snug">
                             Where ____ you from? I am from Taiwan.
                         </p>
                     </div>
 
-                    <!-- 選項 A, B, C, D -->
-                    <div id="quizOptionsContainer" class="space-y-2 pt-2">
+                    <!-- 選項 A, B, C, D (平板端加大 padding 與字體) -->
+                    <div id="quizOptionsContainer" class="space-y-2.5 sm:space-y-3.5 pt-2">
                         <!-- 動態產生 -->
                     </div>
 
                     <!-- 提示按鈕與解析卡片 -->
                     <div class="pt-2">
-                        <button onclick="toggleQuizHint()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center space-x-1">
+                        <button onclick="toggleQuizHint()" class="text-xs sm:text-sm md:text-base font-bold text-indigo-600 hover:text-indigo-800 flex items-center space-x-1.5">
                             <i class="fa-regular fa-lightbulb"></i>
                             <span id="quizHintToggleText">顯示文法提示</span>
                         </button>
-                        <div id="quizHintBox" class="hidden mt-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 font-semibold">
+                        <div id="quizHintBox" class="hidden mt-2 p-3.5 sm:p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs sm:text-sm md:text-base text-amber-900 font-semibold">
                             提示內容
                         </div>
                     </div>
                 </div>
 
                 <!-- 換題控制按鈕 -->
-                <div class="flex justify-between items-center pt-3 border-t">
-                    <button onclick="prevQuizQuestion()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold active:scale-95 transition-all">上一題</button>
-                    <button onclick="nextQuizQuestion()" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold active:scale-95 transition-all shadow-md shadow-indigo-100">下一題 <i class="fa-solid fa-chevron-right ml-1"></i></button>
+                <div class="flex justify-between items-center pt-3 sm:pt-4 border-t">
+                    <button onclick="prevQuizQuestion()" class="px-4 sm:px-6 py-2 sm:py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm md:text-base font-bold active:scale-95 transition-all">上一題</button>
+                    <button onclick="nextQuizQuestion()" class="px-5 sm:px-7 py-2 sm:py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm md:text-base font-bold active:scale-95 transition-all shadow-md shadow-indigo-100">下一題 <i class="fa-solid fa-chevron-right ml-1"></i></button>
                 </div>
 
             </div>
@@ -465,20 +472,20 @@
 
         <!-- ======================= 6. 教材複習秘笈 (外師統整朗讀 + 循環重複播放) ======================= -->
         <section id="sec-guide" class="tab-section hidden">
-            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-emerald-100 max-w-4xl mx-auto space-y-4 sm:space-y-6">
+            <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xl border border-emerald-100 max-w-5xl mx-auto space-y-4 sm:space-y-6">
                 
-                <div class="border-b pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="border-b pb-3 sm:pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                        <span class="text-xs bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-full">教材重點大彙整</span>
-                        <h2 class="text-xl sm:text-2xl font-black text-slate-800 mt-1">康軒五上 U1 & U2 考點秘笈</h2>
+                        <span class="text-xs sm:text-sm md:text-base bg-emerald-100 text-emerald-700 font-bold px-3 py-1 rounded-full">教材重點大彙整</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-800 mt-1.5">康軒五上 U1 & U2 考點秘笈</h2>
                     </div>
                     <!-- 朗讀控制列：全單字詞朗讀與重複播放按鈕 -->
-                    <div class="flex items-center space-x-2">
-                        <button id="guidePlayBtn" onclick="toggleGuideAudio()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm shadow-md active:scale-95 transition-all flex items-center space-x-1.5">
-                            <i id="guidePlayIcon" class="fa-solid fa-volume-high"></i>
+                    <div class="flex items-center space-x-2 sm:space-x-3">
+                        <button id="guidePlayBtn" onclick="toggleGuideAudio()" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm md:text-base shadow-md active:scale-95 transition-all flex items-center space-x-2">
+                            <i id="guidePlayIcon" class="fa-solid fa-volume-high text-sm sm:text-lg"></i>
                             <span id="guidePlayText">外師統整朗讀</span>
                         </button>
-                        <button id="guideRepeatBtn" onclick="toggleGuideRepeat()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs sm:text-sm border border-slate-200 active:scale-95 transition-all flex items-center space-x-1" title="開啟/關閉重複循環播放">
+                        <button id="guideRepeatBtn" onclick="toggleGuideRepeat()" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs sm:text-sm md:text-base border border-slate-200 active:scale-95 transition-all flex items-center space-x-1.5" title="開啟/關閉重複循環播放">
                             <i class="fa-solid fa-repeat"></i>
                             <span id="guideRepeatText">單次</span>
                         </button>
@@ -486,60 +493,60 @@
                 </div>
 
                 <!-- 單字分類卡片 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <!-- Unit 1 國家名稱 -->
-                    <div class="p-4 bg-sky-50/70 rounded-2xl border border-sky-200">
-                        <h3 class="font-black text-sky-900 text-base mb-2 flex items-center">
-                            <span class="mr-1.5">🗺️</span> Unit 1 國家名稱 (字首必大寫)
+                    <div class="p-4 sm:p-6 bg-sky-50/70 rounded-2xl sm:rounded-3xl border border-sky-200">
+                        <h3 class="font-black text-sky-900 text-base sm:text-xl mb-3 flex items-center">
+                            <span class="mr-2">🗺️</span> Unit 1 國家名稱 (字首必大寫)
                         </h3>
-                        <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
-                            <div class="bg-white p-2 rounded-xl border border-sky-100">🇹🇼 Taiwan (台灣)</div>
-                            <div class="bg-white p-2 rounded-xl border border-sky-100">🇯🇵 Japan (日本)</div>
-                            <div class="bg-white p-2 rounded-xl border border-sky-100">🇬🇧 the UK (英國)</div>
-                            <div class="bg-white p-2 rounded-xl border border-sky-100">🇺🇸 the USA (美國)</div>
-                            <div class="bg-white p-2 rounded-xl border border-sky-100">🇨🇦 Canada (加拿大/首都Ottawa)</div>
-                            <div class="bg-white p-2 rounded-xl border border-sky-100">🇦🇺 Australia (澳洲)</div>
+                        <div class="grid grid-cols-2 gap-2.5 sm:gap-3 text-xs sm:text-sm md:text-base font-bold text-slate-700">
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-sky-100 shadow-sm">🇹🇼 Taiwan (台灣)</div>
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-sky-100 shadow-sm">🇯🇵 Japan (日本)</div>
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-sky-100 shadow-sm">🇬🇧 the UK (英國)</div>
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-sky-100 shadow-sm">🇺🇸 the USA (美國)</div>
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-sky-100 shadow-sm">🇨🇦 Canada (加拿大/首都Ottawa)</div>
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-sky-100 shadow-sm">🇦🇺 Australia (澳洲)</div>
                         </div>
                     </div>
 
                     <!-- Unit 2 身體不適症狀 -->
-                    <div class="p-4 bg-rose-50/70 rounded-2xl border border-rose-200">
-                        <h3 class="font-black text-rose-900 text-base mb-2 flex items-center">
-                            <span class="mr-1.5">🤒</span> Unit 2 身體部位與病症 (搭配 have / has)
+                    <div class="p-4 sm:p-6 bg-rose-50/70 rounded-2xl sm:rounded-3xl border border-rose-200">
+                        <h3 class="font-black text-rose-900 text-base sm:text-xl mb-3 flex items-center">
+                            <span class="mr-2">🤒</span> Unit 2 身體部位與病症 (搭配 have / has)
                         </h3>
-                        <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
-                            <div class="bg-white p-2 rounded-xl border border-rose-100">cold (感冒)</div>
-                            <div class="bg-white p-2 rounded-xl border border-rose-100">cough (咳嗽)</div>
-                            <div class="bg-white p-2 rounded-xl border border-rose-100">fever (發燒)</div>
-                            <div class="bg-white p-2 rounded-xl border border-rose-100">headache (頭痛)</div>
-                            <div class="bg-white p-2 rounded-xl border border-rose-100">stomachache (肚子痛)</div>
-                            <div class="bg-white p-2 rounded-xl border border-rose-100">toothache (牙痛)</div>
-                            <div class="bg-white p-2 rounded-xl border border-rose-100">runny nose (流鼻水)</div>
-                            <div class="bg-white p-2 rounded-xl border border-rose-100">sore throat (喉嚨痛)</div>
-                            <div class="bg-amber-100/60 p-2 rounded-xl border border-amber-200">head (頭部)</div>
-                            <div class="bg-amber-100/60 p-2 rounded-xl border border-amber-200">tooth (牙齒)</div>
-                            <div class="bg-amber-100/60 p-2 rounded-xl border border-amber-200 col-span-2">stomach (胃/肚子)</div>
+                        <div class="grid grid-cols-2 gap-2.5 sm:gap-3 text-xs sm:text-sm md:text-base font-bold text-slate-700">
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-rose-100 shadow-sm">cold (感冒)</div>
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-rose-100 shadow-sm">cough (咳嗽)</div>
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-rose-100 shadow-sm">fever (發燒)</div>
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-rose-100 shadow-sm">headache (頭痛)</div>
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-rose-100 shadow-sm">stomachache (肚子痛)</div>
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-rose-100 shadow-sm">toothache (牙痛)</div>
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-rose-100 shadow-sm">runny nose (流鼻水)</div>
+                            <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-rose-100 shadow-sm">sore throat (喉嚨痛)</div>
+                            <div class="bg-amber-100/60 p-2.5 sm:p-3 rounded-xl border border-amber-200 font-black">head (頭部)</div>
+                            <div class="bg-amber-100/60 p-2.5 sm:p-3 rounded-xl border border-amber-200 font-black">tooth (牙齒)</div>
+                            <div class="bg-amber-100/60 p-2.5 sm:p-3 rounded-xl border border-amber-200 font-black col-span-2">stomach (胃/肚子)</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Phonics 發音群 (課本 P.26 & P.40 原版內容) -->
-                <div class="p-4 bg-amber-50/80 rounded-2xl border border-amber-200">
-                    <h3 class="font-black text-amber-900 text-base mb-2 flex items-center">
-                        <span class="mr-1.5">🔤</span> Phonics 自然發音規律與韻文對比
+                <div class="p-4 sm:p-6 bg-amber-50/80 rounded-2xl sm:rounded-3xl border border-amber-200">
+                    <h3 class="font-black text-amber-900 text-base sm:text-xl mb-3 flex items-center">
+                        <span class="mr-2">🔤</span> Phonics 自然發音規律與韻文對比
                     </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                        <div class="bg-white p-3 rounded-xl border border-amber-100 space-y-1.5">
-                            <div class="font-black text-amber-800">【er / ir / ur】發音群：</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5 text-xs sm:text-sm md:text-base">
+                        <div class="bg-white p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-amber-100 space-y-2 shadow-sm">
+                            <div class="font-black text-amber-800 text-sm sm:text-base md:text-lg">【er / ir / ur】發音群：</div>
                             <p class="font-semibold text-slate-700">clerk, perm, girl, skirt, shirt, nurse, purse, purple, perfect</p>
-                            <p class="text-[11px] text-indigo-600 font-bold">🔍 聽辨對比組：first / fist、blue / blur、her / he、bun / burn</p>
-                            <p class="text-[11px] text-amber-600 font-bold">韻文：The nurse has a purple purse. / Who's the girl in a shirt and skirt?</p>
+                            <p class="text-xs sm:text-sm md:text-base text-indigo-600 font-bold">🔍 聽辨對比組：first / fist、blue / blur、her / he、bun / burn</p>
+                            <p class="text-xs sm:text-sm md:text-base text-amber-600 font-bold">韻文：The nurse has a purple purse. / Who's the girl in a shirt and skirt?</p>
                         </div>
-                        <div class="bg-white p-3 rounded-xl border border-amber-100 space-y-1.5">
-                            <div class="font-black text-amber-800">【ar / or】發音群：</div>
+                        <div class="bg-white p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-amber-100 space-y-2 shadow-sm">
+                            <div class="font-black text-amber-800 text-sm sm:text-base md:text-lg">【ar / or】發音群：</div>
                             <p class="font-semibold text-slate-700">car, farm, party, park, card, barn, corn, horse, pork, cord, born, form</p>
-                            <p class="text-[11px] text-indigo-600 font-bold">🔍 聽辨對比組：pork / park、card / cord、born / barn、form / farm</p>
-                            <p class="text-[11px] text-amber-600 font-bold">韻文：There's a party at the farm. / Would you like some corn and pork?</p>
+                            <p class="text-xs sm:text-sm md:text-base text-indigo-600 font-bold">🔍 聽辨對比組：pork / park、card / cord、born / barn、form / farm</p>
+                            <p class="text-xs sm:text-sm md:text-base text-amber-600 font-bold">韻文：There's a party at the farm. / Would you like some corn and pork?</p>
                         </div>
                     </div>
                 </div>
@@ -551,53 +558,53 @@
 
     <!-- ======================= 學生角色切換彈窗 ======================= -->
     <div id="characterModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-sm w-full p-5 shadow-2xl border border-indigo-100 space-y-4">
+        <div class="bg-white rounded-3xl max-w-sm sm:max-w-md w-full p-5 sm:p-7 shadow-2xl border border-indigo-100 space-y-4 sm:space-y-5">
             <div class="text-center">
-                <span class="text-2xl">🏆</span>
-                <h3 class="text-lg font-black text-slate-800 mt-1">選擇參賽學生</h3>
-                <p class="text-xs text-slate-500 font-semibold">紀錄兩位學生的遊戲得分與考試成就</p>
+                <span class="text-3xl sm:text-4xl">🏆</span>
+                <h3 class="text-lg sm:text-2xl font-black text-slate-800 mt-1.5">選擇參賽學生</h3>
+                <p class="text-xs sm:text-sm md:text-base text-slate-500 font-semibold">紀錄兩位學生的遊戲得分與考試成就</p>
             </div>
 
-            <div class="space-y-2.5">
+            <div class="space-y-3">
                 <!-- 嬌小莉莉 -->
-                <div onclick="selectCharacter('lily')" id="card-student-lily" class="p-3 rounded-2xl border-2 border-indigo-500 bg-indigo-50/50 flex items-center justify-between cursor-pointer active:scale-95 transition-all">
-                    <div class="flex items-center space-x-3">
-                        <span class="text-3xl">👧</span>
+                <div onclick="selectCharacter('lily')" id="card-student-lily" class="p-3.5 sm:p-4 rounded-2xl border-2 border-indigo-500 bg-indigo-50/50 flex items-center justify-between cursor-pointer active:scale-95 transition-all">
+                    <div class="flex items-center space-x-3 sm:space-x-4">
+                        <span class="text-3xl sm:text-4xl">👧</span>
                         <div>
-                            <div class="font-black text-sm text-slate-800">嬌小莉莉 (Lily)</div>
-                            <div class="text-[11px] text-slate-500 font-semibold">活力女精靈・手寫細心</div>
+                            <div class="font-black text-sm sm:text-lg text-slate-800">嬌小莉莉 (Lily)</div>
+                            <div class="text-[11px] sm:text-sm text-slate-500 font-semibold">活力女精靈・手寫細心</div>
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-xs font-black text-indigo-600">⭐ <span id="modalScoreLily">0</span> 分</div>
-                        <span id="badgeLily" class="text-[10px] bg-indigo-600 text-white px-2 py-0.5 rounded-full font-bold">當前選擇</span>
+                        <div class="text-xs sm:text-base font-black text-indigo-600">⭐ <span id="modalScoreLily">0</span> 分</div>
+                        <span id="badgeLily" class="text-[10px] sm:text-xs bg-indigo-600 text-white px-2.5 py-0.5 rounded-full font-bold">當前選擇</span>
                     </div>
                 </div>
 
                 <!-- 粗壯麥克斯 -->
-                <div onclick="selectCharacter('max')" id="card-student-max" class="p-3 rounded-2xl border-2 border-slate-200 bg-white flex items-center justify-between cursor-pointer active:scale-95 transition-all">
-                    <div class="flex items-center space-x-3">
-                        <span class="text-3xl">👦</span>
+                <div onclick="selectCharacter('max')" id="card-student-max" class="p-3.5 sm:p-4 rounded-2xl border-2 border-slate-200 bg-white flex items-center justify-between cursor-pointer active:scale-95 transition-all">
+                    <div class="flex items-center space-x-3 sm:space-x-4">
+                        <span class="text-3xl sm:text-4xl">👦</span>
                         <div>
-                            <div class="font-black text-sm text-slate-800">粗壯麥克斯 (Max)</div>
-                            <div class="text-[11px] text-slate-500 font-semibold">陽光小勇士・口說滿分</div>
+                            <div class="font-black text-sm sm:text-lg text-slate-800">粗壯麥克斯 (Max)</div>
+                            <div class="text-[11px] sm:text-sm text-slate-500 font-semibold">陽光小勇士・口說滿分</div>
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-xs font-black text-amber-600">⭐ <span id="modalScoreMax">0</span> 分</div>
-                        <span id="badgeMax" class="text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full font-bold hidden">選擇</span>
+                        <div class="text-xs sm:text-base font-black text-amber-600">⭐ <span id="modalScoreMax">0</span> 分</div>
+                        <span id="badgeMax" class="text-[10px] sm:text-xs bg-slate-200 text-slate-600 px-2.5 py-0.5 rounded-full font-bold hidden">選擇</span>
                     </div>
                 </div>
             </div>
 
-            <button onclick="closeCharacterModal()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs active:scale-95 transition-all">
+            <button onclick="closeCharacterModal()" class="w-full py-3 sm:py-3.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs sm:text-base active:scale-95 transition-all">
                 確定並開始學習
             </button>
         </div>
     </div>
 
     <!-- 浮動提示 Toast -->
-    <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-slate-800/95 backdrop-blur-md text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-full shadow-2xl flex items-center space-x-2 transition-all opacity-0 pointer-events-none translate-y-3">
+    <div id="toast" class="fixed bottom-5 sm:bottom-8 left-1/2 -translate-x-1/2 z-50 bg-slate-800/95 backdrop-blur-md text-white text-xs sm:text-base md:text-lg font-bold px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-full shadow-2xl flex items-center space-x-2.5 transition-all opacity-0 pointer-events-none translate-y-3">
         <i id="toastIcon" class="fa-solid fa-circle-info text-pink-400"></i>
         <span id="toastMsg">提示訊息</span>
     </div>
@@ -809,8 +816,8 @@
                     }
 
                     div.innerHTML = `
-                        <span class="text-xl sm:text-2xl">${tile.icon}</span>
-                        <span class="text-[9px] sm:text-[10px] font-bold text-slate-600 truncate max-w-[90%] leading-none mt-1">${tile.name}</span>
+                        <span class="text-xl sm:text-3xl md:text-4xl">${tile.icon}</span>
+                        <span class="text-[9px] sm:text-xs md:text-sm font-bold text-slate-700 truncate max-w-[92%] leading-none mt-1 sm:mt-1.5">${tile.name}</span>
                     `;
 
                     div.onclick = () => onTileClick(r, c);
@@ -998,7 +1005,7 @@
             grid.innerHTML = '';
             q.opts.forEach((opt, idx) => {
                 const btn = document.createElement('button');
-                btn.className = 'py-2 px-3 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-xs border border-white/20 active:scale-95 transition-all text-left';
+                btn.className = 'py-2 sm:py-3 px-3 sm:px-4 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-xs sm:text-base border border-white/20 active:scale-95 transition-all text-left';
                 btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
                 btn.onclick = () => checkBonusAnswer(idx);
                 grid.appendChild(btn);
@@ -1103,7 +1110,9 @@
 
                 hwCtx.beginPath();
                 hwCtx.moveTo(x, y);
-                hwCtx.lineWidth = 4;
+                // 平板端加大畫筆粗細，寫起來更飽滿清楚
+                const isTablet = window.innerWidth >= 768;
+                hwCtx.lineWidth = isTablet ? 6 : 4;
                 hwCtx.lineCap = 'round';
                 hwCtx.lineJoin = 'round';
                 hwCtx.strokeStyle = '#1e293b';
@@ -1146,7 +1155,7 @@
             const wrapper = document.getElementById('hwCanvasWrapper');
             if (!wrapper) return;
             const w = wrapper.clientWidth;
-            const h = wrapper.clientHeight || 240;
+            const h = wrapper.clientHeight || (window.innerWidth >= 768 ? 360 : 240);
             if (w === 0) return;
 
             // 備份現有筆跡
@@ -1760,10 +1769,10 @@
 
             q.opts.forEach((opt, idx) => {
                 const btn = document.createElement('button');
-                btn.className = 'w-full p-3 rounded-xl bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-left font-bold text-xs sm:text-sm text-slate-800 active:scale-[0.99] transition-all flex items-center justify-between';
+                btn.className = 'w-full p-3.5 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-left font-bold text-xs sm:text-base md:text-lg text-slate-800 active:scale-[0.99] transition-all flex items-center justify-between shadow-sm';
                 btn.innerHTML = `
-                    <span><strong class="text-indigo-600 mr-2">${String.fromCharCode(65 + idx)}.</strong> ${opt}</span>
-                    <i class="fa-regular fa-circle text-slate-300"></i>
+                    <span><strong class="text-indigo-600 mr-2 sm:mr-3">${String.fromCharCode(65 + idx)}.</strong> ${opt}</span>
+                    <i class="fa-regular fa-circle text-slate-300 text-sm sm:text-lg"></i>
                 `;
                 btn.onclick = () => selectQuizAnswer(idx, btn);
                 container.appendChild(btn);
@@ -1780,18 +1789,18 @@
             allBtns.forEach(b => b.classList.add('pointer-events-none'));
 
             if (selectedIdx === q.ans) {
-                btnEl.className = 'w-full p-3 rounded-xl bg-emerald-50 border-2 border-emerald-500 text-left font-black text-xs sm:text-sm text-emerald-800 transition-all flex items-center justify-between';
-                btnEl.querySelector('i').className = 'fa-solid fa-circle-check text-emerald-600 text-base';
+                btnEl.className = 'w-full p-3.5 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl bg-emerald-50 border-2 border-emerald-500 text-left font-black text-xs sm:text-base md:text-lg text-emerald-800 transition-all flex items-center justify-between shadow-sm';
+                btnEl.querySelector('i').className = 'fa-solid fa-circle-check text-emerald-600 text-base sm:text-xl';
                 addStudentScore(15);
                 showToast('🎉 答對了！太厲害了！', 'fa-circle-check text-emerald-400');
             } else {
-                btnEl.className = 'w-full p-3 rounded-xl bg-rose-50 border-2 border-rose-500 text-left font-black text-xs sm:text-sm text-rose-800 transition-all flex items-center justify-between';
-                btnEl.querySelector('i').className = 'fa-solid fa-circle-xmark text-rose-600 text-base';
+                btnEl.className = 'w-full p-3.5 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl bg-rose-50 border-2 border-rose-500 text-left font-black text-xs sm:text-base md:text-lg text-rose-800 transition-all flex items-center justify-between shadow-sm';
+                btnEl.querySelector('i').className = 'fa-solid fa-circle-xmark text-rose-600 text-base sm:text-xl';
                 // 標記正解
                 const correctBtn = allBtns[q.ans];
                 if (correctBtn) {
-                    correctBtn.className = 'w-full p-3 rounded-xl bg-emerald-50 border-2 border-emerald-500 text-left font-bold text-xs sm:text-sm text-emerald-800 transition-all flex items-center justify-between';
-                    correctBtn.querySelector('i').className = 'fa-solid fa-circle-check text-emerald-600';
+                    correctBtn.className = 'w-full p-3.5 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl bg-emerald-50 border-2 border-emerald-500 text-left font-bold text-xs sm:text-base md:text-lg text-emerald-800 transition-all flex items-center justify-between shadow-sm';
+                    correctBtn.querySelector('i').className = 'fa-solid fa-circle-check text-emerald-600 text-base sm:text-xl';
                 }
                 showToast('答錯囉！請查看正確選項解析。', 'fa-circle-xmark text-rose-400');
             }
